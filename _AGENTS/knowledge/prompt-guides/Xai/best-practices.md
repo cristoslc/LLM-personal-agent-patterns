@@ -119,3 +119,4 @@ This guide is based on limited available documentation. As Xai releases more com
 *Last updated: December 2024*
 *Note: Xai has not published comprehensive prompt engineering guides comparable to other major AI companies. This guide is based on available documentation and general best practices.*
 
+
