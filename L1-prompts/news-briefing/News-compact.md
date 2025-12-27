@@ -31,8 +31,8 @@ sources:
 
   tier2:
     name: Institutional
-    types: "Major outlets with editorial standards: nationals (NYT, WSJ, WaPo, FT, Economist, Bloomberg/Reuters analysis, Politico, Guardian, BBC, NPR, PBS, Atlantic, New Yorker, ProPublica, Intercept, Axios, Semafor), international (Le Monde, Der Spiegel, El País, SCMP, Nikkei, Hindu, Al Jazeera, ABC Australia, Globe and Mail, Toronto Star), business (CNBC, MarketWatch, Barron's, Fortune, Forbes news, BI original), tech (Ars Technica, Verge, Wired, MIT Tech Review, TechCrunch funding, Protocol, 404 Media, Heatmap)"
-    rule: Tier 2 has editorial standards. If uncertain, treat as Tier 3
+    types: [nationals, international, business, tech]
+    rule: Major outlets with editorial standards. Examples: NYT, WSJ, FT, BBC, NPR, Guardian, Le Monde, Der Spiegel, CNBC, Wired, Ars Technica. If uncertain, treat as Tier 3
 
   tier3:
     name: Other
@@ -45,43 +45,18 @@ sources:
     rule: Local sources = Tier 2 if editorial standards. If none validated, Local uses terse_recap only; no extrapolation from national stories
 
 definitions:
-  delta: Specific parameter that moved in briefing_window that hadn't moved before. "Another example" never qualifies
-  briefing_window: Past 36 hours from briefing date. Stories outside window MUST use developing_story or exclude. No exceptions
-  developing_story: Ongoing situation where (1) cumulative significance meets slot_test, (2) material update in briefing_window, (3) no resolution/pivot yet
-  slot_test:
-    question: "Which ONE worldview change would deleting this story remove?"
-    valid_answers:
-      - new_constraint: "A new limit on what actors can do"
-      - new_capability: "A new ability actors didn't have before"
-      - precedent: "First instance establishing new baseline"
-      - power_shift: "Change in who can impose costs on whom"
-      - turning_point: "Moment when trend direction changes"
-      - system_reveal: "What the event exposes about how systems actually work (vs. how they're supposed to work)"
-    improvement_test: "Ask not just what happened, but what the event REVEALS"
-    examples:
-      weak: "Fire damaged waterfront businesses"
-      strong: "Fire revealed emergency response fragility when winter freezes standard infrastructure"
-      weak: "Markets hit new records"
-      strong: "Market hits records while hedging costs spike—confidence and fragility coexist"
-  actionability_test: (Local only) Enables specific, time-bound actions. Requires: (1) clear time window, (2) specific activities impacted, (3) concrete suggested actions
+  delta: Specific parameter that moved in bw that hadn't moved before. "Another example" never qualifies
+  briefing_window: Past 36h from briefing date. Stories outside bw MUST use dev_story or exclude. No exceptions
+  developing_story: Ongoing situation where (1) cumulative significance meets slot_test, (2) material update in bw, (3) no resolution/pivot yet
+  slot_test: "Articulate ONE worldview change (new_constraint/new_capability/precedent/power_shift/turning_point/sys_reveal). Ask: what does event REVEAL? Weak: 'Fire damaged waterfront businesses'. Strong: 'Fire revealed emergency response fragility when winter freezes standard infrastructure'"
+  actionability_test: "(Local only) Enables specific, time-bound actions. Requires: (1) clear time window, (2) specific activities impacted, (3) concrete suggested actions"
   pattern_proof:
     path_a: >$5B OR top-10 gatekeeper OR creates/reshapes/collapses market category
     path_b: 2+ similar events in 30-90d AND new parameter (actor type, geography, financing, regulatory stance, enforcement, power dynamic)
   durability: Progress survives next election/budget/leadership change. Collapses with one sponsor loss = fails
   local_sig:
-    criteria:
-      - lock_in: right/zoning/tax requiring equal effort to reverse
-      - resource_shift: >1% budget or >5% residents affected
-      - precedent: first local application or pilot with state-scaling path
-      - infrastructure: construction begun or contract signed
-      - personal_impact: public health advisories, major weather events, significant incidents affecting reader/family
-      - actionable: information enabling specific, time-bound actions (health precautions, travel adjustments, service disruptions, safety measures)
-      - service_disruption: loss/suspension of essential services (healthcare, safety, education, housing, social services) affecting community subgroups, particularly vulnerable populations. Provider closures/payment suspensions/capacity reductions materially reducing access
-      - equity_consideration: stories disproportionately affecting vulnerable/marginalized populations (immigrants, refugees, low-income, disabled, unhoused, racial/ethnic minorities, LGBTQ+) receive heightened consideration. Concentrated harm can meet threshold even if <5% total population
-      - system_reveal: "Event exposes how local infrastructure/services actually function under stress. Examples: 'Fire shows frozen hydrants force reliance on waterborne assets'; 'School design unveiling + bid timeline = lock-in beyond voter approval'"
-    reframing_prompts:
-      - "Don't ask 'what burned' ask 'what did the fire reveal about winter infrastructure'"
-      - "Don't ask 'what got approved' ask 'what irreversible commitment just happened'"
+    criteria: "lock_in | resource_shift(>1% budget/>5% pop) | precedent | infrastructure | personal_impact | actionable | svc_disrupt(essential services→vulnerable pop) | equity(vulnerable pop, <5% ok if concentrated harm) | sys_reveal(how local infra/services function under stress)"
+    reframing_prompts: "Don't ask 'what burned' ask 'what did fire reveal about winter infrastructure'. Don't ask 'what got approved' ask 'what irreversible commitment just happened'"
     rule: Passes ONE criteria
   policy_trigger: Crime/violence qualifies ONLY if same-day policy action: legislation introduced, executive order signed, regulation announced, budget allocated, formal investigation with subpoena power. Commentary/calls ≠ policy trigger
 
@@ -92,52 +67,34 @@ phases:
     input: [reader_location, date]
     prerequisite_check: Confirm web search tools available. If not, STOP: "This briefing requires web search tools. Please enable web search or provide URLs directly."
     process: "1.Test web search tools 2.List Tier 1 sources (wires, gov domains) 3.List Tier 2 sources 4.Discover local sources via search '[city] local news,' '[state] newspaper,' '[region] public radio' 5.Validate local sources have recent articles"
-    output_format: "## Phase 1: Source Manifest | Format: **Tier 1:** [list] **Tier 2:** [list] **Local:** [list] **Excluded:** [list] | End with: Phase 1 complete. Say 'continue' for Phase 2"
+    output_format: "## Phase 1: Source Manifest | **Tier 1:** [list] **Tier 2:** [list] **Local:** [list] **Excluded:** [list] | End: Phase 1 complete. Say 'continue' for Phase 2"
     on_complete: OUTPUT PHASE 1 ONLY. STOP
 
   phase2:
     name: Story Collection
     turn: 2
-    input: [Source manifest from Phase 1, date, briefing_window (36h)]
+    input: [Source manifest from Phase 1, date, bw (36h)]
     constraint: SEARCH TOOLS ONLY. Every URL MUST come from search result. Do not construct URLs. If tool didn't return it, it doesn't exist
-    search_strategy:
-      temporal: "For each source, search '[source name] news [date]' or site-specific"
-      thematic_sweeps:
-        - "regulation technology [date]"
-        - "infrastructure failure [region]"
-        - "policy changes [date]"
-        - "trade restrictions [date]"
-        - "energy markets [date]"
-      minimum_searches: "15-20 total searches across temporal + thematic approaches"
-      validation: "Before proceeding to Phase 3, verify you've searched for: policy/regulation changes, infrastructure/systems issues, market structure changes, technology governance"
-    process: "1.Temporal searches per source 2.Thematic sweeps across categories 3.From search results ONLY, extract: headline, timestamp, URL, source tier 4.Verify timestamps within briefing_window; exclude if outside 5.Flag duplicates 6.If zero results, note 'no results' — do not guess 7.Verify minimum search coverage met"
-    output_format: "## Phase 2: Story Candidates | Format: **[Tier] Source | Headline | Timestamp | URL** | Include: no-results list, total count, duplicates, search count | End with: Phase 2 complete. Say 'continue' for Phase 3"
+    search_strategy: "Within bw, prioritize recent. Temporal: '[source name] news [date]' per source. Thematic: regulation tech, infra failure, policy changes, trade restrictions, energy markets. Min 15-20 searches total. Verify: policy/regulation, infra/systems, market structure, tech governance"
+    process: "1.Temporal searches per source 2.Thematic sweeps 3.From search results ONLY: headline, timestamp, URL, tier 4.Verify timestamps within bw; exclude if outside 5.Flag duplicates 6.Zero results→note 'no results' 7.Verify min search coverage met"
+    output_format: "## Phase 2: Story Candidates | **[Tier] Source | Headline | Timestamp | URL** | Include: no-results, total, duplicates, search count | End: Phase 2 complete. Say 'continue' for Phase 3"
     on_complete: OUTPUT PHASE 2 ONLY. STOP
-    empty_result: "Search returned no articles within briefing_window. Options: (1) expand window, (2) user provides URLs, (3) terse_recap for all categories"
+    empty_result: "Search returned no articles within bw. Options: (1) expand window, (2) user provides URLs, (3) terse_recap for all categories"
 
   phase3:
     name: Selection
     turn: 3
     input: [Candidates from Phase 2, selection criteria]
-    process: "1.Temporal gate (outside bw→reject/developing) 2.Source gate (T3→T1-2 corr) 3.Slot test (Local→actionability ok) 4.Category assign (Politics/Tech/Business/Local/Uplifting) 5.Dedup (keep highest tier) 6.Category tests (pattern_proof/local_sig/durability) 7.Recycling check (one dev=one story) 8.Cross-link ID 9.Political controversy check (local→structural impact) 10.Local rejection review (service disruption/vulnerable pop/political sensitivity) 11.Story consolidation (combine vs separate rules) 12.Quality gate (systemic insight check)"
-    quality_gate:
-      before_composition:
-        - "For each selected story, can you state the systemic insight in one sentence?"
-        - "Does your 'why it matters' identify a mechanism, not just an impact?"
-        - "Would deleting this story remove understanding of how a system works?"
-        - "Have you found the tension/paradox/reveal, not just the event?"
-      if_answers_are_no:
-        - reframe_the_story: "What does this event expose?"
-        - find_the_contradiction: "What are actors doing that contradicts what they're saying?"
-        - identify_the_externality: "What cost is being shifted; who bears it?"
-    output_format: "## Phase 3: Selection Results | Format: **SELECTED:** [Category] Headline → test: [sentence] | Sources: [list] | Format: [standard/developing/actionable] | **REJECTED:** Headline → Reason | **LOCAL REJECTION REVIEW APPLIED:** [list] | **TERSE_RECAP CATEGORIES:** [list] | **POTENTIAL CROSS-LINKS:** [list] | **CONSOLIDATED STORIES:** [list] | End with: Phase 3 complete. Say 'continue' for Phase 4"
+    process: "1.Temporal gate (outside bw→reject/dev_story) 2.Source gate (T3→T1-2 corr) 3.Slot test (Local→act_test ok) 4.Category assign 5.Dedup (keep highest tier) 6.Category tests (pattern_proof/local_sig/durability) 7.Recycling check (one dev=one story) 8.Cross-link ID 9.Political controversy check (local→structural impact) 10.Local rejection review (svc_disrupt/vulnerable pop/political sensitivity) 11.Story consolidation 12.Quality gate (systemic insight check)"
+    quality_gate: "Check: slot_test clear? why_it_matters specific? actors clear? systemic insight in one sentence? If no: reframe/gather/reconsider. Reframe: what does event expose? Find contradiction: what are actors doing vs saying? Identify externality: what cost shifted, who bears it?"
+    output_format: "## Phase 3: Selection Results | **SELECTED:** [Category] Headline → test: [sentence] | Sources: [list] | Format: [standard/developing/actionable] | **REJECTED:** Headline → Reason | **LOCAL REJECTION REVIEW:** [list] | **TERSE_RECAP:** [list] | **CROSS-LINKS:** [list] | **CONSOLIDATED:** [list] | End: Phase 3 complete. Say 'continue' for Phase 4"
     on_complete: OUTPUT PHASE 3 ONLY. STOP
 
   phase4:
     name: Composition
     turn: 4
     input: [Selections from Phase 3, templates]
-    process: "1.Write each story using template: standard (slot_test), developing (ongoing), actionable (actionability_test for local) 2.Include actor context for standard/developing 3.Add explicit cross-links when stories relate 4.Zero selections → terse_recap citing Phase 2 threads 5.Compile bibliography grouped by category 6.Add geo-diversity disclosure if applicable"
+    process: "1.Write each story using template: standard (slot_test), developing (ongoing), actionable (act_test for local) 2.Include actor context for standard/developing 3.Add explicit cross-links when stories relate 4.Zero selections → terse_recap citing Phase 2 threads 5.Compile bibliography grouped by category 6.Add geo-diversity disclosure if applicable"
     output_format: Final briefing as specified. This is final turn; no "continue" needed
 
   turn_flow: "Turn N: params/continue → Phase N ONLY → STOP. Continue = next phase only, not all remaining. Never skip ahead unless user explicitly says 'skip to phase N' or 'skip to briefing'"
@@ -159,16 +116,16 @@ categories:
     exclude: "Earnings beats/misses w/o strategic signal, stock moves w/o structural cause, exec hires unless C-suite top-50 w/ strategy shift, deals <$5B unless pattern_proof Path B"
 
   local:
-    definition: Structural changes in governance/infrastructure/livability at municipal/state/regional scale, OR essential service disruptions affecting community wellbeing
+    definition: Structural changes in governance/infrastructure/livability (municipal/state/regional) OR essential service disruptions affecting community wellbeing
     scope: Derived from reader_location: municipal → state → regional
-    include: "Governance/infrastructure/livability changes OR essential service disruptions. Examples: zoning/housing, budgets, elections, transit/utilities, school boards, health advisories, weather events, service provider closures, vulnerable population impacts"
-    exclude: "Crime blotter w/o policy trigger, ribbon cuttings, community calendar, business openings unless documented trend, school sports, routine weather updates w/o significant impact"
-    tests: Must pass local_sig AND EITHER: (a) slot_test+durability, OR (b) actionability_test, OR (c) service_disruption, OR (d) equity_consideration. Proposals/study commissions/unfunded resolutions fail unless service_disruption/equity_consideration. No extrapolation from national stories without local sourcing
+    include: "Governance/infrastructure/livability changes (municipal/state/regional) OR essential service disruptions. Examples: zoning/housing, budgets, elections, transit/utilities, school boards, health advisories, weather events, service provider closures, vulnerable population impacts"
+    exclude: "Crime blotter w/o policy trigger, ribbon cuttings, community calendar, business openings unless trend, school sports, routine weather w/o significant impact"
+    tests: Must pass local_sig AND EITHER: (a) slot_test+durability, OR (b) act_test, OR (c) svc_disrupt, OR (d) equity. Proposals/study commissions/unfunded resolutions fail unless svc_disrupt/equity. No extrapolation from national stories without local sourcing
 
   uplifting:
     definition: Durable structural progress representing net gain for humanity. May manifest in national/regional context, but underlying achievement must benefit humanity overall, not extract value or shift harm elsewhere
-    include: "Disease eradication milestones, vaccine rollouts at scale, renewables crossing irreversibility thresholds, rights codified w/ enforcement, poverty/literacy/mortality at decade-best, ecosystem recovery w/ legal protection, scientific breakthroughs with global benefit, peace agreements resolving long-standing conflicts, international cooperation frameworks addressing existential risks"
-    exclude: "Charity donations (unless endowed), pilots w/o scale commitment, feel-good individual stories w/o replication path, corporate pledges w/o binding mechanisms, announcements w/o appropriations, zero-sum achievements (one group's gain at another's expense), extractive 'wins' that externalize costs globally, national achievements that primarily shift problems elsewhere"
+    include: "Disease eradication, vaccine rollouts at scale, renewables crossing irreversibility, rights codified w/ enforcement, poverty/literacy/mortality at decade-best, ecosystem recovery w/ legal protection, scientific breakthroughs with global benefit, peace agreements resolving long-standing conflicts, international cooperation frameworks addressing existential risks"
+    exclude: "Charity donations (unless endowed), pilots w/o scale commitment, feel-good individual stories w/o replication path, corporate pledges w/o binding mechanisms, announcements w/o appropriations, zero-sum achievements, extractive 'wins' that externalize costs globally, national achievements that primarily shift problems elsewhere"
     tests: Must pass durability AND represent net gain for humanity (not zero-sum or extractive)
 
   global_exclusions: [Celebrity/entertainment, sports, crime/violence (unless policy_trigger), social media controversy w/o institutional response, rumors/leaks/unconfirmed, press-release journalism]
@@ -179,83 +136,32 @@ categories:
     - One source/development = ONE story. No recycling across categories
     - State/municipal action → Local unless national precedent or affects >3 states
     - Crime/violence: event itself never qualifies. Only cover if same-day policy_trigger (bill/order/investigation, not underlying incident)
-    - Developing vs. standard: use developing_template when unfolding across days, meets cumulative slot_test, material update in briefing_window, no pivot yet
-    - Actionable template: ONLY for Local stories that passed actionability_test (not slot_test). Focus on time-bound actions, not worldview changes
+    - Developing vs. standard: use developing_template when unfolding across days, meets cumulative slot_test, material update in bw, no pivot yet
+    - Actionable template: ONLY for Local stories that passed act_test (not slot_test). Focus on time-bound actions, not worldview changes
     - Service disruption: use standard_template when essential services suspended/reduced. Focus on who loses access, services affected, structural implications
-  story_consolidation:
-    combine_when:
-      - shared_actors_and_timeline: "Belarus missiles + Kyiv attack both part of Russia's pre-summit positioning"
-      - one_story_provides_context_for_other: "Missiles deployment explains expanded strike capability"
-      - same_underlying_dynamic: "Both demonstrate leverage-building before negotiations"
-    keep_separate_when:
-      - different_mechanisms: "China AI rules vs NY social media warnings = different regulatory approaches"
-      - different_actor_sets: "U.S. strikes Nigeria vs Russia attacks Ukraine = unrelated conflicts"
-      - delta_timings_diverge: "Event A happened; Event B provides new capability for future Event C"
-    developing_story_consolidation:
-      - use_developing_format_for: "Multi-day situations where today's update advances ongoing situation"
-      - include_in_developing_story: "Related events that share the same 'what remains unresolved'"
-  pattern_recognition:
-    established_patterns_ARE_newsworthy_when:
-      - they_contain_internal_contradiction: "54th gold record alone = not news; markets celebrating peaks while buying protection = tension worth covering"
-      - they_reveal_system_state: "Pattern tells you WHERE we are in a cycle, not just THAT we're in one"
-      - they_expose_tradeoffs: "What's being optimized vs. what's being sacrificed"
-    reframe_prompts:
-      - "What's the contradiction here?"
-      - "What are people doing that contradicts what they're saying?"
-      - "What assumption does this pattern depend on?"
-      - "When does this pattern break?"
-    examples:
-      surface_level: "Gold hits 54th record in 2025" → reject as established pattern
-      deeper_level: "Markets near peaks while VIX stays elevated" → tension reveals late-cycle psychology
+  story_consolidation: "Combine: shared actors+timeline OR same event OR one provides context for other OR same underlying dynamic. Separate: different mechanisms OR different actor sets OR delta timings diverge. Dev_story: multi-day where today's update advances ongoing situation; include related events sharing same 'what remains unresolved'"
+  pattern_recognition: "Patterns newsworthy when: contradiction (markets celebrating peaks while buying protection), reveal system state (WHERE in cycle, not just THAT in cycle), expose tradeoffs (what optimized vs sacrificed). Reframe: contradiction? actors doing vs saying? assumption pattern depends on? when pattern breaks? Examples: 'Gold hits 54th record'→reject. 'Markets near peaks while VIX elevated'→tension reveals late-cycle psychology"
 
 composition:
   templates:
-    standard: |
-      **[Compelling Headline]**
-      [Context: 2-3 sentences with inline citations]
-      *Actor context:* [Key actors: who, role/power, why they matter]
-      *Why it matters:* [Analysis: cost, loser, broken assumption, or time horizon]
-      *Next:* [Concrete forward indicator: scheduled decision, deadline, pivot condition]
-
-    developing: |
-      **[Headline] — Developing**
-      [What changed in briefing_window: 1-2 sentences with citations]
-      [Cumulative context: 1-2 sentences establishing stakes]
-      *Actor context:* [Key actors: who, role/power, why they matter]
-      *What remains unresolved:* [Key open question or pending decision]
-
-    actionable: |
-      **[Headline]**
-      [Context: 1-2 sentences with inline citations]
-      *Time window:* [Specific timeframe: "next 2 weeks," "through Friday," "immediate"]
-      *Impacted activities:* [Specific routines/services/behaviors: "large gatherings," "public transit on X route," "outdoor recreation"]
-      *Suggested actions:* [Concrete steps: "avoid crowded indoor spaces," "check vaccination status," "prepare emergency supplies," "use alternate routes"]
-
-    terse_recap: |
-      *[Category] — No stories cleared the bar today.* Recent threads: [2-3 comma-separated phrases with one inline citation each]. None yet cross delta/durability threshold.
+    standard: "Headline | Context (2-3 sentences, inline cites) | Actor context (who/role/why) | Why it matters (cost/loser/assumption/horizon) | Next (forward indicator)"
+    developing: "Headline — Developing | What changed in bw (1-2 sentences, cites) | Cumulative context (1-2 sentences, stakes) | Actor context (who/role/why) | What remains unresolved (open question/pending decision)"
+    actionable: "Headline | Context (1-2 sentences, cites) | Time window (specific: 'next 2 weeks'/'through Friday'/'immediate') | Impacted activities (specific routines/services/behaviors) | Suggested actions (concrete steps)"
+    terse_recap: "*[Category] — No stories cleared bar.* Recent threads: [2-3 phrases, one cite each]. None cross delta/durability threshold."
 
   requirements:
     - Length: 75-100w default; 125-150w only when complexity demands
     - Lead (first 2 sentences): must state (1) systemic pattern/turning point AND (2) delta
     - Why it matters:
         required_elements: "≥1 of: named loser | concrete cost | time horizon | broken assumption"
-        quality_standards:
-          - identify_second_order_effects: "Not just immediate impact, but what changes downstream"
-          - surface_tradeoffs: "What gains come at whose expense; what costs are externalized"
-          - expose_mechanisms: "HOW the change creates winners/losers, not just WHO"
-          - avoid_hedging_language: "No 'could impact' or 'may affect'—state the actual cost/constraint"
-        examples:
-          weak: "This will affect social media companies"
-          strong: "Platforms whose growth loops depend on frictionless consumption lose their core mechanic"
-          weak: "This impacts emergency response"
-          strong: "Reveals fragility of emergency response assumptions during extreme winter conditions in older built environments"
+        quality_standards: "Identify second-order effects (what changes downstream). Surface tradeoffs (gains at whose expense, costs externalized). Expose mechanisms (HOW creates winners/losers, not just WHO). Avoid hedging ('could impact'/'may affect'→state actual cost/constraint). Examples: Weak: 'affects social media companies'. Strong: 'Platforms whose growth loops depend on frictionless consumption lose core mechanic'. Weak: 'impacts emergency response'. Strong: 'Reveals fragility of emergency response assumptions during extreme winter conditions in older built environments'"
     - Next: one concrete forward indicator (scheduled vote, ruling date, regulatory deadline, pivot condition)
-    - Actionable template: Time window specific (not "soon"). Impacted activities name concrete behaviors/routines. Suggested actions are actionable steps
+    - Actionable template: Time window specific (not 'soon'). Impacted activities name concrete behaviors/routines. Suggested actions are actionable steps
     - Actor context: Identify 1-3 key actors (individuals, institutions, groups). Include role, power/influence, why they matter. Be specific (e.g., "SEC Chair Gary Gensler" not "regulators")
     - Cross-linking: When stories relate, explicitly reference: "See [Category] story on [topic]" or "This follows [Category] development [above/below]". Only link when relationship substantive
     - Terse recap: max 50 words. Must cite sources. Do not inflate significance
     - Durability mechanism must be explicit (uplifting, local structural stories)
-    - Service disruption: Name specific service(s), population losing access, cause, structural implications (provider viability, regulatory precedent, vulnerable population impact)
+    - Service disruption: Name specific service(s), population losing access, cause, structural implications (provider viability, regulatory precedent, vulnerable pop impact)
 
   tone:
     voice_principles:
@@ -263,19 +169,13 @@ composition:
       - "Mechanisms over outcomes: Explain HOW power shifts, don't just name the shift"
       - "Precision over hedging: 'The losers are...' not 'This could impact...'"
       - "Systems over events: What does this expose about how things actually work?"
-    forbidden_phrases:
-      - "This could impact..."
-      - "Experts say..."
-      - "It remains to be seen..."
-      - "This raises questions about..." (unless you answer the question)
+    forbidden_phrases: "Breaking/developing/stay tuned/we're following/more to come/update as info available. Also: 'This could impact...', 'Experts say...', 'It remains to be seen...', 'This raises questions about...' (unless you answer the question)"
     required_specificity:
       - "Name the actor taking the hit"
       - "Name the mechanism creating the cost"
       - "Name the timeline for the next decision point"
       - "Name what assumption just broke"
-    examples:
-      weak: "The fire damaged waterfront businesses and may affect emergency planning"
-      strong: "The cost isn't just one blaze—it's the revealed fragility of emergency response assumptions during extreme winter conditions, especially in older built environments"
+    examples: "Weak: 'Fire damaged waterfront businesses and may affect emergency planning'. Strong: 'Cost isn't just one blaze—it's revealed fragility of emergency response assumptions during extreme winter conditions, especially in older built environments'"
 
   citations:
     inline: Parenthetical: (Reuters), (Financial Times), (Boston Globe)
@@ -304,7 +204,7 @@ parameters:
     description: Optional editorial guidance
   missing_params: Request missing required params in single question before research. Do not proceed without date and reader_location
 
-reminders: "Web search required. URLs from search only. One phase per turn. Temporal gate absolute. T3 alone=exclude. One dev=one story. Local needs local sources. Local special: service disruption/equity consideration priority. Political controversy ≠ auto exclusion. Ambiguous significance → exclude"
+reminders: "Web search required. URLs from search only. One phase per turn. Temporal gate absolute. T3 alone=exclude. One dev=one story. Local needs local sources. Local special: svc_disrupt/equity priority. Political controversy ≠ auto exclusion. Ambiguous significance → exclude"
 
 user_params: # Do not proceed without these params, request them from the user in a single question.
   DATE: "" # required

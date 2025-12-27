@@ -161,11 +161,22 @@ reminders: "Web search required. URLs from search only. One phase per turn. Temp
 
 ## Additional Strategies
 
-### 8. Use Abbreviations
-- `briefing_window` → `bw`
-- `actionability_test` → `act_test`
-- `service_disruption` → `svc_disrupt`
-- `equity_consideration` → `equity`
+### 8. Abbreviation Strategy
+
+**Quick Decision Rule:** Use abbreviations for terms that appear **5+ times** in the prompt. For terms appearing 1-2 times, keep full form to avoid confusion.
+
+**Abbreviation Glossary (Maintain Consistency):**
+- `briefing_window` → `bw` (appears 15+ times)
+- `actionability_test` → `act_test` (appears 8+ times)
+- `service_disruption` → `svc_disrupt` (appears 6+ times)
+- `equity_consideration` → `equity` (appears 5+ times)
+- `system_reveal` → `sys_reveal` (appears 4+ times)
+- `thematic_sweeps` → `thematic` (appears 3+ times)
+- `internal_contradiction` → `contradiction` (appears 3+ times)
+- `developing_story` → `dev_story` (appears 10+ times)
+- `shared_actors_and_timeline` → `shared_actors` (appears 2+ times)
+
+**Note:** Always use the same abbreviation throughout the prompt once introduced. Use find/replace to ensure consistency.
 
 ### 9. Remove Redundant Explanations
 - Remove "Do not proceed until instructed" (already in contract rules)
@@ -196,10 +207,131 @@ turn_flow: "Turn N: params/continue → Phase N ONLY → STOP. Continue = next p
 ## Estimated Total Savings: ~1,750 tokens
 ## New Estimated Total: ~3,250 tokens (35% reduction)
 
-## Implementation Priority
-1. **High Impact:** Source lists, output formats, templates (saves ~1,100 tokens)
-2. **Medium Impact:** Category lists, process steps (saves ~400 tokens)
-3. **Low Impact:** Definitions, reminders (saves ~250 tokens)
+## Recommended Implementation Order
+
+### Step 1: Quick Wins (Highest ROI, ~15 minutes)
+1. Source lists (Section 1) - ~400 token savings, low risk
+2. Output formats (Section 2) - ~400 token savings, low risk
+3. Templates (Section 3) - ~300 token savings, low risk
+**Total: ~1,100 tokens**
+
+### Step 2: Medium Effort (~30 minutes)
+4. Category lists (Section 4) - ~200 tokens
+5. Process steps (Section 5) - ~200 tokens
+6. New sections 11-18 (see below) - ~1,050 tokens
+**Total: ~1,450 tokens**
+
+### Step 3: Final Polish (~20 minutes)
+7. Definitions (Section 6) - ~150 tokens
+8. Reminders (Section 7) - ~100 tokens
+9. Turn flow (Section 10) - ~100 tokens
+10. Abbreviations (Section 8) - variable
+**Total: ~350+ tokens**
+
+**Grand total: ~2,900 tokens saved, ~65 minutes work**
+**Final count: ~3,600 tokens (from 6.5k = 45% reduction)**
+
+## Compression Patterns (Reusable Templates)
+
+### Pattern 1: List → Pattern Description
+**Before:** `[item1, item2, item3, item4, item5, ...]`  
+**After:** `"Category description. Examples: item1, item2, item3"`  
+**Savings:** ~50-60% tokens
+
+### Pattern 2: Structured YAML → Inline String
+**Before:** 
+```yaml
+section:
+  field1: "value1"
+  field2: "value2"
+```
+**After:** `section: "field1: value1 | field2: value2"`  
+**Savings:** ~40-50% tokens
+
+### Pattern 3: Verbose Definition → Concise Criteria
+**Before:** `"Long explanation with multiple clauses and examples"`  
+**After:** `"Key terms (brief context). Examples: X, Y"`  
+**Savings:** ~40-50% tokens
+
+### Pattern 4: Multiple Reminders → Single Line
+**Before:** List of bullet points  
+**After:** `"Rule1. Rule2. Rule3. Exception: X"`  
+**Savings:** ~60-70% tokens
+
+## Symbol Notation Reference
+
+When compressing, these symbols help save tokens:
+- `→` = "leads to" or "means" (saves ~3 tokens vs "means that")
+- `|` = "or" separator (saves ~2 tokens vs "OR")
+- `+` = "and" (saves ~2 tokens vs "and")
+- `>` = "greater than" (saves ~1 token)
+- `<` = "less than" (saves ~1 token)
+- `/` = "or" in abbreviations (saves ~1 token)
+
+**Example:** `T3→T1-2 corr` saves ~8 tokens vs "Tier 3 requires Tier 1-2 corroboration"
+
+## What to Preserve (Don't Remove)
+
+When compressing, always keep:
+- [ ] Weak/strong example comparisons (compress format, not content)
+- [ ] Edge case exceptions (Local stories, developing stories)
+- [ ] Critical definitions (compress phrasing, not meaning)
+- [ ] Process dependencies (Temporal → Source → Slot test order)
+- [ ] Quality standards (cost/loser/assumption/horizon framework)
+
+**Rule of thumb:** If it helps the model understand quality or handle edge cases, compress the format but preserve the information.
+
+## Common Pitfalls to Avoid
+
+1. **Inconsistent abbreviations:** Using `bw` in one place and `briefing_window` in another
+   - **Fix:** Use find/replace to ensure consistency
+
+2. **Over-compressing examples:** Removing weak/strong examples entirely
+   - **Fix:** Compress format but keep the comparison (e.g., "Weak: X. Strong: Y")
+
+3. **Losing edge cases:** Removing exceptions like "Local stories may use local sources"
+   - **Fix:** Compress to "Local: local sources ok" but keep the exception
+
+4. **Breaking YAML structure:** Making YAML invalid with compression
+   - **Fix:** Test YAML syntax after each change (use online YAML validator)
+
+5. **Removing critical context:** Cutting explanations that clarify ambiguous terms
+   - **Fix:** If a term could be misunderstood, keep a brief explanation
+
+## Model Considerations
+
+### Quick Tips by Model
+- **Claude:** Handles compressed formats well, can be more aggressive with abbreviations
+- **GPT-4:** Benefits from examples, compress format but keep structure
+- **Gemini:** Good with patterns, pattern descriptions work well
+
+**General rule:** If unsure, preserve examples but compress their format rather than removing them.
+
+## Quick Token Counting
+
+### Online Tools (No Setup)
+- **OpenAI Tokenizer:** https://platform.openai.com/tokenizer (paste YAML, get count)
+- **tiktoken online:** Various web-based tokenizers available
+
+### Quick Check Method
+After each major compression:
+1. Copy compressed section
+2. Paste into tokenizer
+3. Compare to original count
+4. Document savings
+
+**Target:** Each high-impact section should save 40-60% tokens.
+
+## YAML Syntax Check
+
+After compressing, always validate YAML syntax:
+- Use online YAML validator (e.g., yamlchecker.com)
+- Or use: `python -c "import yaml; yaml.safe_load(open('file.yaml'))"`
+
+**Common syntax errors from compression:**
+- Missing quotes around strings with special characters
+- Incorrect indentation
+- Invalid list formatting
 
 ## Trade-offs to Consider
 - **Readability:** More compact = harder for humans to read
@@ -207,72 +339,106 @@ turn_flow: "Turn N: params/continue → Phase N ONLY → STOP. Continue = next p
 - **Maintainability:** Denser format harder to update
 - **LLM Performance:** Some models benefit from explicit examples
 
-## New Sections Added (v9.3) - Compaction Considerations
+## New Sections Added (v9.3) - Specific Compaction Strategies
 
 ### 11. Enhanced slot_test (~200 tokens)
-**Current:** Structured with valid_answers, improvement_test, examples
-**Compaction options:**
-- Keep examples but compress format
-- Use abbreviations: `system_reveal` → `sys_reveal`
-- Consolidate weak/strong examples into single line
+**Current structure:**
+```yaml
+slot_test:
+  valid_answers: [...]
+  improvement_test: [...]
+  examples:
+    weak: "..."
+    strong: "..."
+```
+
+**Compaction strategy:**
+```yaml
+slot_test: "Articulate ONE worldview change (system/mechanism/assumption OR actor/power/constraint). Weak: 'affects many people'. Strong: 'reveals system operates by X not Y'"
+```
+**Savings:** ~150 tokens (75% reduction)
 
 ### 12. Enhanced "Why It Matters" (~250 tokens)
-**Current:** Quality standards, examples (weak/strong)
-**Compaction options:**
-- Keep examples but use more compact format
-- Consolidate quality_standards into single list
-- Use abbreviations for standard names
+**Compaction strategy:**
+```yaml
+why_it_matters: "Cost/loser/assumption/horizon. Weak: 'affects economy'. Strong: '$2B shift→rural hospitals 15-20% cuts→closures'"
+```
+**Savings:** ~180 tokens (72% reduction)
 
 ### 13. Pattern Recognition Section (~200 tokens)
-**New section:** established_patterns_ARE_newsworthy_when, reframe_prompts, examples
-**Compaction options:**
-- Compress examples to single-line format
-- Use abbreviations: `internal_contradiction` → `contradiction`
-- Consolidate reframe_prompts into comma-separated list
+**Compaction strategy:**
+```yaml
+patterns_newsworthy: "contradiction/power_shift/precedent. Reframe: system? power? precedent?"
+```
+**Savings:** ~140 tokens (70% reduction)
 
 ### 14. Enhanced Phase 2 Search Strategy (~150 tokens)
-**Current:** search_strategy with temporal, thematic_sweeps, minimum_searches, validation
-**Compaction options:**
-- Consolidate into single process line with inline notes
-- Use abbreviations: `thematic_sweeps` → `thematic`
-- Compress validation into single sentence
+**Compaction strategy:**
+```yaml
+search_strategy: "Within bw, prioritize recent. Group by theme. Min 3/category. Cross-reference sources"
+```
+**Savings:** ~100 tokens (67% reduction)
 
 ### 15. Story Consolidation Section (~200 tokens)
-**New section:** combine_when, keep_separate_when, developing_story_consolidation
-**Compaction options:**
-- Use bullet format instead of structured YAML
-- Compress examples to single-line format
-- Use abbreviations: `shared_actors_and_timeline` → `shared_actors`
+**Compaction strategy:**
+```yaml
+consolidation: "Combine: shared actors+timeline OR same event. Separate: different time/geography"
+```
+**Savings:** ~140 tokens (70% reduction)
 
 ### 16. Enhanced Tone & Voice (~250 tokens)
-**Current:** voice_principles, forbidden_phrases, required_specificity, examples
-**Compaction options:**
-- Consolidate forbidden_phrases into comma-separated list
-- Compress examples to single-line format
-- Use abbreviations where possible
+**Compaction strategy:**
+```yaml
+tone_voice: "Forbidden: breaking/developing/stay tuned/we're following/more to come. Required: specific, quantified, forward-looking"
+```
+**Savings:** ~180 tokens (72% reduction)
 
 ### 17. Phase 3 Quality Gate (~150 tokens)
-**New section:** before_composition checklist, if_answers_are_no actions
-**Compaction options:**
-- Convert to single-line checklist format
-- Use abbreviations: `reframe_the_story` → `reframe`
-- Consolidate actions into comma-separated list
+**Compaction strategy:**
+```yaml
+quality_gate: "Check: slot_test clear? why_it_matters specific? actors clear? If no: reframe/gather/reconsider"
+```
+**Savings:** ~100 tokens (67% reduction)
 
 ### 18. Enhanced local_sig (~100 tokens)
-**Added:** system_reveal criteria, reframing_prompts
-**Compaction options:**
-- Integrate system_reveal into existing criteria list
-- Compress reframing_prompts to single line
+**Compaction strategy:**
+```yaml
+local_sig: "Existing criteria + sys_reveal. Reframe prompts: system? power? precedent?"
+```
+**Savings:** ~60 tokens (60% reduction)
 
-**Total new tokens: ~1,500**
-**Potential compaction savings: ~600-800 tokens (40-50% of new content)**
+**Total potential savings from sections 11-18: ~1,050 tokens**
+**Combined with sections 1-10: ~2,800 tokens total savings**
+**Final estimated total: ~3,700 tokens (from 6.5k = 43% reduction)**
 
 ## Updated Recommendation
+
 1. **Preserve quality:** Keep examples and guidance that improve structural analysis
 2. **Compress format:** Use more compact YAML structures without losing meaning
-3. **Test impact:** Verify LLM performance after compaction
-4. **Priority order:**
-   - First: Compress existing sections (1-10) as originally planned
-   - Second: Compress new sections (11-18) using format optimization
-   - Third: Consider abbreviations only if performance maintained
+3. **Follow implementation order:** Start with quick wins (sections 1-3), then medium effort (sections 4-6, 11-18), then polish (sections 7, 10, 8)
+4. **Validate YAML:** Check syntax after each major change
+5. **Use patterns:** Apply compression patterns consistently
+6. **Maintain consistency:** Use abbreviation glossary and symbol notation reference
+
+## Quick Reference Checklist
+
+Before starting compaction:
+- [ ] Create backup of current News-compact.yaml
+- [ ] Review abbreviation glossary
+- [ ] Review compression patterns
+- [ ] Review symbol notation reference
+- [ ] Review what to preserve checklist
+
+During compaction:
+- [ ] Follow implementation order (Step 1 → Step 2 → Step 3)
+- [ ] Validate YAML syntax after each section
+- [ ] Use find/replace for abbreviations to ensure consistency
+- [ ] Check token count after each major section
+- [ ] Preserve examples and edge cases (compress format, not content)
+
+After compaction:
+- [ ] Final YAML syntax validation
+- [ ] Final token count check (target: <3.7k tokens)
+- [ ] Verify all abbreviations used consistently
+- [ ] Document any deviations from standard patterns
 
