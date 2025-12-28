@@ -48,7 +48,7 @@ definitions:
   delta: Specific parameter that moved in bw that hadn't moved before. "Another example" never qualifies
   briefing_window: Past 36h from briefing date. Stories outside bw MUST use dev_story or exclude. No exceptions
   developing_story: Ongoing situation where (1) cumulative significance meets slot_test, (2) material update in bw, (3) no resolution/pivot yet
-  slot_test: "Articulate ONE worldview change (new_constraint/new_capability/precedent/power_shift/turning_point/sys_reveal). Ask: what does event REVEAL? Weak: 'Fire damaged waterfront businesses'. Strong: 'Fire revealed emergency response fragility when winter freezes standard infrastructure'"
+  slot_test: "Articulate ONE worldview change (new_constraint/new_capability/precedent/power_shift/turning_point/sys_reveal). Ask: what does event REVEAL? Weak: 'Infrastructure failure damaged waterfront businesses'. Strong: 'Infrastructure failure revealed emergency response fragility when winter freezes standard systems'"
   actionability_test: "(Local only) Enables specific, time-bound actions. Requires: (1) clear time window, (2) specific activities impacted, (3) concrete suggested actions"
   pattern_proof:
     path_a: >$5B OR top-10 gatekeeper OR creates/reshapes/collapses market category
@@ -56,7 +56,7 @@ definitions:
   durability: Progress survives next election/budget/leadership change. Collapses with one sponsor loss = fails
   local_sig:
     criteria: "lock_in | resource_shift(>1% budget/>5% pop) | precedent | infrastructure | personal_impact | actionable | svc_disrupt(essential services→vulnerable pop) | equity(vulnerable pop, <5% ok if concentrated harm) | sys_reveal(how local infra/services function under stress)"
-    reframing_prompts: "Don't ask 'what burned' ask 'what did fire reveal about winter infrastructure'. Don't ask 'what got approved' ask 'what irreversible commitment just happened'"
+    reframing_prompts: "Don't ask 'what was damaged' ask 'what did the event reveal about infrastructure resilience'. Don't ask 'what got approved' ask 'what irreversible commitment just happened'"
     rule: Passes ONE criteria
   policy_trigger: Crime/violence qualifies ONLY if same-day policy action: legislation introduced, executive order signed, regulation announced, budget allocated, formal investigation with subpoena power. Commentary/calls ≠ policy trigger
 
@@ -75,9 +75,19 @@ phases:
     turn: 2
     input: [Source manifest from Phase 1, date, bw (36h)]
     constraint: SEARCH TOOLS ONLY. Every URL MUST come from search result. Do not construct URLs. If tool didn't return it, it doesn't exist
-    search_strategy: "Within bw, prioritize recent. Temporal: '[source name] news [date]' per source. Thematic: regulation tech, infra failure, policy changes, trade restrictions, energy markets. Min 15-20 searches total. Verify: policy/regulation, infra/systems, market structure, tech governance"
-    process: "1.Temporal searches per source 2.Thematic sweeps 3.From search results ONLY: headline, timestamp, URL, tier 4.Verify timestamps within bw; exclude if outside 5.Flag duplicates 6.Zero results→note 'no results' 7.Verify min search coverage met"
-    output_format: "## Phase 2: Story Candidates | **[Tier] Source | Headline | Timestamp | URL** | Include: no-results, total, duplicates, search count | End: Phase 2 complete. Say 'continue' for Phase 3"
+    critical_note: "CRITICAL: Phase2 determines briefing quality. Insufficient searches→missed stories. MANDATORY: 17+ total (target 20-23), 5+ local, city-level specificity (not state), event-based+outlet-based local coverage. Most common failure point."
+    local_search_strategy: "LOCAL SEARCH STRATEGY (CRITICAL): 5-7 searches for user location, mix outlet-based+event-based, city/town level (not state). Pattern 1-Geographic: '[City] [State] news [date]' (city-specific) OR '[Metro] breaking news [date]' (metro), avoid '[State] news' (too broad). Pattern 2-Outlet: '[Outlet name] [date]' per validated local source. Pattern 3-Event-Based: Infrastructure/Service (power outage, water main break, transit disruption) | Public Safety (emergency, evacuation, public safety alert) | Essential Services (school closure, hospital disruption, gov office closure) | Transportation (major road closure, bridge closure, airport disruption) | Weather/Environmental (weather impact, flooding, infrastructure failure). Note: Illustrative patterns, apply similar thinking to other event types meeting local_sig. Pattern 4-Breaking: '[Metro] breaking news [date range]' OR 'Greater [metro] emergency [date]'. Allocation (20 total): Tier 1 temporal 4, Tier 2 temporal 3, Local systematic 6 (2 geographic+2 outlet+2 event-based), Thematic national 4, Infrastructure/weather 3"
+    search_count_guidance: >
+      | Query Complexity | Minimum Searches | Local Allocation | Notes |
+      |-----------------|------------------|------------------|-------|
+      | Single date, single location | 17-20 | 5-6 local | Standard daily briefing |
+      | Multi-day window | 20-23 | 6-7 local | More temporal coverage needed |
+      | Major events expected | 23-25 | 7-8 local | Increase event-based searches |
+    failure_mode_warning: "COMMON FAILURE MODE: BAD (story missed): Only 3 local searches ('Portland Press Herald Maine news', 'Maine Public news', 'Maine winter storm'), no geographic specificity ('Maine' not 'South Portland'), no event-based searches (missed 'Portland emergency/power outage/school closure [date]'), 11 total (below min). RESULT: Major local story missed. GOOD (story found): 6 local searches ('South Portland Maine news [date]' geographic, 'Portland Press Herald [date]' outlet, 'Portland emergency [date]' event-based, 'Portland infrastructure failure [date]' event-based, 'Greater Portland emergency [date]' breaking), 20 total. RESULT: Story surfaced in first search"
+    search_strategy: "Within bw, prioritize recent. Temporal: '[source name] news [date]' per source. Thematic: regulation tech, infra failure, policy changes, trade restrictions, energy markets. **MINIMUM 17 searches required, target 20-23.** Briefings with <17 searches are INVALID and must be restarted. Track and report total search count at end of Phase 2. Verify: policy/regulation, infra/systems, market structure, tech governance"
+    process: "1.Temporal searches per source 2.Thematic sweeps 3.Local search strategy (geographic + outlet + event-based) 4.From search results ONLY: headline, timestamp, URL, tier 5.Verify timestamps within bw; exclude if outside 6.Flag duplicates 7.Zero results→note 'no results' 8.Verify min search coverage met (≥17 total, ≥5 local) 9.Complete Phase 2 validation checklist"
+    validation_checklist: "PHASE 2 CHECKLIST (before Phase 3): Search count ≥17 (report actual) | Local coverage ≥5 | Geographic specificity (city/town level) | Event-based local (emergencies/infrastructure/service disruptions) | Source diversity (Tier 1+Tier 2+Local) | Timestamp check (all within bw). If ANY unchecked→Phase 2 INCOMPLETE"
+    output_format: "## Phase 2: Story Candidates | **[Tier] Source | Headline | Timestamp | URL** | Include: no-results, total, duplicates, **search count (must be ≥17)** | End: Phase 2 complete. Say 'continue' for Phase 3"
     on_complete: OUTPUT PHASE 2 ONLY. STOP
     empty_result: "Search returned no articles within bw. Options: (1) expand window, (2) user provides URLs, (3) terse_recap for all categories"
 
@@ -175,7 +185,7 @@ composition:
       - "Name the mechanism creating the cost"
       - "Name the timeline for the next decision point"
       - "Name what assumption just broke"
-    examples: "Weak: 'Fire damaged waterfront businesses and may affect emergency planning'. Strong: 'Cost isn't just one blaze—it's revealed fragility of emergency response assumptions during extreme winter conditions, especially in older built environments'"
+    examples: "Weak: 'Infrastructure failure damaged waterfront businesses and may affect emergency planning'. Strong: 'Cost isn't just one incident—it's revealed fragility of emergency response assumptions during extreme conditions, especially in older built environments'"
 
   citations:
     inline: Parenthetical: (Reuters), (Financial Times), (Boston Globe)
