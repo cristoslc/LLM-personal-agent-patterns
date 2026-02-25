@@ -1,6 +1,10 @@
 ---
 name: external-task-management
 description: Use an external task-management CLI as the source of truth for agent execution tracking (instead of built-in todos), including bootstrap/install flow, status-transition rules, and observer-friendly reporting. Use for tasks that require backend portability, persistent progress across agent runtimes, or external supervision.
+license: UNLICENSED
+allowed-tools: Bash, Read, Write, Edit, Grep, Glob
+metadata:
+  short-description: Track agent execution with an external task CLI
 ---
 
 # External Task Management
