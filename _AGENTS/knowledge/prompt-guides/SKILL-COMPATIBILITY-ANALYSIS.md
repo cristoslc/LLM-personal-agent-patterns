@@ -68,19 +68,46 @@ your-repo/
 ├── GEMINI.md                          # Contains: @AGENTS.md
 │
 ├── .agents/
+│   ├── AGENTS-SETUP.md               # First-run verification (see below)
 │   └── skills/
 │       ├── my-skill/
-│       │   ├── SKILL.md               # Write once, works everywhere
+│       │   ├── SKILL.md              # Write once, works everywhere
 │       │   ├── scripts/
 │       │   └── references/
 │       └── another-skill/
 │           └── SKILL.md
 │
 ├── .claude/
-│   └── skills -> ../.agents/skills    # Symlink for Claude Code
+│   └── skills -> ../.agents/skills   # Symlink (git-portable on macOS/Linux)
 │
-└── .gitignore                         # Optional: exclude .gemini/ if unused
+└── .gitignore
 ```
+
+### First-Run Bootstrap: AGENTS-SETUP.md
+
+Symlinks are stored natively in git and survive clone on macOS/Linux. But they break silently on Windows (unless Developer Mode or `core.symlinks=true`), and new contributors may not realize the infrastructure needs verification.
+
+The bootstrap pattern solves this: `AGENTS.md` includes a reference to `.agents/AGENTS-SETUP.md` that any agent will follow on first session, then remove.
+
+**In `AGENTS.md`:**
+
+```markdown
+# Project instructions
+...your normal project context...
+
+@.agents/AGENTS-SETUP.md
+```
+
+**In `.agents/AGENTS-SETUP.md`:** Verification steps that the agent runs once:
+
+1. `.agents/skills/` directory exists
+2. `.claude/skills` symlink exists and resolves
+3. `CLAUDE.md` contains `@AGENTS.md`
+4. `GEMINI.md` contains `@AGENTS.md` (if using Gemini CLI)
+
+After all checks pass, the agent removes the `@.agents/AGENTS-SETUP.md` line from `AGENTS.md` — but only locally, not committed. The reference stays in the committed version so fresh clones always get verified.
+
+This keeps the setup self-documenting, agent-executable, and zero-friction for new contributors. The context cost is one line in `AGENTS.md` on first session, zero thereafter.
 
 ### User-Level (Global) Skills
 
