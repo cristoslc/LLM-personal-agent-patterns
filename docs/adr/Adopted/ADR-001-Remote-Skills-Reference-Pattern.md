@@ -1,6 +1,6 @@
 ---
 title: ADR-001 Remote Skills Reference Pattern
-status: Draft
+status: Adopted
 author: Claude
 created_date: 2026-02-26
 last_updated_date: 2026-02-26
@@ -147,3 +147,4 @@ These criteria define what "done" means for the initial implementation. The smok
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Draft | 2026-02-26 | 6953762 | Initial creation, schema v1 defined |
+| Adopted | 2026-02-26 | d0fbe9c | Decision accepted |

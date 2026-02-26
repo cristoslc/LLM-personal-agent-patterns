@@ -4,7 +4,7 @@
 
 | Artifact | Date | Commit | Notes |
 |---|---|---|---|
-| [ADR-001-Remote-Skills-Reference-Pattern](./Draft/ADR-001-Remote-Skills-Reference-Pattern.md) | 2026-02-26 | 6953762 | Schema v1 for `.source.yml` remote skill provenance |
+| _None_ | - | - | - |
 
 ## Proposed
 
@@ -16,7 +16,7 @@
 
 | Artifact | Date | Commit | Notes |
 |---|---|---|---|
-| _None_ | - | - | - |
+| [ADR-001-Remote-Skills-Reference-Pattern](./Adopted/ADR-001-Remote-Skills-Reference-Pattern.md) | 2026-02-26 | d0fbe9c | Schema v1 for `.source.yml` remote skill provenance |
 
 ## Retired
 
