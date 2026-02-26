@@ -49,8 +49,8 @@ fi
 echo "Adding remote '$REMOTE_NAME'..."
 git remote add "$REMOTE_NAME" "$UPSTREAM_URL"
 
-echo "Fetching $UPSTREAM_BRANCH..."
-git fetch "$REMOTE_NAME" "$UPSTREAM_BRANCH"
+echo "Fetching $UPSTREAM_BRANCH (shallow — only tip commit needed)..."
+git fetch --depth=1 "$REMOTE_NAME" "$UPSTREAM_BRANCH"
 
 echo "Merging into project root (squash)..."
 git merge "$REMOTE_NAME/$UPSTREAM_BRANCH" --allow-unrelated-histories --squash
@@ -60,7 +60,7 @@ echo "Files staged. Review with: git diff --cached --stat"
 echo "Then commit with: git commit -m 'Import agents-standalone scaffolding'"
 echo ""
 echo "To pull future updates:"
-echo "  git fetch $REMOTE_NAME $UPSTREAM_BRANCH"
+echo "  git fetch --depth=1 $REMOTE_NAME $UPSTREAM_BRANCH"
 echo "  git merge $REMOTE_NAME/$UPSTREAM_BRANCH --allow-unrelated-histories --squash"
 echo ""
 echo "Done."
