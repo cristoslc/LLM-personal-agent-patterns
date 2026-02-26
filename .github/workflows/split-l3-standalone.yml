@@ -14,6 +14,40 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: |
-          git subtree split --prefix=L3-agents-standalone -b l3-standalone
-          git push origin l3-standalone --force
+
+      - name: Build and push filtered l3-standalone branch
+        run: |
+          MAIN_SHA=$(git rev-parse --short HEAD)
+
+          # Copy L3-agents-standalone contents, applying exclusions
+          STAGING=$(mktemp -d)
+          if [ -f L3-agents-standalone/.distignore ]; then
+            rsync -a --exclude-from=L3-agents-standalone/.distignore \
+              L3-agents-standalone/ "$STAGING/"
+          else
+            rsync -a L3-agents-standalone/ "$STAGING/"
+          fi
+
+          # Commit on top of existing l3-standalone history
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git rev-parse --verify origin/l3-standalone &>/dev/null; then
+            git checkout origin/l3-standalone --detach
+          else
+            git checkout --orphan l3-standalone-build
+          fi
+
+          # Replace tree contents with filtered snapshot
+          git rm -rf . 2>/dev/null || true
+          cp -a "$STAGING/." .
+          rm -rf "$STAGING"
+          git add -A
+
+          # Only commit if there are actual changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Sync l3-standalone from main (${MAIN_SHA})"
+            git push origin HEAD:l3-standalone --force
+          fi

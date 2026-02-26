@@ -1,0 +1,5 @@
+# Files excluded from the l3-standalone distribution branch.
+# Uses rsync exclude patterns (similar to .gitignore).
+.distignore
+import-agents-standalone.sh
+README.md
