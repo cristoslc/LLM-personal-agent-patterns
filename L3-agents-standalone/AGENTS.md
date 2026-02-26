@@ -1,5 +1,9 @@
 # AGENTS.md
 
+## Skill routing
+
+When the user wants to create, plan, write, update, transition, or review any documentation artifact (Vision, Journey, Epic, Story, PRD, Spike, ADR), **always invoke the spec-management skill**. This includes requests like "write a PRD", "let's plan the next feature", "create an ADR for this decision", "move the spike to Active", or "add a user story." The skill contains the procedures, formats, and validation rules — do not improvise artifact creation from the reference tables below.
+
 ## Documentation lifecycle workflow
 
 ### General rules
@@ -47,4 +51,4 @@ Product Vision (VISION-NNN) — one per product or product area
 - ADRs are cross-cutting: they link to all affected Epics/PRDs but are not owned by any single one.
 - An artifact may only have one parent in the hierarchy but may reference siblings or cousins via `related` links.
 
-For artifact creation, lifecycle transitions, and implementation plan workflows, use the **spec-management** skill.
+For detailed procedures, see the **spec-management** skill (referenced in Skill routing above).
