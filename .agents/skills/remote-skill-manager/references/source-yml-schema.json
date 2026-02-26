@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "source-yml-v1",
   "title": ".source.yml",
-  "description": "Remote skill provenance manifest per ADR-001-Remote-Skills-Reference-Pattern",
+  "description": "Remote skill provenance manifest per ADR-002-Remote-Skills-Reference-Pattern",
   "type": "object",
   "required": ["source", "skill", "fetched", "integrity"],
   "additionalProperties": false,
