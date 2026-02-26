@@ -1,31 +1,24 @@
-# ADR Lifecycle Index
-
-## Draft
-
-| Artifact | Date | Commit | Notes |
-|---|---|---|---|
-| _None_ | - | - | - |
-
-## Proposed
-
-| Artifact | Date | Commit | Notes |
-|---|---|---|---|
-| _None_ | - | - | - |
+# ADR Index
 
 ## Adopted
 
-| Artifact | Date | Commit | Notes |
-|---|---|---|---|
-| [ADR-001-Remote-Skills-Reference-Pattern](./Adopted/ADR-001-Remote-Skills-Reference-Pattern.md) | 2026-02-26 | d0fbe9c | Schema v1 for `.source.yml` remote skill provenance |
+| ID | Title | Date | Commit |
+|----|-------|------|--------|
+| ADR-001 | Subtree Split Distribution Model | 2026-02-26 | de5f1a3 |
+| ADR-002 | Remote Skills Reference Pattern | 2026-02-26 | d0fbe9c |
+
+## Proposed
+
+_None._
+
+## Draft
+
+_None._
 
 ## Retired
 
-| Artifact | Date | Commit | Notes |
-|---|---|---|---|
-| _None_ | - | - | - |
+_None._
 
 ## Superseded
 
-| Artifact | Date | Commit | Notes |
-|---|---|---|---|
-| _None_ | - | - | - |
+_None._

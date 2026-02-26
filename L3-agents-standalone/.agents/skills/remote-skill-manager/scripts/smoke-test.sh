@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # smoke-test.sh — End-to-end verification of the remote-skills-reference pattern
 #
-# Exercises acceptance criteria AC-1 through AC-5 from ADR-001.
+# Exercises acceptance criteria AC-1 through AC-5 from ADR-002.
 # Uses THIS repository's spec-management skill as the fetch target
 # (self-referential test — no external dependency required).
 #
@@ -78,7 +78,7 @@ yaml_field() {
   grep "  *${field}:" "$file" | head -1 | sed 's/.*: *"\{0,1\}\([^"]*\)"\{0,1\}/\1/' | tr -d ' '
 }
 
-echo "=== ADR-001 Smoke Test ==="
+echo "=== ADR-002 Smoke Test ==="
 echo "Repo:       $REPO_URL"
 echo "Skill path: $SKILL_PATH"
 echo "Target:     $TARGET_DIR"

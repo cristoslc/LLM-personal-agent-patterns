@@ -1,6 +1,6 @@
-# Architecture Decision Records (ADRs)
+# Architecture Decision Records
 
-Architectural decisions that affect one or more Epics, PRDs, or cross-cutting concerns. ADRs are not owned by a single artifact — they link to all affected specs.
+ADRs capture significant architectural decisions with context, alternatives considered, and rationale. They are cross-cutting — an ADR may affect multiple Epics and PRDs.
 
 ## Phases
 
@@ -11,23 +11,5 @@ Architectural decisions that affect one or more Epics, PRDs, or cross-cutting co
 | Adopted | Decision accepted and in effect |
 | Retired | Decision no longer applies (superseded or obsoleted) |
 | Superseded | Replaced by a newer ADR (must link to successor) |
-
-## Directory layout
-
-ADR markdown files live directly in their current phase directory:
-
-```
-docs/adr/
-├── README.md
-├── list-adrs.md
-├── Draft/
-│   └── ADR-001-Remote-Skills-Reference-Pattern.md
-├── Proposed/
-├── Adopted/
-├── Retired/
-└── Superseded/
-```
-
-## Index
 
 See [list-adrs.md](./list-adrs.md) for the lifecycle index.

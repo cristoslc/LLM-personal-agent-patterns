@@ -5,12 +5,12 @@ license: UNLICENSED
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 metadata:
   short-description: Fetch, track, and update remote skills
-  related-adr: ADR-001-Remote-Skills-Reference-Pattern
+  related-adr: ADR-002-Remote-Skills-Reference-Pattern
 ---
 
 # Remote Skill Manager
 
-Fetch skills from remote Git repositories into the local `.agents/skills/` directory and maintain `.source.yml` provenance manifests per ADR-001.
+Fetch skills from remote Git repositories into the local `.agents/skills/` directory and maintain `.source.yml` provenance manifests per ADR-002.
 
 ## Quick reference
 
@@ -31,7 +31,7 @@ Every skill fetched from a remote repo gets a `.source.yml` file written alongsi
 - **When** it was fetched and by whom
 - **Integrity** hash for drift detection
 
-The schema is defined in ADR-001 and formalized as:
+The schema is defined in ADR-002 and formalized as:
 - JSON Schema: `references/source-yml-schema.json`
 - Jinja template: `references/source-yml.template.j2`
 
@@ -143,7 +143,7 @@ Run the smoke test to validate the fetch-and-stamp workflow end-to-end:
 bash scripts/smoke-test.sh
 ```
 
-The smoke test exercises acceptance criteria AC-1 through AC-5 from ADR-001. See `scripts/smoke-test.sh` for details.
+The smoke test exercises acceptance criteria AC-1 through AC-5 from ADR-002. See `scripts/smoke-test.sh` for details.
 
 ## Skill references
 

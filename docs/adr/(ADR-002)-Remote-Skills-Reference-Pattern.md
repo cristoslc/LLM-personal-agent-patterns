@@ -1,14 +1,13 @@
 ---
-title: ADR-001 Remote Skills Reference Pattern
+title: Remote Skills Reference Pattern
 status: Adopted
 author: Claude
-created_date: 2026-02-26
-last_updated_date: 2026-02-26
-linked_epics: []
-linked_prds: []
+created: 2026-02-26
+last-updated: 2026-02-26
+affects: []
 ---
 
-# ADR-001 Remote Skills Reference Pattern
+# ADR-002: Remote Skills Reference Pattern
 
 ## Context
 
