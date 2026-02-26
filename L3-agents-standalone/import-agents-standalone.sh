@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 # One-time import of agents-standalone scaffolding into a project repo.
-# Run from the root of the target project repo. Self-deletes after use.
+#
+# Usage (run from your project root):
+#   curl -fsSL https://raw.githubusercontent.com/cristoslc/LLM-personal-agent-patterns/main/L3-agents-standalone/import-agents-standalone.sh | bash
+#
+# Can also be downloaded and run as a file — the script will clean up after itself.
 set -euo pipefail
 
 UPSTREAM_URL="https://github.com/cristoslc/LLM-personal-agent-patterns.git"
 UPSTREAM_BRANCH="l3-standalone"
 REMOTE_NAME="agents-upstream"
-SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
 
 # --- preflight checks ---
 
@@ -30,6 +33,17 @@ if git remote get-url "$REMOTE_NAME" &>/dev/null; then
   exit 1
 fi
 
+# --- clean up script file before merge (if run as a file, not piped) ---
+
+# Detect if we were invoked as a file (not piped via curl | bash).
+# If so, remove the script now — before the merge — so it can't conflict
+# with incoming files. This is safe because the { ... } block below
+# ensures bash has already read the entire script into memory.
+if [ -n "${BASH_SOURCE[0]:-}" ] && [ -f "${BASH_SOURCE[0]}" ]; then
+  SCRIPT_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+  rm -f "$SCRIPT_FILE"
+fi
+
 # --- import ---
 
 echo "Adding remote '$REMOTE_NAME'..."
@@ -49,8 +63,4 @@ echo "To pull future updates:"
 echo "  git fetch $REMOTE_NAME $UPSTREAM_BRANCH"
 echo "  git merge $REMOTE_NAME/$UPSTREAM_BRANCH --squash"
 echo ""
-
-# --- self-destruct ---
-
-rm -f "$SCRIPT_PATH"
-echo "Script self-deleted. Done."
+echo "Done."
