@@ -5,6 +5,8 @@ license: UNLICENSED
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 metadata:
   short-description: Manage spec artifact creation and lifecycle
+  version: 1.1.0
+  author: cristos
 ---
 
 # Spec Management
