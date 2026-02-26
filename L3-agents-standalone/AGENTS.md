@@ -2,7 +2,7 @@
 
 ## Skill routing
 
-When the user wants to create, plan, write, update, transition, or review any documentation artifact (Vision, Journey, Epic, Story, PRD, Spike, ADR), **always invoke the spec-management skill**. This includes requests like "write a PRD", "let's plan the next feature", "create an ADR for this decision", "move the spike to Active", or "add a user story." The skill contains the procedures, formats, and validation rules — do not improvise artifact creation from the reference tables below.
+When the user wants to create, plan, write, update, transition, or review any documentation artifact (Vision, Journey, Epic, Story, PRD, Spike, ADR) or their supporting docs (architecture overviews, competitive analyses, journey maps), **always invoke the spec-management skill**. This includes requests like "write a PRD", "let's plan the next feature", "create an ADR for this decision", "move the spike to Active", "add a user story", or "update the architecture overview." The skill contains the procedures, formats, and validation rules — do not improvise artifact creation from the reference tables below.
 
 ## Documentation lifecycle workflow
 

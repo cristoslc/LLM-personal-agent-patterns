@@ -1,6 +1,6 @@
 ---
 name: spec-management
-description: Create, validate, and transition documentation artifacts (Vision, Journey, Epic, Story, PRD, Spike, ADR) through their lifecycle phases. Use when the user wants to write a PRD, plan a feature, create an epic, add a user story, draft an ADR, start a research spike, move an artifact to a new phase, seed an implementation plan, or validate cross-references between artifacts. Covers any request to create, update, review, or transition spec artifacts.
+description: Create, validate, and transition documentation artifacts (Vision, Journey, Epic, Story, PRD, Spike, ADR) and their supporting docs (architecture overviews, journey maps, competitive analyses) through their lifecycle phases. Use when the user wants to write a PRD, plan a feature, create an epic, add a user story, draft an ADR, start a research spike, update the architecture overview, document the system architecture, move an artifact to a new phase, seed an implementation plan, or validate cross-references between artifacts. Covers any request to create, update, review, or transition spec artifacts and supporting docs.
 license: UNLICENSED
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 metadata:
