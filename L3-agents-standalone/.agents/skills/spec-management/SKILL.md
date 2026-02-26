@@ -1,6 +1,6 @@
 ---
 name: spec-management
-description: Create, validate, and transition documentation artifacts (Vision, Epic, PRD, Spike, ADR) through their lifecycle phases. Use when creating new spec artifacts, moving artifacts between phases, seeding implementation plans in bd, or validating cross-references between artifacts.
+description: Create, validate, and transition documentation artifacts (Vision, Journey, Epic, Story, PRD, Spike, ADR) through their lifecycle phases. Use when creating new spec artifacts, moving artifacts between phases, seeding implementation plans in bd, or validating cross-references between artifacts.
 license: UNLICENSED
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 metadata:
@@ -33,18 +33,35 @@ Commit hashes reference the repo state at the time of the transition, not the co
 1. Scan `docs/<type>/` to determine the next available number for the prefix.
 2. Create the artifact using the appropriate format (see AGENTS.md artifact types table).
 3. Populate frontmatter with the required fields for the type (see sections below).
-4. Initialize the lifecycle table with the first phase and current date.
+4. Initialize the lifecycle table with the appropriate phase and current date. This is usually the first phase (Draft, Planned, etc.), but an artifact may be created directly in a later phase if it was fully developed during the conversation (see [Phase skipping](#phase-skipping)).
 5. Update or create the `list-<type>.md` index in the type's directory.
 6. Validate parent references exist (e.g., the Epic referenced by a new PRD must already exist).
 
 ### Product Vision (VISION-NNN)
 
-The highest-level specification artifact. Defines *what the product is* and *why it exists*. Typically one per product or major product area.
+The highest-level specification artifact. Defines *what the product is* and *why it exists*. Typically one per product or major product area. Uses folder format to accommodate supporting documents.
 
+- **Folder structure:** `docs/vision/(VISION-NNN)-<Title>/`
+  - Primary file: `(VISION-NNN)-<Title>.md` — the vision document itself.
+  - Supporting docs live alongside it in the same folder. These are NOT numbered artifacts — they are informal reference material owned by the Vision.
+  - Typical supporting docs: competitive analysis, market research, positioning docs, persona summaries, **architecture overview**.
+- **Architecture overview vs. ADRs:** An `architecture-overview.md` in the Vision folder describes *how the system works holistically* — a living description of the system shape. It is descriptive, not decisional. Individual architectural *decisions* ("we chose X over Y because Z") belong in ADRs. When extracting architecture content from a Vision document, split it: the holistic description stays as a Vision supporting doc; discrete decisions with alternatives considered become ADRs.
 - Frontmatter must include: title, status, author, created date, last updated date.
 - Must define: target audience, value proposition, success metrics, non-goals.
 - Should be stable — update infrequently. If a Vision needs frequent revision, it is likely scoped too narrowly (should be an Epic) or too early (needs a Spike first).
 - Vision documents do NOT contain implementation details, timelines, or task breakdowns.
+
+### User Journey (JOURNEY-NNN)
+
+Maps an end-to-end user experience across features and touchpoints. Journeys describe *how a user accomplishes a goal* and surface pain points and opportunities that inform which Epics to create.
+
+- **Folder structure:** `docs/journey/(JOURNEY-NNN)-<Title>/`
+  - Primary file: `(JOURNEY-NNN)-<Title>.md` — the journey narrative.
+  - Supporting docs: journey map diagrams, persona profiles, flow charts, interview notes.
+- Frontmatter must include: title, status, author, created date, last updated date, parent Vision.
+- Must define: persona (who), goal (what they're trying to accomplish), steps/stages (the flow), pain points (friction), and opportunities (where the product can improve).
+- A Journey is "Validated" when its steps and pain points have been confirmed through user research, stakeholder review, or prototype testing.
+- Journeys are *discovery artifacts* — they inform Epic and PRD creation but are not directly implemented. They do NOT contain acceptance criteria or task breakdowns.
 
 ### Epics (EPIC-NNN)
 
@@ -54,6 +71,19 @@ A strategic initiative that decomposes into multiple PRDs, Spikes, and ADRs. The
 - Must define: goal/objective, scope boundaries, child PRD list (updated as PRDs are created), and key dependencies on other Epics.
 - An Epic is "Complete" when all child PRDs reach "Implemented" and success criteria are met.
 - An Epic is "Archived" after completion, when it no longer requires active reference.
+
+### User Story (STORY-NNN)
+
+The atomic unit of user-facing requirements. Captures a single capability from the user's perspective with clear acceptance criteria. Decomposes an Epic into verifiable, implementable increments.
+
+- **Format:** Single markdown file at `docs/story/(STORY-NNN)-<Title>.md`.
+- Frontmatter must include: title, status, author, created date, last updated date, parent Epic, and optionally linked Journey(s).
+- Must follow the canonical format:
+  - **As a** [role/persona], **I want** [capability], **so that** [benefit/outcome].
+  - **Acceptance criteria:** Numbered list of testable conditions that must be true for the story to be complete.
+- Stories should be small enough to implement and verify independently. If a story requires multiple PRDs, it is likely scoped too broadly (should be an Epic).
+- A Story is "Ready" when acceptance criteria are defined and agreed upon. A Story is "Implemented" when all acceptance criteria pass.
+- Stories can link to Journeys via `related` frontmatter to show which user experience they improve.
 
 ### PRDs (PRD-NNN)
 
@@ -72,13 +102,24 @@ A strategic initiative that decomposes into multiple PRDs, Spikes, and ADRs. The
 
 - Frontmatter must include: title, status, author, created date, last updated date, and links to all affected Epics/PRDs.
 - ADRs are cross-cutting: they link to all affected artifacts but are not owned by any single one.
+- ADRs record **decisions**: a specific choice between alternatives, with rationale and consequences. They require status, alternatives considered, and a decision outcome.
+- ADRs are NOT for descriptive or explanatory architecture content. If the content describes "how the system works" without presenting a decision between alternatives, it belongs as an architecture overview supporting doc in the Vision folder — not as an ADR.
 - Use the Draft phase while investigation (Spikes) is still in progress. Move to Proposed when the recommendation is formed and ready for review.
 
 ## Phase transitions
 
+### Phase skipping
+
+Phases listed in AGENTS.md are available waypoints, not mandatory gates. An artifact may skip intermediate phases and land directly on a later phase in the sequence. This is normal in single-user workflows where drafting and review happen conversationally in the same session.
+
+- The lifecycle table records only the phases the artifact actually occupied — one row per state it landed on, not rows for states it skipped past.
+- Skipping is forward-only: an artifact cannot skip backward in its phase sequence.
+- **Abandoned** is a universal end-of-life phase available from any state, including Draft. It signals the artifact was intentionally not pursued. Use it instead of deleting artifacts — the record of what was considered and why it was dropped is valuable.
+- Other end-of-life transitions (Sunset, Retired, Superseded, Archived, Deprecated) require the artifact to have been in an active state first — you cannot skip directly from Draft to Retired.
+
 ### Workflow
 
-1. Validate the transition is legal for the artifact type (see AGENTS.md phases column).
+1. Validate the target phase is reachable from the current phase (same or later in the sequence; intermediate phases may be skipped).
 2. Update the artifact's status field in frontmatter.
 3. Commit the change.
 4. Append a row to the artifact's lifecycle table with the commit hash from step 3.
