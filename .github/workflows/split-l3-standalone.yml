@@ -1,0 +1,19 @@
+name: Split L3 standalone branch
+
+on:
+  push:
+    branches: [main]
+    paths: ['L3-agents-standalone/**']
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          git subtree split --prefix=L3-agents-standalone -b l3-standalone
+          git push origin l3-standalone --force
