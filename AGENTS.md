@@ -27,7 +27,7 @@ Phases are **available waypoints**, not mandatory gates. Artifacts may skip inte
 | User Story | `docs/story/` | Markdown file per story | Draft → Ready → Implemented · Abandoned |
 | PRDs | `docs/prd/` | Folder containing titled `.md` + supporting docs | Draft → Review → Approved → Implemented → Deprecated · Abandoned |
 | Research / Spikes | `docs/research/` | Folder containing titled `.md` (not `README.md`) | Planned → Active → Complete · Abandoned |
-| ADRs | `docs/adr/` | Markdown file directly in phase directory | Draft → Proposed → Adopted → Retired · Superseded · Abandoned |
+| ADRs | `docs/adr/` | Markdown file in `<Phase>/` subdirectory (e.g., `docs/adr/Adopted/(ADR-001)-Title.md`) | Draft → Proposed → Adopted → Retired · Superseded · Abandoned |
 | Personas | `docs/persona/` | Folder containing titled `.md` + supporting docs (interview notes, research data) | Draft → Validated → Archived · Abandoned |
 
 ### Artifact hierarchy
