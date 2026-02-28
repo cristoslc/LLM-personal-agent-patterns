@@ -98,12 +98,11 @@ A Vision is NOT a spec, NOT a feature list, NOT a roadmap, NOT a technical archi
 stateDiagram-v2
     [*] --> Draft
     Draft --> Validated
-    Validated --> [*]
     Draft --> Abandoned
-    Validated --> Abandoned
     Validated --> Archived
-    Abandoned --> [*]
+    Validated --> Abandoned
     Archived --> [*]
+    Abandoned --> [*]
 ```
 
 Maps an end-to-end user experience across features and touchpoints. Journeys describe *how a user accomplishes a goal* and surface pain points and opportunities that inform which Epics to create.
