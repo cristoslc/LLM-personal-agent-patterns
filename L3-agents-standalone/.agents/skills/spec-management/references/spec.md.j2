@@ -1,6 +1,6 @@
 ---
 title: "{{ title }}"
-artifact: PRD-{{ number }}
+artifact: SPEC-{{ number }}
 status: {{ status | default("Draft") }}
 author: {{ author }}
 created: {{ created_date }}
@@ -18,13 +18,21 @@ linked-adrs:
 
 # {{ title }}
 
-## Overview
+## Problem Statement
 
-{{ overview | default("What this PRD covers — scoped to something a team or agent can ship and validate independently.") }}
+{{ problem_statement | default("What problem this spec addresses — scoped from the parent Epic's goal.") }}
 
-## Requirements
+## External Behavior
 
-{{ requirements | default("Detailed functional and non-functional requirements.") }}
+{{ external_behavior | default("Inputs, outputs, preconditions, postconditions, constraints, and interfaces.") }}
+
+## Acceptance Criteria
+
+{{ acceptance_criteria | default("Given/When/Then scenarios — concise and verifiable.") }}
+
+## Scope & Constraints
+
+{{ scope_constraints | default("Boundaries, non-goals, and token-budget awareness.") }}
 
 ## Implementation Approach
 
