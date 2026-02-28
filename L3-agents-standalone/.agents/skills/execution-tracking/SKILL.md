@@ -1,27 +1,43 @@
 ---
-name: external-task-management
-description: Use an external task-management CLI as the source of truth for agent execution tracking (instead of built-in todos), including bootstrap/install flow, status-transition rules, and observer-friendly reporting. Use for tasks that require backend portability, persistent progress across agent runtimes, or external supervision.
+name: execution-tracking
+description: Bootstrap, install, and operate an external task-management CLI as the source of truth for agent execution tracking (instead of built-in todos). Provides the abstraction layer between spec-management intent (implementation plans and tasks) and concrete CLI commands. Use for tasks that require backend portability, persistent progress across agent runtimes, or external supervision.
 license: UNLICENSED
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 metadata:
-  short-description: Track agent execution with an external task CLI
-  version: 1.0.0
+  short-description: Bootstrap and operate external task tracking
+  version: 1.1.0
   author: cristos
 ---
 
-# External Task Management
+# Execution Tracking
 
-Prefer external task CLI tracking over built-in todo systems.
+Abstraction layer for agent execution tracking. Other skills (e.g., spec-management) express intent using abstract terms; this skill translates that intent into concrete CLI commands.
+
+## Term mapping
+
+Other skills use these abstract terms. This skill maps them to the current backend:
+
+| Abstract term | Meaning | bd mapping |
+|---------------|---------|------------|
+| **implementation plan** | Top-level container grouping all tasks for a spec artifact | `bd` epic (`bd create --type=epic`) |
+| **task** | An individual unit of work within a plan | `bd` task (`bd create`) |
+| **origin ref** | Immutable link from a plan to the spec that seeded it | `--external-ref <ID>` |
+| **spec tag** | Mutable label linking a task to every spec it affects | `--labels spec:<ID>` / `bd label add` |
+| **dependency** | Ordering constraint between tasks | `bd dep add` / `bd dep relate` |
+| **ready work** | Unblocked tasks available for pickup | `bd ready` |
 
 ## Default workflow (current default: `bd`)
 1. Check for `bd` availability:
-   - `command -v bd`
-2. If missing, install `bd`:
+   - Run `command -v bd` to test whether the binary is on `$PATH`.
+2. If missing, attempt to install `bd`:
+   - Detect the platform and available package managers.
    - macOS (Homebrew): `brew install beads`
    - Linux (Cargo): `cargo install beads`
+   - If neither package manager is available, or the install command fails, proceed to the [Failure and fallback](#failure-and-fallback) section.
 3. Initialize and validate:
    - `bd --help`
    - `bd ready`
+   - If either command fails after a successful install, log the error and proceed to [Failure and fallback](#failure-and-fallback).
 4. Track every meaningful work item with `bd` records.
 
 ## Canonical task states
@@ -44,6 +60,10 @@ When creating `bd` tasks that implement a spec artifact:
 - When a task affects multiple specs, add additional labels: `bd label add <task-id> spec:PRD-007`.
 - Use `bd dep relate` for bidirectional links between tasks in different plans.
 - Query all work for a spec with: `bd list --label spec:PRD-003`.
+
+## Parallel coordination (bd-specific)
+- `bd swarm create <plan-id>` sets up a swarm — agents use `bd ready` to pick up unblocked work.
+- For repeatable workflows, define a formula in `.beads/formulas/` and instantiate with `bd mol pour`.
 
 ## Observer pattern expectations
 1. Maintain a compact current-status view that can be queried externally.
