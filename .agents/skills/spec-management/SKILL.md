@@ -1,6 +1,6 @@
 ---
 name: spec-management
-description: Create, validate, and transition documentation artifacts (Vision, Journey, Epic, Story, PRD, Spike, ADR, Persona) and their supporting docs (architecture overviews, journey maps, competitive analyses) through their lifecycle phases. Use when the user wants to write a PRD, plan a feature, create an epic, add a user story, draft an ADR, start a research spike, define a persona, create a user persona, update the architecture overview, document the system architecture, move an artifact to a new phase, seed an implementation plan, or validate cross-references between artifacts. Covers any request to create, update, review, or transition spec artifacts and supporting docs.
+description: Create, validate, and transition documentation artifacts (Vision, Journey, Epic, Story, Agent Spec, Spike, ADR, Persona) and their supporting docs (architecture overviews, journey maps, competitive analyses) through their lifecycle phases. Use when the user wants to write a spec, plan a feature, create an epic, add a user story, draft an ADR, start a research spike, define a persona, create a user persona, update the architecture overview, document the system architecture, move an artifact to a new phase, seed an implementation plan, or validate cross-references between artifacts. Covers any request to create, update, review, or transition spec artifacts and supporting docs.
 license: UNLICENSED
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 metadata:
@@ -59,7 +59,7 @@ This rule is referenced as the **index refresh step** in the workflows below. Do
 2. Create the artifact using the appropriate format (see AGENTS.md artifact types table).
 3. Populate frontmatter with the required fields for the type (see the template in `references/<type>.md.j2`).
 4. Initialize the lifecycle table with the appropriate phase and current date. This is usually the first phase (Draft, Planned, etc.), but an artifact may be created directly in a later phase if it was fully developed during the conversation (see [Phase skipping](#phase-skipping)).
-5. Validate parent references exist (e.g., the Epic referenced by a new PRD must already exist).
+5. Validate parent references exist (e.g., the Epic referenced by a new Agent Spec must already exist).
 6. **Index refresh step** — update `list-<type>.md` (see [Index maintenance](#index-maintenance)).
 
 ### Product Vision (VISION-NNN)
@@ -79,7 +79,7 @@ stateDiagram-v2
 
 The highest-level specification artifact. Follow **Marty Cagan's product vision model** (from *Inspired*): a Vision is a short, aspirational narrative describing the future you want to create for your customers. It communicates *why* the product exists, *who* it serves, and *what better state of the world* it enables — and nothing else.
 
-A Vision is NOT a spec, NOT a feature list, NOT a roadmap, NOT a technical architecture document, and NOT a tracking artifact. If content describes *how* the system is built, *what* technologies it uses, *when* things ship, or *which tasks* remain, it belongs in a child artifact (Epic, PRD, ADR, Spike), not the Vision.
+A Vision is NOT a spec, NOT a feature list, NOT a roadmap, NOT a technical architecture document, and NOT a tracking artifact. If content describes *how* the system is built, *what* technologies it uses, *when* things ship, or *which tasks* remain, it belongs in a child artifact (Epic, Agent Spec, ADR, Spike), not the Vision.
 
 - **Folder structure:** `docs/vision/(VISION-NNN)-<Title>/`
   - Primary file: `(VISION-NNN)-<Title>.md` — the vision document itself.
@@ -111,7 +111,7 @@ Maps an end-to-end user experience across features and touchpoints. Journeys des
   - Primary file: `(JOURNEY-NNN)-<Title>.md` — the journey narrative.
   - Supporting docs: flow charts, interview notes, extended research.
 - A Journey is "Validated" when its steps and pain points have been confirmed through user research, stakeholder review, or prototype testing.
-- Journeys are *discovery artifacts* — they inform Epic and PRD creation but are not directly implemented. They do NOT contain acceptance criteria or task breakdowns.
+- Journeys are *discovery artifacts* — they inform Epic and Agent Spec creation but are not directly implemented. They do NOT contain acceptance criteria or task breakdowns.
 
 #### Mermaid journey diagram
 
@@ -192,9 +192,9 @@ stateDiagram-v2
     Abandoned --> [*]
 ```
 
-A strategic initiative that decomposes into multiple PRDs, Spikes, and ADRs. The **coordination layer** between product vision and feature-level work.
+A strategic initiative that decomposes into multiple Agent Specs, Spikes, and ADRs. The **coordination layer** between product vision and feature-level work.
 
-- An Epic is "Complete" when all child PRDs reach "Implemented" and success criteria are met.
+- An Epic is "Complete" when all child Agent Specs reach "Implemented" and success criteria are met.
 
 ### User Story (STORY-NNN)
 
@@ -214,12 +214,12 @@ stateDiagram-v2
 The atomic unit of user-facing requirements. Follow **Mike Cohn's user story model** (from *User Stories Applied*): a Story captures a single capability from the user's perspective in the "As a / I want / so that" format with clear acceptance criteria. Stories should satisfy the **INVEST** criteria — Independent, Negotiable, Valuable, Estimable, Small, Testable. Decomposes an Epic into verifiable, implementable increments.
 
 - **Format:** Single markdown file at `docs/story/(STORY-NNN)-<Title>.md`.
-- Stories should be small enough to implement and verify independently. If a story requires multiple PRDs, it is likely scoped too broadly (should be an Epic).
+- Stories should be small enough to implement and verify independently. If a story requires multiple Agent Specs, it is likely scoped too broadly (should be an Epic).
 - A Story is "Ready" when acceptance criteria are defined and agreed upon. A Story is "Implemented" when all acceptance criteria pass.
 
-### PRDs (PRD-NNN)
+### Agent Specs (SPEC-NNN)
 
-**Template:** [references/prd.md.j2](references/prd.md.j2)
+**Template:** [references/spec.md.j2](references/spec.md.j2)
 
 ```mermaid
 stateDiagram-v2
@@ -235,6 +235,8 @@ stateDiagram-v2
     Implemented --> Abandoned
     Abandoned --> [*]
 ```
+
+Follow **spec-driven development** principles: an Agent Spec is a behavior contract — precise enough for an agent to create an implementation plan from, but concise enough to scan in a single pass. It defines external behavior (inputs, outputs, preconditions, constraints), not exhaustive requirements. Supplemental detail comes from child Stories and linked research.
 
 - Should be scoped to something a team (or agent) can ship and validate independently.
 
@@ -258,7 +260,7 @@ A time-boxed investigation to reduce uncertainty before committing to a path. Fo
 - Number in intended execution order — sequence communicates priority.
 - Gating spikes must define go/no-go criteria with measurable thresholds (not just "investigate X").
 - Gating spikes must recommend a specific pivot if the gate fails (not just "reconsider approach").
-- Spikes can belong to any artifact type (Vision, Epic, PRD, ADR, Persona). The owning artifact controls all spike tables: questions, risks, gate criteria, dependency graph, execution order, phase mappings, and risk coverage. There is no separate research roadmap document.
+- Spikes can belong to any artifact type (Vision, Epic, Agent Spec, ADR, Persona). The owning artifact controls all spike tables: questions, risks, gate criteria, dependency graph, execution order, phase mappings, and risk coverage. There is no separate research roadmap document.
 
 ### Personas (PERSONA-NNN)
 
@@ -281,7 +283,7 @@ A user archetype that represents a distinct segment of the product's audience. F
   - Primary file: `(PERSONA-NNN)-<Title>.md` — the persona definition.
   - Supporting docs: interview notes, survey data, behavioral research, demographic analysis.
 - A Persona is "Validated" when its attributes have been confirmed through user research, interviews, or data analysis — not just assumed.
-- Personas are *reference artifacts* — they inform Journey, Story, and PRD creation but are not directly implemented. They do NOT contain acceptance criteria, task breakdowns, or feature specifications.
+- Personas are *reference artifacts* — they inform Journey, Story, and Agent Spec creation but are not directly implemented. They do NOT contain acceptance criteria, task breakdowns, or feature specifications.
 
 ### ADRs (ADR-NNN)
 
@@ -334,8 +336,8 @@ Phases listed in AGENTS.md are available waypoints, not mandatory gates. An arti
 
 ### Completion rules
 
-- An Epic is "Complete" only when all child PRDs are "Implemented" and success criteria are met.
-- A PRD is "Implemented" only when its implementation plan is closed (or all tasks are done in fallback mode).
+- An Epic is "Complete" only when all child Agent Specs are "Implemented" and success criteria are met.
+- An Agent Spec is "Implemented" only when its implementation plan is closed (or all tasks are done in fallback mode).
 - An ADR is "Superseded" only when the superseding ADR is "Adopted" and links back.
 
 ## Implementation plans
@@ -348,8 +350,8 @@ Before creating or modifying implementation plans, invoke the **execution-tracki
 
 ### Seeding a plan from a spec
 
-1. A PRD (or Epic) may include an "Implementation Approach" section sketching the high-level plan. This seeds the implementation plan but is not the plan of record.
-2. When work begins, create an **implementation plan** for the spec artifact, linked via an **origin ref** (e.g., `PRD-003`).
+1. An Agent Spec (or Epic) may include an "Implementation Approach" section sketching the high-level plan. This seeds the implementation plan but is not the plan of record.
+2. When work begins, create an **implementation plan** for the spec artifact, linked via an **origin ref** (e.g., `SPEC-003`).
 3. Create **tasks** under the implementation plan with dependencies between them. Tag each task with a **spec tag** for the originating spec.
 
 ### Lineage and cross-spec impact
@@ -365,9 +367,9 @@ Before creating or modifying implementation plans, invoke the **execution-tracki
 
 ### Closing the loop
 
-- Progress is tracked in the execution backend, not in the spec doc. The PRD's lifecycle table records the transition to "Implemented" once the implementation plan completes.
-- Cross-spec tasks should be noted in each affected artifact's lifecycle table entry (e.g., "Implemented — shared serializer also covers PRD-007").
+- Progress is tracked in the execution backend, not in the spec doc. The Agent Spec's lifecycle table records the transition to "Implemented" once the implementation plan completes.
+- Cross-spec tasks should be noted in each affected artifact's lifecycle table entry (e.g., "Implemented — shared serializer also covers SPEC-007").
 
 ### Fallback
 
-If the **execution-tracking** skill is not available in the current agent environment, fall back to the agent's built-in todo system with canonical states (`todo`, `in_progress`, `blocked`, `done`). The plan structure (ordered steps, dependencies, completion tracking) remains the same — only the backend changes. Lineage is maintained by including artifact IDs in task titles or notes (e.g., `[PRD-003] Add export endpoint`).
+If the **execution-tracking** skill is not available in the current agent environment, fall back to the agent's built-in todo system with canonical states (`todo`, `in_progress`, `blocked`, `done`). The plan structure (ordered steps, dependencies, completion tracking) remains the same — only the backend changes. Lineage is maintained by including artifact IDs in task titles or notes (e.g., `[SPEC-003] Add export endpoint`).
