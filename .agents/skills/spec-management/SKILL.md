@@ -168,7 +168,7 @@ A strategic initiative that decomposes into multiple PRDs, Spikes, and ADRs. The
 
 **Template:** [references/story.md.j2](references/story.md.j2)
 
-The atomic unit of user-facing requirements. Captures a single capability from the user's perspective with clear acceptance criteria. Decomposes an Epic into verifiable, implementable increments.
+The atomic unit of user-facing requirements. Follow **Mike Cohn's user story model** (from *User Stories Applied*): a Story captures a single capability from the user's perspective in the "As a / I want / so that" format with clear acceptance criteria. Stories should satisfy the **INVEST** criteria — Independent, Negotiable, Valuable, Estimable, Small, Testable. Decomposes an Epic into verifiable, implementable increments.
 
 - **Format:** Single markdown file at `docs/story/(STORY-NNN)-<Title>.md`.
 - Stories should be small enough to implement and verify independently. If a story requires multiple PRDs, it is likely scoped too broadly (should be an Epic).
@@ -184,6 +184,8 @@ The atomic unit of user-facing requirements. Captures a single capability from t
 
 **Template:** [references/spike.md.j2](references/spike.md.j2)
 
+A time-boxed investigation to reduce uncertainty before committing to a path. Follow **Kent Beck's spike concept** (from *Extreme Programming Explained*): a Spike is a short, focused experiment that answers a specific technical or design question — it produces *knowledge*, not shippable code.
+
 - Number in intended execution order — sequence communicates priority.
 - Gating spikes must define go/no-go criteria with measurable thresholds (not just "investigate X").
 - Gating spikes must recommend a specific pivot if the gate fails (not just "reconsider approach").
@@ -193,7 +195,7 @@ The atomic unit of user-facing requirements. Captures a single capability from t
 
 **Template:** [references/persona.md.j2](references/persona.md.j2)
 
-A user archetype that represents a distinct segment of the product's audience. Personas are cross-cutting — they are referenced by Journeys, Stories, Visions, and other artifacts but are not owned by any single one.
+A user archetype that represents a distinct segment of the product's audience. Follow **Alan Cooper's persona model** (from *The Inmates Are Running the Asylum*): a Persona is a concrete, narrative description of a fictional but realistic user — defined by goals, behaviors, and context, not demographics alone. Personas are cross-cutting — they are referenced by Journeys, Stories, Visions, and other artifacts but are not owned by any single one.
 
 - **Folder structure:** `docs/persona/(PERSONA-NNN)-<Title>/`
   - Primary file: `(PERSONA-NNN)-<Title>.md` — the persona definition.
@@ -205,12 +207,13 @@ A user archetype that represents a distinct segment of the product's audience. P
 
 **Template:** [references/adr.md.j2](references/adr.md.j2)
 
+Follow **Michael Nygard's ADR format**: each ADR records a single architectural decision with its context, the decision itself, alternatives considered, and consequences. The format is deliberately lightweight — one decision per document, written in short prose, not a formal specification.
+
 - **Directory structure:** `docs/adr/<Phase>/(ADR-NNN)-<Title>.md` — each ADR is a single Markdown file placed in the subdirectory matching its current lifecycle phase. Phase subdirectories: `Draft/`, `Proposed/`, `Adopted/`, `Retired/`, `Superseded/`.
   - Example: `docs/adr/Adopted/(ADR-001)-Subtree-Split-Distribution-Model.md`
   - When transitioning phases, **move the file** to the new phase directory (e.g., `git mv docs/adr/Draft/(ADR-003)-Foo.md docs/adr/Proposed/(ADR-003)-Foo.md`).
   - **Never** store ADRs flat in `docs/adr/` with phase tracked only in frontmatter — the directory structure must reflect the phase.
 - ADRs are cross-cutting: they link to all affected artifacts but are not owned by any single one.
-- ADRs record **decisions**: a specific choice between alternatives, with rationale and consequences. They require status, alternatives considered, and a decision outcome.
 - ADRs are NOT for descriptive or explanatory architecture content. If the content describes "how the system works" without presenting a decision between alternatives, it belongs as an architecture overview supporting doc in the Vision folder — not as an ADR.
 - Use the Draft phase while investigation (Spikes) is still in progress. Move to Proposed when the recommendation is formed and ready for review.
 
