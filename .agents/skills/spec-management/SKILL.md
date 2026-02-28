@@ -66,6 +66,17 @@ This rule is referenced as the **index refresh step** in the workflows below. Do
 
 **Template:** [references/vision.md.j2](references/vision.md.j2)
 
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Active
+    Active --> Sunset
+    Sunset --> [*]
+    Draft --> Abandoned
+    Active --> Abandoned
+    Abandoned --> [*]
+```
+
 The highest-level specification artifact. Follow **Marty Cagan's product vision model** (from *Inspired*): a Vision is a short, aspirational narrative describing the future you want to create for your customers. It communicates *why* the product exists, *who* it serves, and *what better state of the world* it enables — and nothing else.
 
 A Vision is NOT a spec, NOT a feature list, NOT a roadmap, NOT a technical architecture document, and NOT a tracking artifact. If content describes *how* the system is built, *what* technologies it uses, *when* things ship, or *which tasks* remain, it belongs in a child artifact (Epic, PRD, ADR, Spike), not the Vision.
@@ -82,6 +93,17 @@ A Vision is NOT a spec, NOT a feature list, NOT a roadmap, NOT a technical archi
 ### User Journey (JOURNEY-NNN)
 
 **Template:** [references/journey.md.j2](references/journey.md.j2)
+
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Validated
+    Validated --> Archived
+    Archived --> [*]
+    Draft --> Abandoned
+    Validated --> Abandoned
+    Abandoned --> [*]
+```
 
 Maps an end-to-end user experience across features and touchpoints. Journeys describe *how a user accomplishes a goal* and surface pain points and opportunities that inform which Epics to create.
 
@@ -159,6 +181,19 @@ In this example, "Configure credentials" (2) and "Invite team member" (1) surfac
 
 **Template:** [references/epic.md.j2](references/epic.md.j2)
 
+```mermaid
+stateDiagram-v2
+    [*] --> Proposed
+    Proposed --> Active
+    Active --> Complete
+    Complete --> Archived
+    Archived --> [*]
+    Proposed --> Abandoned
+    Active --> Abandoned
+    Complete --> Abandoned
+    Abandoned --> [*]
+```
+
 A strategic initiative that decomposes into multiple PRDs, Spikes, and ADRs. The **coordination layer** between product vision and feature-level work.
 
 - An Epic is "Complete" when all child PRDs reach "Implemented" and success criteria are met.
@@ -167,6 +202,17 @@ A strategic initiative that decomposes into multiple PRDs, Spikes, and ADRs. The
 ### User Story (STORY-NNN)
 
 **Template:** [references/story.md.j2](references/story.md.j2)
+
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Ready
+    Ready --> Implemented
+    Implemented --> [*]
+    Draft --> Abandoned
+    Ready --> Abandoned
+    Abandoned --> [*]
+```
 
 The atomic unit of user-facing requirements. Follow **Mike Cohn's user story model** (from *User Stories Applied*): a Story captures a single capability from the user's perspective in the "As a / I want / so that" format with clear acceptance criteria. Stories should satisfy the **INVEST** criteria — Independent, Negotiable, Valuable, Estimable, Small, Testable. Decomposes an Epic into verifiable, implementable increments.
 
@@ -178,11 +224,37 @@ The atomic unit of user-facing requirements. Follow **Mike Cohn's user story mod
 
 **Template:** [references/prd.md.j2](references/prd.md.j2)
 
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Review
+    Review --> Approved
+    Approved --> Implemented
+    Implemented --> Deprecated
+    Deprecated --> [*]
+    Draft --> Abandoned
+    Review --> Abandoned
+    Approved --> Abandoned
+    Implemented --> Abandoned
+    Abandoned --> [*]
+```
+
 - Should be scoped to something a team (or agent) can ship and validate independently.
 
 ### Research Spikes (SPIKE-NNN)
 
 **Template:** [references/spike.md.j2](references/spike.md.j2)
+
+```mermaid
+stateDiagram-v2
+    [*] --> Planned
+    Planned --> Active
+    Active --> Complete
+    Complete --> [*]
+    Planned --> Abandoned
+    Active --> Abandoned
+    Abandoned --> [*]
+```
 
 A time-boxed investigation to reduce uncertainty before committing to a path. Follow **Kent Beck's spike concept** (from *Extreme Programming Explained*): a Spike is a short, focused experiment that answers a specific technical or design question — it produces *knowledge*, not shippable code.
 
@@ -195,6 +267,17 @@ A time-boxed investigation to reduce uncertainty before committing to a path. Fo
 
 **Template:** [references/persona.md.j2](references/persona.md.j2)
 
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Validated
+    Validated --> Archived
+    Archived --> [*]
+    Draft --> Abandoned
+    Validated --> Abandoned
+    Abandoned --> [*]
+```
+
 A user archetype that represents a distinct segment of the product's audience. Follow **Alan Cooper's persona model** (from *The Inmates Are Running the Asylum*): a Persona is a concrete, narrative description of a fictional but realistic user — defined by goals, behaviors, and context, not demographics alone. Personas are cross-cutting — they are referenced by Journeys, Stories, Visions, and other artifacts but are not owned by any single one.
 
 - **Folder structure:** `docs/persona/(PERSONA-NNN)-<Title>/`
@@ -206,6 +289,21 @@ A user archetype that represents a distinct segment of the product's audience. F
 ### ADRs (ADR-NNN)
 
 **Template:** [references/adr.md.j2](references/adr.md.j2)
+
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Proposed
+    Proposed --> Adopted
+    Adopted --> Retired
+    Adopted --> Superseded
+    Retired --> [*]
+    Superseded --> [*]
+    Draft --> Abandoned
+    Proposed --> Abandoned
+    Adopted --> Abandoned
+    Abandoned --> [*]
+```
 
 Follow **Michael Nygard's ADR format**: each ADR records a single architectural decision with its context, the decision itself, alternatives considered, and consequences. The format is deliberately lightweight — one decision per document, written in short prose, not a formal specification.
 
