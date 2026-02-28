@@ -14,7 +14,7 @@ prd_risks_addressed:
 dependencies:
   - "PRD-001 External Task Management Tooling (Draft)"
 what_it_blocks:
-  - "Default task management approach in the L3 external-task-management skill"
+  - "Default task backend in the L3 execution-tracking skill"
   - "Runbook standardization for operator supervision"
 recommended_pivot_if_gate_fails: "Use a neutral JSONL task ledger plus a thin wrapper script, and treat CLI tools as optional adapters rather than the system of record."
 ---
@@ -38,7 +38,7 @@ Evaluate modern external task CLI tools (including `bd`) and recommend a default
 ## Deliverables
 - Comparative scorecard with weighted rubric.
 - Recommended default CLI and one fallback option.
-- Integration guidance update for `skills/external-task-management/SKILL.md`.
+- Integration guidance update for `skills/execution-tracking/SKILL.md`.
 
 ### Lifecycle
 
