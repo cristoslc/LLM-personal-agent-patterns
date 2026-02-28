@@ -15,13 +15,16 @@ Prefer external task CLI tracking over built-in todo systems.
 
 ## Default workflow (current default: `bd`)
 1. Check for `bd` availability:
-   - `command -v bd`
-2. If missing, install `bd`:
+   - Run `command -v bd` to test whether the binary is on `$PATH`.
+2. If missing, attempt to install `bd`:
+   - Detect the platform and available package managers.
    - macOS (Homebrew): `brew install beads`
    - Linux (Cargo): `cargo install beads`
+   - If neither package manager is available, or the install command fails, proceed to the [Failure and fallback](#failure-and-fallback) section.
 3. Initialize and validate:
    - `bd --help`
    - `bd ready`
+   - If either command fails after a successful install, log the error and proceed to [Failure and fallback](#failure-and-fallback).
 4. Track every meaningful work item with `bd` records.
 
 ## Canonical task states

@@ -214,6 +214,10 @@ Phases listed in AGENTS.md are available waypoints, not mandatory gates. An arti
 
 Implementation Plans are not a doc-type artifact. They bridge declarative specs (`docs/`) and execution tracking (`bd`). Plans are materialized as live `bd` epics with dependency-ordered child tasks.
 
+### Prerequisites
+
+Before using any `bd` commands, invoke the **external-task-management** skill to bootstrap `bd` (availability check, installation if missing, initialization). That skill owns the install and recovery flow — this skill assumes `bd` is ready once bootstrapping succeeds.
+
 ### Seeding a plan from a spec
 
 1. A PRD (or Epic) may include an "Implementation Approach" section sketching the high-level plan. This seeds the `bd` plan but is not the plan of record.
@@ -251,4 +255,4 @@ Implementation Plans are not a doc-type artifact. They bridge declarative specs 
 
 ### Fallback
 
-If `bd` is unavailable, use the agent's built-in todo system with canonical states (`todo`, `in_progress`, `blocked`, `done`) per the external-task-management skill. The plan structure (ordered steps, dependencies, completion tracking) remains the same — only the backend changes. Lineage is maintained by including artifact IDs in task titles or notes (e.g., `[PRD-003] Add export endpoint`).
+If the **external-task-management** skill is not available in the current agent environment, fall back to the agent's built-in todo system with canonical states (`todo`, `in_progress`, `blocked`, `done`). The plan structure (ordered steps, dependencies, completion tracking) remains the same — only the backend changes. Lineage is maintained by including artifact IDs in task titles or notes (e.g., `[PRD-003] Add export endpoint`).
