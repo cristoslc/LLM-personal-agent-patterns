@@ -2,14 +2,13 @@
 
 ADRs capture significant architectural decisions with context, alternatives considered, and rationale. They are cross-cutting — an ADR may affect multiple Epics and PRDs.
 
-## Phases
+## Structure
+- `Draft/`: investigation in progress; recommendation not yet formed.
+- `Proposed/`: recommendation ready for review.
+- `Adopted/`: decision accepted and in effect.
+- `Retired/`: decision no longer applies (superseded or obsoleted).
+- `Superseded/`: replaced by a newer ADR (must link to successor).
+- `list-adrs.md`: lifecycle dashboard index.
 
-| Phase | Meaning |
-|---|---|
-| Draft | Investigation in progress; recommendation not yet formed |
-| Proposed | Recommendation ready for review |
-| Adopted | Decision accepted and in effect |
-| Retired | Decision no longer applies (superseded or obsoleted) |
-| Superseded | Replaced by a newer ADR (must link to successor) |
-
-See [list-adrs.md](./list-adrs.md) for the lifecycle index.
+## Current index
+See [`list-adrs.md`](./list-adrs.md).

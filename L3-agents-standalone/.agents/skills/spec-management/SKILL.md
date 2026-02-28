@@ -178,6 +178,10 @@ A user archetype that represents a distinct segment of the product's audience. P
 
 ### ADRs (ADR-NNN)
 
+- **Directory structure:** `docs/adr/<Phase>/(ADR-NNN)-<Title>.md` — each ADR is a single Markdown file placed in the subdirectory matching its current lifecycle phase. Phase subdirectories: `Draft/`, `Proposed/`, `Adopted/`, `Retired/`, `Superseded/`.
+  - Example: `docs/adr/Adopted/(ADR-001)-Subtree-Split-Distribution-Model.md`
+  - When transitioning phases, **move the file** to the new phase directory (e.g., `git mv docs/adr/Draft/(ADR-003)-Foo.md docs/adr/Proposed/(ADR-003)-Foo.md`).
+  - **Never** store ADRs flat in `docs/adr/` with phase tracked only in frontmatter — the directory structure must reflect the phase.
 - Frontmatter must include: title, status, author, created date, last updated date, and links to all affected Epics/PRDs.
 - ADRs are cross-cutting: they link to all affected artifacts but are not owned by any single one.
 - ADRs record **decisions**: a specific choice between alternatives, with rationale and consequences. They require status, alternatives considered, and a decision outcome.
