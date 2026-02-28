@@ -98,11 +98,12 @@ A Vision is NOT a spec, NOT a feature list, NOT a roadmap, NOT a technical archi
 stateDiagram-v2
     [*] --> Draft
     Draft --> Validated
-    Validated --> Archived
-    Archived --> [*]
+    Validated --> [*]
     Draft --> Abandoned
     Validated --> Abandoned
+    Validated --> Archived
     Abandoned --> [*]
+    Archived --> [*]
 ```
 
 Maps an end-to-end user experience across features and touchpoints. Journeys describe *how a user accomplishes a goal* and surface pain points and opportunities that inform which Epics to create.
@@ -186,18 +187,15 @@ stateDiagram-v2
     [*] --> Proposed
     Proposed --> Active
     Active --> Complete
-    Complete --> Archived
-    Archived --> [*]
+    Complete --> [*]
     Proposed --> Abandoned
     Active --> Abandoned
-    Complete --> Abandoned
     Abandoned --> [*]
 ```
 
 A strategic initiative that decomposes into multiple PRDs, Spikes, and ADRs. The **coordination layer** between product vision and feature-level work.
 
 - An Epic is "Complete" when all child PRDs reach "Implemented" and success criteria are met.
-- An Epic is "Archived" after completion, when it no longer requires active reference.
 
 ### User Story (STORY-NNN)
 
