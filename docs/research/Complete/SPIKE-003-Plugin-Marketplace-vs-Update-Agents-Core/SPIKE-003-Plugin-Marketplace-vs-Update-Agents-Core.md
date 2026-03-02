@@ -1,7 +1,7 @@
 ---
 title: "SPIKE-003 Plugin Marketplace vs Update Agents Core"
 artifact: SPIKE-003
-status: Active
+status: Complete
 author: cristos
 created: 2026-03-01
 last-updated: 2026-03-01
@@ -149,3 +149,4 @@ Provenance overlay (optional, future):
 |-------|------|--------|-------|
 | Planned | 2026-03-01 | b7245e8 | Initial creation |
 | Active | 2026-03-01 | b7245e8 | Investigation with findings |
+| Complete | 2026-03-01 | d4ed11a | Gate PASS — reject plugins for vendor-agnosticism; retain update-agents-core for scaffolding |

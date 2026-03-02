@@ -27,24 +27,21 @@ Does `npx skills` replace the `remote-skill-manager` skill, should `remote-skill
 
 ### Context
 
+The primary problem is **skill installation** — making it easy for consumers to install skills into their projects using ecosystem tooling with committed resources behind it. Per-project skills (not just global) must be an option. Provenance and drift detection are secondary concerns that can be layered on later as scanning tools mature.
+
 The `remote-skill-manager` skill (per ADR-002) provides:
 - Fetch skills from remote Git repos via a custom bash script
 - `.source.yml` provenance manifests with integrity hashes for drift detection
 - Explicit ref pinning (branch, tag, commit SHA)
+- POSIX-only (git, tar, sha256sum)
 
 The `npx skills` ecosystem (Vercel skills.sh) provides:
-- `npx skills add owner/repo` — installs skills from GitHub into agent-specific directories
+- `npx skills add owner/repo@ref` — installs skills from GitHub into agent-specific directories
 - `npx skills update` — pulls latest from upstream
 - `npx skills check` — detects available updates
 - Auto-discovery on skills.sh via install telemetry
 - Support for 40+ agents
-- No provenance manifests or integrity hashing
-
-Key differences:
-- `remote-skill-manager` tracks provenance (`.source.yml`) and supports drift detection; `npx skills` does not
-- `npx skills` handles multi-agent routing (installs to the right location per agent); `remote-skill-manager` targets `.agents/skills/` only
-- `remote-skill-manager` requires only POSIX tools (git, tar, sha256sum); `npx skills` requires Node.js
-- `npx skills` has ecosystem discoverability (skills.sh); `remote-skill-manager` is repo-to-repo only
+- Backed by Vercel with active development, 69k+ skills, 2M+ CLI installs
 
 ### Scenarios to evaluate
 
@@ -54,7 +51,7 @@ Key differences:
 
 ## Go / No-Go Criteria
 
-1. **Feature gap analysis complete:** Document what `remote-skill-manager` provides that `npx skills` does not (provenance, integrity, drift detection) and assess whether those gaps matter for the target user base.
+1. **Feature gap analysis complete:** Document what `remote-skill-manager` provides that `npx skills` does not and assess whether those gaps matter for the target user base.
 2. **Non-Node path verified:** Confirm that a viable installation path exists for users without Node.js, regardless of the chosen scenario.
 3. **Clear recommendation:** One of the three scenarios is recommended with rationale, not "it depends."
 
@@ -63,12 +60,6 @@ Key differences:
 If no scenario cleanly resolves the trade-offs, adopt **Scenario 3 (Coexist)** as the default — it preserves all existing functionality while adding the ecosystem path. Revisit consolidation when the Agent Skills spec adds provenance/integrity features (which may make `.source.yml` redundant).
 
 ## Findings
-
-### Reframe: the primary problem is skill installation
-
-The original framing positioned `remote-skill-manager` and `npx skills` as tools for different audiences (consumers vs operators). That was wrong. The primary problem is **making skill installation easy for consumers** — preferably using ecosystem tooling with committed resources behind it, not custom infrastructure. Provenance is secondary and can be layered on later as scanning tools mature.
-
-`npx skills` (Vercel skills.sh) has traction: 69k+ skills, 2M+ CLI installs, backed by Vercel with active development, and adopted across 40+ agents. It solves the installation problem. The question is what gaps remain.
 
 ### Feature comparison
 
@@ -83,35 +74,33 @@ The original framing positioned `remote-skill-manager` and `npx skills` as tools
 | Project-scoped update | **Broken** — [#337](https://github.com/vercel-labs/skills/issues/337) open | Re-run fetch script (idempotent) |
 | Lockfile-based install | **Missing** — no `npx skills install` from lockfile | N/A |
 | Provenance manifest | Centralized `skills-lock.json` (source, ref, hash) | Per-skill `.source.yml` (full SHA, integrity digest) |
-| Drift detection | Hash comparison possible but no CLI command | Explicit workflow via tar hash comparison |
 | Security scanning | **None** | **None** |
 | Runtime dependency | Node.js (npx) | POSIX only (git, tar, sha256sum) |
 
 ### `npx skills` gaps (see JOURNEY-001 for full experience map)
 
-1. **Project-scoped updates broken** (score 1) — `npx skills update` only works for global installs. Workaround: re-run `npx skills add`. Issue #337 is the single highest-impact fix to track.
-2. **No declarative skill manifest** (score 2) — `skills-lock.json` exists but can't be used as input. No `npx skills install --from-lock` equivalent to `npm install`.
-3. **Skills drift silently across projects** (score 2) — no cross-project awareness or sync command.
-4. **No drift detection CLI** (score 2) — hash data in lock file but no `npx skills check --project` command.
-5. **No security scanning** (score 1) — industry-wide gap, not specific to `npx skills`.
+1. **Project-scoped updates broken** (JOURNEY-001 score: 1) — `npx skills update` only works for global installs. Workaround: re-run `npx skills add`. [Issue #337](https://github.com/vercel-labs/skills/issues/337) is the single highest-impact fix to track.
+2. **No declarative skill manifest** (score: 2) — `skills-lock.json` exists but can't be used as input. No `npx skills install --from-lock` equivalent to `npm install`.
+3. **Skills drift silently across projects** (score: 2) — no cross-project awareness or sync command.
+4. **No security scanning** (score: 1) — industry-wide gap, not specific to `npx skills`.
 
 ### Scope boundary: skills vs scaffolding
 
 `npx skills` installs SKILL.md files into agent-specific directories. It does **not** touch AGENTS.md or any project-level scaffolding. Agents auto-discover installed skills without AGENTS.md routing entries.
 
-This means two concerns remain separate:
+Two concerns remain separate:
 - **Skill installation** → `npx skills` (this spike)
 - **Framework scaffolding** (AGENTS.md, `.agents/` structure, artifact types, lifecycle rules) → `update-agents-core` git-merge workflow (SPIKE-003 scope)
 
 ### Recommendation: Scenario 1 (Replace) — adopt `npx skills`, deprecate `remote-skill-manager` as installer
 
-**Adopt `npx skills` as the primary skill installation mechanism. Don't maintain a competing project.**
+**Adopt `npx skills` as the primary skill installation mechanism. Ride the ecosystem; fill the gaps with thin scripts.**
 
 | What | Action |
 |---|---|
 | **Skill installation** | `npx skills add owner/repo@L3-agents` — ecosystem path, 40+ agents |
 | **`remote-skill-manager` fetch function** | **Deprecate.** `npx skills` does this better with multi-agent routing and ecosystem discoverability. |
-| **`.source.yml` provenance stamping** | **Retain as lightweight post-install script** (not a full skill). Runs after any install method. Feeds future security scanners when they arrive. |
+| **`.source.yml` provenance stamping** | **Retain as lightweight post-install script.** Runs after any install method. Feeds future security scanners when they arrive. |
 | **No-Node fallback** | Document manual `git clone` + symlink. Lightweight docs, not custom tooling. |
 | **Gap-filling** | Track [#337](https://github.com/vercel-labs/skills/issues/337). Consider contributing a `--from-lock` feature upstream. Use thin scripts (Makefile targets, post-install hooks) for multi-project sync. |
 
@@ -124,7 +113,7 @@ This means two concerns remain separate:
 
 ### Gate evaluation
 
-1. **Feature gap analysis:** Complete. `npx skills` covers installation well. Gaps are in lifecycle management (project updates, sync, scanning) — addressable with thin scripts and upstream contributions.
+1. **Feature gap analysis:** Complete. `npx skills` covers installation well. Gaps are in lifecycle management (project updates, sync, scanning) — addressable with thin scripts and upstream contributions, not custom infrastructure.
 2. **Non-Node path:** Verified — manual clone + symlink works. Documented, not automated with custom tooling.
 3. **Clear recommendation:** Scenario 1 (Replace). Adopt ecosystem tooling, fill gaps with lightweight scripts, don't maintain a competing installer.
 
@@ -135,4 +124,4 @@ This means two concerns remain separate:
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Planned | 2026-03-01 | b7245e8 | Initial creation |
-| Active | 2026-03-01 | b7245e8 | Investigation with findings |
+| Active | 2026-03-01 | b7245e8 | Investigation |

@@ -5,9 +5,9 @@ status: Draft
 author: cristos
 created: 2026-03-01
 last-updated: 2026-03-01
-parent-vision: TBD
+parent-vision: VISION-001
 personas:
-  - "Solo Developer (TBD — no PERSONA artifact yet)"
+  - "PERSONA-001 Solo Framework Developer"
 related:
   - "SPIKE-002 npx Skills vs Remote Skill Manager"
   - "EPIC-001 Skills Ecosystem Zero-Effort Distribution"
@@ -17,7 +17,7 @@ related:
 
 ## Persona
 
-**Solo Developer** — maintains an agents-standalone framework with shared skills. Publishes skills from a monorepo (subtree-split to a `L3-agents` distribution branch). Consumes third-party skills into multiple personal projects. Uses Claude Code primarily, sometimes Gemini CLI or Cursor. Has Node.js available. Not building infrastructure — wants to ride ecosystem tooling and fill gaps.
+**[PERSONA-001 Solo Framework Developer](../../persona/(PERSONA-001)-Solo-Framework-Developer/(PERSONA-001)-Solo-Framework-Developer.md)** — the Pragmatic Tinkerer. Maintains an agents-standalone framework with shared skills. Publishes skills from a monorepo (subtree-split to a `L3-agents` distribution branch). Consumes third-party skills into multiple personal projects. Uses Claude Code primarily, sometimes Gemini CLI or Cursor. Has Node.js available. Not building infrastructure — wants to ride ecosystem tooling and fill gaps.
 
 ## Goal
 

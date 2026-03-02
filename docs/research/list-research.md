@@ -11,11 +11,10 @@
 
 | Artifact | Date | Commit | Notes |
 |---|---|---|---|
-| [SPIKE-002-npx-Skills-vs-Remote-Skill-Manager](./Active/SPIKE-002-npx-Skills-vs-Remote-Skill-Manager/SPIKE-002-npx-Skills-vs-Remote-Skill-Manager.md) | 2026-03-01 | b7245e8 | Investigating: coexist with role clarity |
-| [SPIKE-003-Plugin-Marketplace-vs-Update-Agents-Core](./Active/SPIKE-003-Plugin-Marketplace-vs-Update-Agents-Core/SPIKE-003-Plugin-Marketplace-vs-Update-Agents-Core.md) | 2026-03-01 | b7245e8 | Investigating: plugin for skills, git-merge for scaffolding |
+| [SPIKE-002-npx-Skills-vs-Remote-Skill-Manager](./Active/SPIKE-002-npx-Skills-vs-Remote-Skill-Manager/SPIKE-002-npx-Skills-vs-Remote-Skill-Manager.md) | 2026-03-01 | b7245e8 | Gate PASS — adopt npx skills, deprecate remote-skill-manager as installer |
 
 ## Complete
 
 | Artifact | Date | Commit | Notes |
 |---|---|---|---|
-| _None_ | - | - | - |
+| [SPIKE-003-Plugin-Marketplace-vs-Update-Agents-Core](./Complete/SPIKE-003-Plugin-Marketplace-vs-Update-Agents-Core/SPIKE-003-Plugin-Marketplace-vs-Update-Agents-Core.md) | 2026-03-01 | d4ed11a | Gate PASS — reject plugins; retain update-agents-core for scaffolding |

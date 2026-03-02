@@ -1,11 +1,11 @@
 ---
 title: "EPIC-002 Claude Code Plugin Marketplace"
 artifact: EPIC-002
-status: Proposed
+status: Abandoned
 author: cristos
 created: 2026-03-01
 last-updated: 2026-03-01
-parent-vision: TBD
+parent-vision: VISION-001
 success-criteria:
   - "`/plugin marketplace add cristoslc/LLM-personal-agent-patterns` (targeting the `L3-agents` branch) registers the marketplace in Claude Code"
   - "All active skills are installable via `/plugin install` with correct namespacing"
@@ -56,3 +56,4 @@ _None yet. To be created after SPIKE-003 findings._
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Proposed | 2026-03-01 | b7245e8 | Initial creation |
+| Abandoned | 2026-03-01 | d4ed11a | Rejected per SPIKE-003 — vendor lock-in to Claude Code violates vendor-agnosticism principle |

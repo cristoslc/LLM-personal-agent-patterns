@@ -5,7 +5,7 @@ status: Proposed
 author: cristos
 created: 2026-03-01
 last-updated: 2026-03-01
-parent-vision: TBD
+parent-vision: VISION-001
 success-criteria:
   - "`npx skills add cristoslc/LLM-personal-agent-patterns` (targeting the `L3-agents` branch) installs all active skills into any supported agent"
   - "Skills appear on skills.sh with correct names and descriptions"
