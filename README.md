@@ -7,17 +7,30 @@ Cross-CLI agent scaffolding (`.agents/` directory, skills, setup verification) t
 
 ### Install
 
-From your project root:
+**Option A — npx skills** (recommended if you have Node.js):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/cristoslc/LLM-personal-agent-patterns/main/L3-agents-standalone/import-agents-standalone.sh | bash
+npx skills add https://github.com/cristoslc/LLM-personal-agent-patterns
 ```
 
-This adds an `agents-upstream` remote, squash-merges the scaffolding, and stages the files. Review with `git diff --cached --stat`, then commit.
+**Option B — git clone:**
+
+```bash
+git clone --depth 1 https://github.com/cristoslc/LLM-personal-agent-patterns.git /tmp/agents-scaffold
+cp -r /tmp/agents-scaffold/L3-agents-standalone/.agents .agents
+cp /tmp/agents-scaffold/L3-agents-standalone/AGENTS.md AGENTS.md
+cp /tmp/agents-scaffold/L3-agents-standalone/CLAUDE.md CLAUDE.md
+rm -rf /tmp/agents-scaffold
+```
+
+Review the copied files and commit.
 
 ### Update
 
+Use the `update-agents-core` skill, or manually:
+
 ```bash
-git fetch agents-upstream l3-standalone
-git merge agents-upstream/l3-standalone --squash
+git remote add agents-upstream https://github.com/cristoslc/LLM-personal-agent-patterns.git  # first time only
+git fetch --depth=1 agents-upstream l3-standalone
+git merge agents-upstream/l3-standalone --allow-unrelated-histories --squash
 ```
