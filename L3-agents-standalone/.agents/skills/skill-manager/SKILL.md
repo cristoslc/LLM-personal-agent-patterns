@@ -18,6 +18,7 @@ Full-lifecycle skill management for agent skills per ADR-002 and ADR-003. Wraps 
 
 | Operation | Command |
 |---|---|
+| Discover skills | `npx skills find <query>` or GitHub/skills.sh search |
 | Install a skill | `scripts/install.sh <repo-url> <skill-path> [ref] [target-dir]` |
 | Audit a skill | `scripts/audit.sh <skill-dir>` |
 | Fetch (low-level) | `scripts/fetch-remote-skill.sh <repo-url> <skill-path> [ref] [target-dir]` |
@@ -50,6 +51,48 @@ sha256(tar of skill files, excluding .source.yml) == .source.yml → integrity.d
 ```
 
 Drift means either upstream changed (re-fetch to update) or the local copy was modified (document customizations or fork to local-only by removing `.source.yml`).
+
+## Discovery
+
+### Ecosystem search (npx skills)
+
+When Node.js is available:
+
+```bash
+npx skills find "code review"
+```
+
+This queries the skills.sh index and returns matching skills with names, descriptions, and install commands.
+
+### Skills.sh web search
+
+Browse the skills directory at `https://skills.sh`. Search by category, keyword, or browse featured skills. Each listing includes the `npx skills add` command.
+
+### GitHub search fallback
+
+When ecosystem tooling is unavailable, search GitHub directly:
+
+```bash
+# Search for repos containing SKILL.md (Agent Skills convention)
+# GitHub web: search for "path:.agents/skills SKILL.md" + your query
+```
+
+Look for repositories that follow the Agent Skills convention (`.agents/skills/*/SKILL.md`).
+
+### Project-context recommendations
+
+When helping a user find relevant skills, examine their project for context:
+
+1. **Check AGENTS.md** — what skills are already referenced in routing rules?
+2. **List installed skills** — `ls .agents/skills/` or `.claude/skills/`
+3. **Identify gaps** — compare installed capabilities against common needs:
+   - Code review / PR review
+   - Testing and test generation
+   - Documentation generation
+   - Security scanning
+   - Deployment and CI/CD
+   - Database management
+4. **Suggest based on tech stack** — examine `package.json`, `Cargo.toml`, `go.mod`, etc. to recommend stack-specific skills
 
 ## Installation
 
