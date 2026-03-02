@@ -35,7 +35,9 @@ Ride the Agent Skills ecosystem for skill distribution rather than maintaining c
 
 ## Child Specs
 
-_To be created after SPIKE-002 is finalized._
+- [STORY-001](../../story/(STORY-001)-Validate-SKILL-md-Ecosystem-Compliance.md) — Validate SKILL.md Ecosystem Compliance
+- [STORY-002](../../story/(STORY-002)-Verify-npx-Skills-Add-End-to-End.md) — Verify npx Skills Add End-to-End
+- [STORY-003](../../story/(STORY-003)-Verify-Non-Node-Installation-Path.md) — Verify Non-Node.js Installation Path
 
 ## Key Dependencies
 
