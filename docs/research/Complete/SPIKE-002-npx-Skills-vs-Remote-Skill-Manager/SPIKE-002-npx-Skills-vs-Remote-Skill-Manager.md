@@ -1,7 +1,7 @@
 ---
 title: "SPIKE-002 npx Skills vs Remote Skill Manager"
 artifact: SPIKE-002
-status: Active
+status: Complete
 author: cristos
 created: 2026-03-01
 last-updated: 2026-03-01
@@ -278,3 +278,4 @@ The wrapped skill becomes the single entry point for skill installation. It dele
 |-------|------|--------|-------|
 | Planned | 2026-03-01 | b7245e8 | Initial creation |
 | Active | 2026-03-01 | b7245e8 | Investigation |
+| Complete | 2026-03-01 | e48dbba | Gate PASS — Scenario 2 (Wrap) recommended |

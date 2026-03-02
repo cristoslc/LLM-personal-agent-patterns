@@ -1,7 +1,7 @@
 ---
 title: "SPIKE-004 Remote Skill Repo Distribution Path"
 artifact: SPIKE-004
-status: Planned
+status: Abandoned
 author: cristos
 created: 2026-03-01
 last-updated: 2026-03-01
@@ -70,3 +70,4 @@ _To be populated during Active phase._
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Planned | 2026-03-01 | b7245e8 | Initial creation |
+| Abandoned | 2026-03-01 | e48dbba | Questions answered by SPIKE-002, SPIKE-003, SPIKE-005. Remaining question (architecture-reference-repo SKILL.md) belongs in EPIC-001 scope. |

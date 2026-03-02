@@ -43,7 +43,9 @@ _To be created._
 
 ## Key Dependencies
 
-- **SPIKE-002** (npx Skills vs Remote Skill Manager): Wrap recommendation provides the architecture — `skill-manager` wraps `npx skills` with provenance overlay and POSIX fallback.
+- **SPIKE-002** (npx Skills vs Remote Skill Manager) — **Complete**: Wrap recommendation provides the architecture — `skill-manager` wraps `npx skills` with provenance overlay and POSIX fallback.
+- **SPIKE-005** (Existing Skill Lifecycle Tools) — **Complete**: No full-lifecycle skill exists in the ecosystem. Build `skill-manager`, borrowing composable patterns (install-audit-rollback, rules-based scanning, diff-scan on update).
+- **ADR-003** (Skill Manager Wraps npx Skills with Provenance Overlay) — **Adopted**: Records the wrap + borrow-patterns decision.
 - **JOURNEY-001** (Skill Installation Across Projects): Pain points at scores 1-2 define the gaps this Epic must address.
 - **ADR-002** (Remote Skills Reference Pattern): `.source.yml` provenance pattern remains the provenance layer.
 - **EPIC-001** (Skills Ecosystem Zero-Effort Distribution): Complementary — EPIC-001 is publisher-side (make skills installable), EPIC-003 is consumer-side (manage installed skills).
