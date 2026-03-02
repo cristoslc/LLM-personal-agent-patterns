@@ -64,57 +64,69 @@ If no scenario cleanly resolves the trade-offs, adopt **Scenario 3 (Coexist)** a
 
 ## Findings
 
-### Feature gap analysis
+### Reframe: the primary problem is skill installation
+
+The original framing positioned `remote-skill-manager` and `npx skills` as tools for different audiences (consumers vs operators). That was wrong. The primary problem is **making skill installation easy for consumers** — preferably using ecosystem tooling with committed resources behind it, not custom infrastructure. Provenance is secondary and can be layered on later as scanning tools mature.
+
+`npx skills` (Vercel skills.sh) has traction: 69k+ skills, 2M+ CLI installs, backed by Vercel with active development, and adopted across 40+ agents. It solves the installation problem. The question is what gaps remain.
+
+### Feature comparison
 
 | Capability | `npx skills` | `remote-skill-manager` |
 |---|---|---|
 | Install from GitHub | `npx skills add owner/repo@ref` | `fetch-remote-skill.sh <url> <path> [ref]` |
 | Branch/tag/SHA pinning | `@ref` syntax; tracked in lock file | Positional `ref` argument; tracked in `.source.yml` |
-| Provenance manifest | Centralized `skills-lock.json` with source, ref, `skillFolderHash` | Per-skill `.source.yml` with full 40-char commit SHA, integrity digest |
-| Drift detection | Compares `skillFolderHash` against GitHub tree SHA | `sha256(tar excluding .source.yml) == .source.yml digest` |
-| Integrity hash | GitHub tree SHA (content-addressable but opaque) | sha256 of deterministic tar archive (auditable) |
-| Update mechanism | `npx skills update` (global only; project-scoped pending [#337](https://github.com/vercel-labs/skills/issues/337)) | Re-run fetch script (idempotent, any scope) |
 | Multi-agent routing | Installs to correct location per agent (40+ agents) | Targets `.agents/skills/` only |
 | Selective install | `--skill` flag for specific skills | Targets specific `<skill-path>` by design |
 | Ecosystem discoverability | Automatic via skills.sh install telemetry | None (repo-to-repo only) |
+| Project-scoped install | Yes (`.claude/skills/`, `skills-lock.json`) | Yes (`.agents/skills/`, `.source.yml`) |
+| Project-scoped update | **Broken** — [#337](https://github.com/vercel-labs/skills/issues/337) open | Re-run fetch script (idempotent) |
+| Lockfile-based install | **Missing** — no `npx skills install` from lockfile | N/A |
+| Provenance manifest | Centralized `skills-lock.json` (source, ref, hash) | Per-skill `.source.yml` (full SHA, integrity digest) |
+| Drift detection | Hash comparison possible but no CLI command | Explicit workflow via tar hash comparison |
+| Security scanning | **None** | **None** |
 | Runtime dependency | Node.js (npx) | POSIX only (git, tar, sha256sum) |
-| Lock file location | `~/.agents/.skill-lock.json` (global) / `skills-lock.json` (project) | `.source.yml` alongside each skill |
 
-### Key observations
+### `npx skills` gaps (see JOURNEY-001 for full experience map)
 
-1. **They solve different problems.** `npx skills` is a consumer-facing distribution tool (install, discover, update across agents). `remote-skill-manager` is an operator-facing provenance tool (track where skills came from, detect unauthorized modifications, audit integrity).
+1. **Project-scoped updates broken** (score 1) — `npx skills update` only works for global installs. Workaround: re-run `npx skills add`. Issue #337 is the single highest-impact fix to track.
+2. **No declarative skill manifest** (score 2) — `skills-lock.json` exists but can't be used as input. No `npx skills install --from-lock` equivalent to `npm install`.
+3. **Skills drift silently across projects** (score 2) — no cross-project awareness or sync command.
+4. **No drift detection CLI** (score 2) — hash data in lock file but no `npx skills check --project` command.
+5. **No security scanning** (score 1) — industry-wide gap, not specific to `npx skills`.
 
-2. **Provenance gap is real but narrowing.** `npx skills` tracks source + ref + hash in a centralized lock file, which covers 80% of what `.source.yml` provides. The remaining 20% — per-skill manifest, full commit SHA (not just ref), deterministic tar-based integrity, and explicit drift detection workflow — matters for auditable environments but not for most consumers.
+### Scope boundary: skills vs scaffolding
 
-3. **The Node.js requirement is a real constraint.** The agents-standalone framework targets environments that may not have Node.js. POSIX-only operation is a design principle worth preserving as a fallback.
+`npx skills` installs SKILL.md files into agent-specific directories. It does **not** touch AGENTS.md or any project-level scaffolding. Agents auto-discover installed skills without AGENTS.md routing entries.
 
-4. **Project-scoped updates are broken in `npx skills`.** Issue #337 is open — `npx skills update` only works for globally installed skills. This is a significant gap since project-scoped installation is the natural fit for team repos.
+This means two concerns remain separate:
+- **Skill installation** → `npx skills` (this spike)
+- **Framework scaffolding** (AGENTS.md, `.agents/` structure, artifact types, lifecycle rules) → `update-agents-core` git-merge workflow (SPIKE-003 scope)
 
-5. **Wrapping is fragile.** `npx skills` is a young CLI (v1.x). Its flags and behavior are still evolving. Building a wrapper that shells out to `npx skills` creates coupling to an unstable interface.
+### Recommendation: Scenario 1 (Replace) — adopt `npx skills`, deprecate `remote-skill-manager` as installer
 
-### Recommendation: Scenario 3 (Coexist) with role clarity
+**Adopt `npx skills` as the primary skill installation mechanism. Don't maintain a competing project.**
 
-**Do not replace or wrap. Keep both paths independent with clear guidance on when to use which.**
+| What | Action |
+|---|---|
+| **Skill installation** | `npx skills add owner/repo@L3-agents` — ecosystem path, 40+ agents |
+| **`remote-skill-manager` fetch function** | **Deprecate.** `npx skills` does this better with multi-agent routing and ecosystem discoverability. |
+| **`.source.yml` provenance stamping** | **Retain as lightweight post-install script** (not a full skill). Runs after any install method. Feeds future security scanners when they arrive. |
+| **No-Node fallback** | Document manual `git clone` + symlink. Lightweight docs, not custom tooling. |
+| **Gap-filling** | Track [#337](https://github.com/vercel-labs/skills/issues/337). Consider contributing a `--from-lock` feature upstream. Use thin scripts (Makefile targets, post-install hooks) for multi-project sync. |
 
-| Audience | Recommended path | Why |
-|---|---|---|
-| **Consumers** installing skills into their projects | `npx skills add owner/repo@L3-agents` | Broadest agent support (40+), ecosystem discoverability, familiar CLI |
-| **Operators / auditors** in provenance-sensitive environments | `remote-skill-manager` fetch script | Per-skill `.source.yml`, deterministic integrity hashing, POSIX-only, no external CLI dependency |
-| **Users without Node.js** | `remote-skill-manager` fetch script or manual clone + symlink | Only viable automated path without Node |
-
-**What changes:**
-- `npx skills` becomes the **documented default** install path for EPIC-001 (Tier 1)
-- `remote-skill-manager` is repositioned from "the skill installer" to "the provenance/audit tool" — its description and docs should reflect this
-- Document the manual clone + symlink path as the minimal fallback for no-tooling environments
-- No code changes to either tool needed right now
-
-**Future consolidation trigger:** If the Agent Skills spec or `npx skills` adds per-skill provenance manifests and integrity verification, `remote-skill-manager` becomes redundant for its provenance role and can be deprecated. Monitor skills.sh roadmap.
+**What changes in the repo:**
+- `remote-skill-manager` skill moves to `skills-drafts/` (deprecated as installer)
+- `fetch-remote-skill.sh` refactored into a standalone provenance-stamping script (strips the fetch/clone logic, keeps the `.source.yml` generation)
+- ADR-002 remains Adopted — `.source.yml` pattern is still valid as a provenance overlay, just no longer coupled to installation
+- EPIC-001 implementation uses `npx skills` as the documented install path
+- Document the manual clone + symlink path as the no-Node alternative
 
 ### Gate evaluation
 
-1. **Feature gap analysis:** Complete (table above). Provenance and POSIX-only operation are the meaningful gaps.
-2. **Non-Node path:** Verified — `remote-skill-manager` and manual clone/symlink both work without Node.js.
-3. **Clear recommendation:** Scenario 3 (Coexist) with role clarity. Not "it depends."
+1. **Feature gap analysis:** Complete. `npx skills` covers installation well. Gaps are in lifecycle management (project updates, sync, scanning) — addressable with thin scripts and upstream contributions.
+2. **Non-Node path:** Verified — manual clone + symlink works. Documented, not automated with custom tooling.
+3. **Clear recommendation:** Scenario 1 (Replace). Adopt ecosystem tooling, fill gaps with lightweight scripts, don't maintain a competing installer.
 
 **Gate: PASS**
 

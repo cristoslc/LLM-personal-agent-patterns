@@ -81,91 +81,65 @@ If no scenario cleanly resolves the scope boundary between skills and scaffoldin
 
 ## Findings
 
-### Plugin scope boundary (critical finding)
+### Decisive constraint: vendor-agnosticism
 
-The Claude Code plugin mechanism **cannot modify files outside the plugin cache**. Specifically:
+The Claude Code plugin marketplace is Claude Code-specific. Skills distributed as plugins are only installable via `/plugin` in Claude Code — users on Gemini CLI, Cursor, Codex, or any other agent get nothing. This violates the framework's vendor-agnostic principle.
 
-| File/directory | Plugin can manage? | Why |
+`npx skills` (SPIKE-002 recommendation) supports 40+ agents from a single installation mechanism. There is no benefit to maintaining a parallel Claude Code-only distribution channel.
+
+**Plugins are rejected as a distribution pathway.**
+
+### Prior investigation (retained for reference)
+
+The plugin mechanism was investigated before the vendor-agnosticism constraint was applied. Key technical findings:
+
+- Plugins **cannot modify files outside their cache** (`~/.claude/plugins/cache/`). AGENTS.md and `.agents/` are untouchable.
+- Plugin auto-update is **full overwrite** with no merge conflict resolution.
+- Branch specification via GitHub shorthand (`owner/repo`) is **not supported** ([#23551](https://github.com/anthropics/claude-code/issues/23551)).
+- Plugin skills are namespaced (`/plugin:skill`) — different invocation model than standalone skills.
+
+These technical limitations would have been additional blockers even without the vendor-agnosticism constraint.
+
+### EPIC-002 disposition
+
+**EPIC-002 (Claude Code Plugin Marketplace) should be Abandoned.** The vendor-agnostic path (`npx skills` via EPIC-001) covers skill distribution. A Claude Code-specific channel adds complexity without proportional value for a solo developer.
+
+### Scope boundary: skills vs scaffolding (confirmed)
+
+SPIKE-002 identified that `npx skills` handles skill installation but does not touch AGENTS.md or `.agents/` scaffolding. This spike confirms the boundary:
+
+| Content | Mechanism | Why |
 |---|---|---|
-| `skills/` (in plugin) | Yes | Core plugin content, auto-discovered and namespaced |
-| `commands/`, `agents/`, `hooks/` (in plugin) | Yes | Standard plugin components |
-| `AGENTS.md` (project root) | **No** | Plugins are cached in `~/.claude/plugins/cache/`, not merged into the project tree |
-| `.agents/` directory (project) | **No** | Project-level scaffolding is outside plugin scope |
-| `.claude/settings.json` | Partially — only `enabledPlugins` and `extraKnownMarketplaces` keys | Modified at install time, not by plugin content |
+| **Skills** (SKILL.md + scripts + references) | `npx skills add` | Cross-agent, ecosystem, vendor-agnostic |
+| **Scaffolding** (AGENTS.md, `.agents/` structure, templates, README) | `update-agents-core` git-merge | Requires merge conflict resolution on consumer-customized files |
 
-This is the decisive finding: **plugins distribute reusable components; they do not manage project configuration.** The AGENTS.md merge problem is inherently a git-merge task.
+**`update-agents-core` is not deprecated.** Skills and scaffolding have different update semantics:
+- Skills: **overwrite** is fine (upstream version replaces local)
+- Scaffolding: **merge** is required (upstream structure + local additions must coexist)
 
-### Sub-question answers
+`npx skills` is an overwrite tool. `update-agents-core` is a merge tool. Different tools for different problems. Agents auto-discover installed skills without AGENTS.md routing entries, so these concerns are fully decoupled.
 
-**Does plugin auto-update handle the AGENTS.md merge problem?**
-No. Plugin auto-update is a full overwrite of the cached plugin directory. It has no merge conflict resolution. AGENTS.md requires reconciliation (upstream structure + local additions), which is a git-merge workflow.
+### Recommendation: Reject plugins. Retain `update-agents-core` for scaffolding.
 
-**Should AGENTS.md and scaffolding be part of the plugin?**
-No. Even if included, they'd be cached in the plugin directory, not placed at the project root. Plugin components are namespaced (`/plugin-name:skill-name`) and isolated. Project-level configuration must live in the project tree.
-
-**Can hooks.json or settings.json replicate update-agents-core?**
-No. `hooks.json` defines event handlers (pre-tool-use, post-tool-use). `settings.json` currently only supports the `agent` key for default agent mode. Neither can perform git operations or file modifications outside the plugin directory.
-
-### Plugin marketplace capabilities for skill distribution
-
-| Capability | Plugin marketplace | Comparison to `remote-skill-manager` |
-|---|---|---|
-| Install skills | `/plugin install name@marketplace` | Equivalent; richer UI |
-| Auto-update | On Claude Code startup (configurable) | Not available — manual re-fetch only |
-| Versioning | Semantic versioning in `plugin.json` + release channels via ref/SHA | Git ref pinning only |
-| Multi-skill bundles | Yes — `skills/` directory with multiple SKILL.md | Fetches one skill at a time |
-| Branch specification | **Not supported** for GitHub shorthand (`owner/repo`); only via full Git URL + `#ref` ([feature request #23551](https://github.com/anthropics/claude-code/issues/23551)) | Full ref support |
-| Provenance | None | `.source.yml` with integrity hash |
-| Agent support | Claude Code only | Any environment with POSIX tools |
-| Skill namespacing | `/plugin-name:skill-name` (avoids conflicts with project skills) | Installed directly as project skills (may conflict) |
-
-### Branch constraint (significant for EPIC-002)
-
-Claude Code's `/plugin marketplace add owner/repo` syntax **does not support branch specification**. It always uses the repo's default branch. Since the `L3-agents` branch is the distribution branch (not `main`), consumers would need to either:
-
-1. Use full Git URL: `/plugin marketplace add https://github.com/cristoslc/LLM-personal-agent-patterns.git#L3-agents`
-2. Wait for feature request #23551 to land (branch spec in GitHub shorthand)
-3. Make `L3-agents` the default branch on GitHub (breaking change for monorepo users)
-4. Create a separate marketplace repo that points to the `L3-agents` branch via source ref
-
-Option 4 is the cleanest workaround: a lightweight `marketplace.json` in a separate repo (or on the `L3-agents` branch itself) with explicit ref pinning.
-
-### Recommendation: Scenario 2 (Plugin for skills, git-merge for scaffolding)
-
-**Skills and scaffolding have a hard scope boundary. Distribute each through its natural mechanism.**
-
-| Content type | Distribution mechanism | Update mechanism |
-|---|---|---|
-| **Skills** (SKILL.md + scripts + references) | Claude Code plugin (EPIC-002) + `npx skills` (EPIC-001) | Plugin auto-update (Claude Code) / `npx skills update` (others) |
-| **Scaffolding** (AGENTS.md, `.agents/README.md`, templates, skill-drafts structure) | `update-agents-core` git-merge workflow | Manual invocation of `update-agents-core` skill |
-| **Individual third-party skills** | `remote-skill-manager` (provenance path) or `npx skills` (ecosystem path) per SPIKE-002 | Re-fetch (remote-skill-manager) / `npx skills update` |
-
-**What changes:**
-- `remote-skill-manager` is **not deprecated** — it retains its provenance/audit role (per SPIKE-002 finding)
-- `update-agents-core` is **not deprecated** — it retains its scaffolding merge role (plugins cannot do this)
-- Plugin marketplace is **additive** — a new distribution channel for skills specifically, coexisting with existing tools
-- Scenario 1 (Replace both) is ruled out: plugins can't manage scaffolding
-- Scenario 3 (Refactor to use /plugin internally) is ruled out: unnecessary coupling; different scopes don't benefit from sharing a mechanism
-- Scenario 4 (Coexist independently) is close but less clear — Scenario 2 provides the explicit scope boundary that avoids confusion
-
-**Architecture after implementation:**
+**Distribution architecture:**
 
 ```
-Distribution channels (consumer-facing):
-├── npx skills add owner/repo@L3-agents     → installs skills (40+ agents)
-├── /plugin marketplace add ...              → installs skills (Claude Code, auto-updates)
-└── update-agents-core                       → merges scaffolding (any git env)
+Skill installation (vendor-agnostic):
+└── npx skills add owner/repo@L3-agents     → SKILL.md into agent-specific dirs
 
-Provenance layer (operator-facing, optional):
-└── remote-skill-manager                     → .source.yml stamps on any installed skill
+Framework scaffolding updates (git-native):
+└── update-agents-core                       → AGENTS.md + .agents/ via git-merge
+
+Provenance overlay (optional, future):
+└── .source.yml stamping script              → post-install hook for audit trail
 ```
 
 ### Gate evaluation
 
-1. **Scope boundary:** Defined. Skills → plugin/npx. Scaffolding (AGENTS.md, .agents/ structure) → git-merge.
-2. **AGENTS.md update path:** Stays with `update-agents-core` git-merge workflow. Plugins cannot manage it.
-3. **Non-Claude-Code path:** Preserved. `npx skills` (40+ agents) + `update-agents-core` (any git env) + manual clone/symlink.
-4. **Clear recommendation:** Scenario 2 (Plugin for skills, git-merge for scaffolding).
+1. **Scope boundary:** Defined. Skills → `npx skills`. Scaffolding → `update-agents-core` git-merge. Different update semantics (overwrite vs merge).
+2. **AGENTS.md update path:** Stays with `update-agents-core`. `npx skills` does not touch it. Agents auto-discover skills without AGENTS.md routing.
+3. **Non-Claude-Code path:** Preserved by rejecting the Claude Code-specific plugin pathway entirely.
+4. **Clear recommendation:** Reject plugins. `npx skills` for skills (vendor-agnostic). `update-agents-core` for scaffolding (git-native).
 
 **Gate: PASS**
 
