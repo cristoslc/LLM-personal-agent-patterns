@@ -11,13 +11,13 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| [STORY-001](./(STORY-001)-Validate-SKILL-md-Ecosystem-Compliance.md) | Validate SKILL.md Ecosystem Compliance | 2026-03-02 | 7729fab | SKILL.md spec validation |
+| _None_ | - | - | - | - |
 
 ## Implemented
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| _None_ | - | - | - | - |
+| [STORY-001](./(STORY-001)-Validate-SKILL-md-Ecosystem-Compliance.md) | Validate SKILL.md Ecosystem Compliance | 2026-03-02 | df1a683 | All 4 SKILL.md files pass spec validation |
 
 ## Abandoned
 

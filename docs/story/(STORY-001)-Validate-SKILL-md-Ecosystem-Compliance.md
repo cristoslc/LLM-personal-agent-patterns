@@ -1,7 +1,7 @@
 ---
 title: "Validate SKILL.md Ecosystem Compliance"
 artifact: STORY-001
-status: Ready
+status: Implemented
 author: cristos
 created: 2026-03-02
 last-updated: 2026-03-02
@@ -25,3 +25,4 @@ related:
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Ready | 2026-03-02 | 7729fab | Initial creation — skipped Draft, ACs fully defined |
+| Implemented | 2026-03-02 | df1a683 | All 4 SKILL.md files pass spec validation; l3-standalone branch current |
