@@ -18,7 +18,9 @@ Full-lifecycle skill management for agent skills per ADR-002 and ADR-003. Wraps 
 
 | Operation | Command |
 |---|---|
-| Fetch a skill | `scripts/fetch-remote-skill.sh <repo-url> <skill-path> [ref] [target-dir]` |
+| Install a skill | `scripts/install.sh <repo-url> <skill-path> [ref] [target-dir]` |
+| Audit a skill | `scripts/audit.sh <skill-dir>` |
+| Fetch (low-level) | `scripts/fetch-remote-skill.sh <repo-url> <skill-path> [ref] [target-dir]` |
 | Check drift | Compare `integrity.digest` in `.source.yml` to a fresh hash of local files |
 | Update a skill | Re-run the fetch script — it overwrites and re-stamps |
 | Verify setup | `scripts/smoke-test.sh` |
@@ -49,7 +51,76 @@ sha256(tar of skill files, excluding .source.yml) == .source.yml → integrity.d
 
 Drift means either upstream changed (re-fetch to update) or the local copy was modified (document customizations or fork to local-only by removing `.source.yml`).
 
-## Fetching a skill
+## Installation
+
+### Install with safety gate
+
+Use `install.sh` for all skill installations. It wraps the fetch-and-stamp workflow with a post-install safety audit and automatic rollback on critical findings.
+
+```bash
+bash scripts/install.sh \
+  https://github.com/acme/shared-skills \
+  .agents/skills/code-review \
+  v2.1.0 \
+  ../../.agents/skills
+```
+
+**Backend selection:** When `npx` is available, `install.sh` attempts `npx skills add` first. If `npx` is unavailable or the command fails, it falls back to `fetch-remote-skill.sh` (POSIX path).
+
+**After install:**
+1. Stamps `.source.yml` provenance manifest
+2. Runs `audit.sh` on the installed skill
+3. If audit finds **critical** issues (exit 2): rolls back the installation
+4. If audit finds **warnings** (exit 1): skill installed, review recommended
+5. If audit is **clean** (exit 0): skill installed and ready
+
+**Exit codes:**
+- `0` — installed, audit clean
+- `1` — installed, audit warnings
+- `2` — rolled back due to critical audit findings
+
+### Optional: `--agent` flag
+
+When using the npx backend, pass `--agent <name>` to scope the installation:
+
+```bash
+bash scripts/install.sh \
+  https://github.com/acme/shared-skills \
+  .agents/skills/code-review \
+  v2.1.0 \
+  .agents/skills \
+  --agent claude
+```
+
+## Safety review
+
+### Automated audit
+
+Run `audit.sh` on any skill directory to scan for security patterns:
+
+```bash
+bash scripts/audit.sh .agents/skills/code-review
+```
+
+The audit checks for:
+
+| Category | Severity | What it detects |
+|---|---|---|
+| Exfiltration | Critical | `curl --data`, `wget --post`, outbound POST |
+| Env harvesting | Critical/Warning | `printenv`, references to KEY/TOKEN/SECRET vars |
+| Credential access | Critical | SSH keys, AWS creds, `.env`, service accounts |
+| Obfuscation | Critical/Warning | `base64 -d`, `eval $var` |
+| Reverse shells | Critical | `/dev/tcp`, netcat listeners, bash reverse shells |
+| Curl-pipe-shell | Critical | `curl ... \| bash`, `wget ... \| sh` |
+| Prompt injection | Warning | "ignore previous instructions", role hijacking |
+| Known malicious | Critical | `rm -rf /`, `chmod 777`, fifo+netcat |
+
+**Interpreting results:**
+- **Exit 0 (clean):** No findings. Skill is safe to activate.
+- **Exit 1 (warnings):** Review the flagged patterns. Most are false positives in legitimate skills. Check context before activating.
+- **Exit 2 (critical):** Do not activate. Review the findings file:line references. If using `install.sh`, the skill was already rolled back.
+
+## Fetching a skill (low-level)
 
 ### Prerequisites
 
@@ -153,5 +224,7 @@ The smoke test exercises acceptance criteria AC-1 through AC-5 from ADR-002. See
 |---|---|
 | `references/source-yml-schema.json` | JSON Schema for `.source.yml` validation |
 | `references/source-yml.template.j2` | Jinja2 template for `.source.yml` generation |
-| `scripts/fetch-remote-skill.sh` | Fetch-and-stamp automation script |
-| `scripts/smoke-test.sh` | End-to-end verification of the pattern |
+| `scripts/install.sh` | Install with safety-gated activation |
+| `scripts/audit.sh` | Security pattern scanner |
+| `scripts/fetch-remote-skill.sh` | Low-level fetch-and-stamp (POSIX fallback) |
+| `scripts/smoke-test.sh` | End-to-end verification |

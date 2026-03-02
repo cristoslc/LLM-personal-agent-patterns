@@ -1,7 +1,7 @@
 ---
 title: "Implement Install With Safety-Gated Activation"
 artifact: STORY-005
-status: Draft
+status: Implemented
 author: cristos
 created: 2026-03-02
 last-updated: 2026-03-02
@@ -28,3 +28,4 @@ related:
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Draft | 2026-03-02 | 21421b0 | Initial creation |
+| Implemented | 2026-03-02 | ee5ec0c | install.sh + audit.sh + smoke tests AC-6..AC-9 |
