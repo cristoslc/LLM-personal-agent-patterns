@@ -10,13 +10,13 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| [EPIC-001](./(EPIC-001)-Skills-Ecosystem-Zero-Effort-Distribution/(EPIC-001)-Skills-Ecosystem-Zero-Effort-Distribution.md) | Skills Ecosystem Zero-Effort Distribution | 2026-03-02 | 89c2fec | Publisher-side: make skills installable via ecosystem |
+| _None_ | - | - | - | - |
 
 ## Complete
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| _None_ | - | - | - | - |
+| [EPIC-001](./(EPIC-001)-Skills-Ecosystem-Zero-Effort-Distribution/(EPIC-001)-Skills-Ecosystem-Zero-Effort-Distribution.md) | Skills Ecosystem Zero-Effort Distribution | 2026-03-02 | f7226c2 | All 3 stories done; ecosystem distribution verified |
 
 ## Abandoned
 
