@@ -4,13 +4,13 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| [EPIC-003](./(EPIC-003)-Skill-Lifecycle-Manager/(EPIC-003)-Skill-Lifecycle-Manager.md) | Skill Lifecycle Manager | 2026-03-01 | e2769af | Consumer-side: discovery, safety, install, updates |
+| _None_ | - | - | - | - |
 
 ## Active
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| _None_ | - | - | - | - |
+| [EPIC-003](./(EPIC-003)-Skill-Lifecycle-Manager/(EPIC-003)-Skill-Lifecycle-Manager.md) | Skill Lifecycle Manager | 2026-03-02 | 21421b0 | 5 child stories created |
 
 ## Complete
 

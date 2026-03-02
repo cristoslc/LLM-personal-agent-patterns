@@ -4,13 +4,16 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| _None_ | - | - | - | - |
+| [STORY-005](./(STORY-005)-Implement-Install-With-Safety-Gated-Activation.md) | Implement Install With Safety-Gated Activation | 2026-03-02 | 21421b0 | EPIC-003 |
+| [STORY-006](./(STORY-006)-Implement-Project-Scoped-Updates.md) | Implement Project-Scoped Updates | 2026-03-02 | 21421b0 | EPIC-003 |
+| [STORY-007](./(STORY-007)-Implement-Drift-Detection.md) | Implement Drift Detection | 2026-03-02 | 21421b0 | EPIC-003 |
+| [STORY-008](./(STORY-008)-Add-Discovery-Procedures.md) | Add Discovery Procedures | 2026-03-02 | 21421b0 | EPIC-003 |
 
 ## Ready
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| _None_ | - | - | - | - |
+| [STORY-004](./(STORY-004)-Scaffold-Skill-Manager-From-Remote-Skill-Manager.md) | Scaffold Skill Manager From Remote Skill Manager | 2026-03-02 | 21421b0 | EPIC-003 |
 
 ## Implemented
 

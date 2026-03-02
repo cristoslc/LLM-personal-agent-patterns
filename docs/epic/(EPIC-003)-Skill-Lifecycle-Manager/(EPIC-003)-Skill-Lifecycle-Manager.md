@@ -1,10 +1,10 @@
 ---
 title: "EPIC-003 Skill Lifecycle Manager"
 artifact: EPIC-003
-status: Proposed
+status: Active
 author: cristos
 created: 2026-03-01
-last-updated: 2026-03-01
+last-updated: 2026-03-02
 parent-vision: VISION-001
 success-criteria:
   - "A single `skill-manager` skill covers discovery, safety review, installation, updates, and drift detection"
@@ -37,9 +37,13 @@ Evolve `remote-skill-manager` into `skill-manager` — a full-lifecycle skill ma
 - Building a skill registry or marketplace
 - Skill authoring or content changes
 
-## Child Specs
+## Child Stories
 
-_To be created._
+- [STORY-004](../../story/(STORY-004)-Scaffold-Skill-Manager-From-Remote-Skill-Manager.md) — Scaffold skill-manager from remote-skill-manager
+- [STORY-005](../../story/(STORY-005)-Implement-Install-With-Safety-Gated-Activation.md) — Implement install with safety-gated activation
+- [STORY-006](../../story/(STORY-006)-Implement-Project-Scoped-Updates.md) — Implement project-scoped updates
+- [STORY-007](../../story/(STORY-007)-Implement-Drift-Detection.md) — Implement drift detection
+- [STORY-008](../../story/(STORY-008)-Add-Discovery-Procedures.md) — Add discovery procedures
 
 ## Key Dependencies
 
@@ -55,3 +59,4 @@ _To be created._
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Proposed | 2026-03-01 | e2769af | Initial creation |
+| Active | 2026-03-02 | 21421b0 | 5 child stories created (STORY-004 through STORY-008) |
