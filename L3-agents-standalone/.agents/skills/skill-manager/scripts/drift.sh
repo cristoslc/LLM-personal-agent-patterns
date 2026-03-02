@@ -27,7 +27,7 @@ sha256_hash() {
 # --- Portable YAML field extractor (no yq dependency) ---
 yaml_field() {
   local file="$1" field="$2"
-  grep "  *${field}:" "$file" | head -1 | sed 's/.*: *"\{0,1\}\([^"]*\)"\{0,1\}/\1/' | tr -d ' '
+  grep "  *${field}:" "$file" | head -1 | sed "s/.*${field}: *//" | sed 's/^"\(.*\)"$/\1/' | tr -d ' '
 }
 
 # --- Check single skill ---
@@ -53,7 +53,7 @@ check_drift() {
   local parent_dir
   parent_dir="$(dirname "$skill_dir")"
   local fresh_digest
-  fresh_digest="$(tar cf - --exclude='.source.yml' -C "$parent_dir" "$skill_name" 2>/dev/null | sha256_hash)"
+  fresh_digest="$(cd "$parent_dir" && find "$skill_name" -type f ! -name '.source.yml' | LC_ALL=C sort | while IFS= read -r f; do printf '%s\n' "$f"; sha256_hash < "$f"; done | sha256_hash)"
 
   if [ "$recorded_digest" = "$fresh_digest" ]; then
     echo "  OK: $skill_name (in sync)"

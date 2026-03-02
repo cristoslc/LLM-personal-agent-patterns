@@ -37,7 +37,7 @@ fi
 # --- Portable YAML field extractor (no yq dependency) ---
 yaml_field() {
   local file="$1" field="$2"
-  grep "  *${field}:" "$file" | head -1 | sed 's/.*: *"\{0,1\}\([^"]*\)"\{0,1\}/\1/' | tr -d ' '
+  grep "  *${field}:" "$file" | head -1 | sed "s/.*${field}: *//" | sed 's/^"\(.*\)"$/\1/' | tr -d ' '
 }
 
 # --- Read coordinates from .source.yml ---

@@ -47,7 +47,7 @@ Local-only skills (authored in this repo) do NOT have `.source.yml`. Its absence
 A fetched skill is **in sync** when:
 
 ```
-sha256(tar of skill files, excluding .source.yml) == .source.yml → integrity.digest
+sha256(file paths + file content hashes, excluding .source.yml) == .source.yml → integrity.digest
 ```
 
 Drift means either upstream changed (re-fetch to update) or the local copy was modified (document customizations or fork to local-only by removing `.source.yml`).
@@ -274,13 +274,17 @@ The skill is now treated as locally-authored. Drift detection no longer applies.
 
 ## Verification
 
-Run the smoke test to validate the fetch-and-stamp workflow end-to-end:
+Run the smoke test to validate all operations end-to-end:
 
 ```bash
 bash scripts/smoke-test.sh
 ```
 
-The smoke test exercises acceptance criteria AC-1 through AC-5 from ADR-002. See `scripts/smoke-test.sh` for details.
+The smoke test exercises:
+- **AC-1..AC-5:** Fetch, provenance, field validation, integrity, idempotency (ADR-002)
+- **AC-6..AC-9:** Install via POSIX path, audit clean skill, audit detects bad patterns, rollback on critical (STORY-005)
+- **AC-10..AC-11:** Update with changes, update no-op (STORY-006)
+- **AC-12..AC-13:** Drift detection clean, drift detection modified (STORY-007)
 
 ## Skill references
 

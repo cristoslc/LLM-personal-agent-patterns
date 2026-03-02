@@ -1,10 +1,16 @@
 ---
 title: "EPIC-003 Skill Lifecycle Manager"
 artifact: EPIC-003
-status: Active
+status: Complete
 author: cristos
 created: 2026-03-01
 last-updated: 2026-03-02
+child-stories:
+  - STORY-004
+  - STORY-005
+  - STORY-006
+  - STORY-007
+  - STORY-008
 parent-vision: VISION-001
 success-criteria:
   - "A single `skill-manager` skill covers discovery, safety review, installation, updates, and drift detection"
@@ -60,3 +66,4 @@ Evolve `remote-skill-manager` into `skill-manager` — a full-lifecycle skill ma
 |-------|------|--------|-------|
 | Proposed | 2026-03-01 | e2769af | Initial creation |
 | Active | 2026-03-02 | 21421b0 | 5 child stories created (STORY-004 through STORY-008) |
+| Complete | 2026-03-02 | ad5d66e | All 5 stories implemented; 38/38 smoke tests pass |

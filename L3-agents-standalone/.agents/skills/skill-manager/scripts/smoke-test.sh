@@ -82,7 +82,7 @@ sha256_hash() {
 # --- Portable YAML field extractor (no yq dependency) ---
 yaml_field() {
   local file="$1" field="$2"
-  grep "  *${field}:" "$file" | head -1 | sed 's/.*: *"\{0,1\}\([^"]*\)"\{0,1\}/\1/' | tr -d ' '
+  grep "  *${field}:" "$file" | head -1 | sed "s/.*${field}: *//" | sed 's/^"\(.*\)"$/\1/' | tr -d ' '
 }
 
 echo "=== ADR-002 Smoke Test ==="
@@ -153,7 +153,7 @@ check "integrity.digest is 64 hex chars" test "$(printf '%s' "$digest_val" | gre
 echo ""
 echo "--- AC-4: Integrity digest verification ---"
 
-FRESH_DIGEST="$(tar cf - --exclude='.source.yml' -C "$TARGET_DIR" "$SKILL_NAME" 2>/dev/null | sha256_hash)"
+FRESH_DIGEST="$(cd "$TARGET_DIR" && find "$SKILL_NAME" -type f ! -name '.source.yml' | LC_ALL=C sort | while IFS= read -r f; do printf '%s\n' "$f"; sha256_hash < "$f"; done | sha256_hash)"
 check "fresh digest matches recorded ($FRESH_DIGEST)" test "$FRESH_DIGEST" = "$digest_val"
 
 # ============================================================
