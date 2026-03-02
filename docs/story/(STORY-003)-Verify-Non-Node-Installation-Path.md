@@ -1,7 +1,7 @@
 ---
 title: "Verify Non-Node.js Installation Path"
 artifact: STORY-003
-status: Draft
+status: Implemented
 author: cristos
 created: 2026-03-02
 last-updated: 2026-03-02
@@ -26,3 +26,4 @@ related:
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Draft | 2026-03-02 | 7729fab | Initial creation |
+| Implemented | 2026-03-02 | d8c1766 | All 4 ACs pass — clone, symlink, import script all work without Node.js |
