@@ -1,7 +1,7 @@
 ---
 title: "Implement Project-Scoped Updates"
 artifact: STORY-006
-status: Draft
+status: Implemented
 author: cristos
 created: 2026-03-02
 last-updated: 2026-03-02
@@ -26,3 +26,4 @@ related:
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Draft | 2026-03-02 | 21421b0 | Initial creation |
+| Implemented | 2026-03-02 | 5d8250f | update.sh + smoke tests AC-10..AC-11 |

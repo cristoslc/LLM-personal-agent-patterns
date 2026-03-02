@@ -2,7 +2,8 @@
 # smoke-test.sh — End-to-end verification of the skill-manager
 #
 # Exercises acceptance criteria AC-1 through AC-5 from ADR-002,
-# plus AC-6 through AC-9 from STORY-005 (install + audit).
+# plus AC-6 through AC-9 from STORY-005 (install + audit),
+# AC-10 through AC-11 from STORY-006 (update).
 # Uses THIS repository's spec-management skill as the fetch target
 # (self-referential test — no external dependency required).
 #
@@ -22,6 +23,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 FETCH_SCRIPT="$SCRIPT_DIR/fetch-remote-skill.sh"
 INSTALL_SCRIPT="$SCRIPT_DIR/install.sh"
 AUDIT_SCRIPT="$SCRIPT_DIR/audit.sh"
+UPDATE_SCRIPT="$SCRIPT_DIR/update.sh"
 
 # --- Configuration ---
 # Default: fetch from this repo's own origin
@@ -267,6 +269,39 @@ bash "$INSTALL_SCRIPT" "$BAD_REPO_DIR" ".agents/skills/bad-skill" HEAD "$ROLLBAC
 
 check "install exits 2 for critical findings" test "$ROLLBACK_EXIT" -eq 2
 check_not "bad skill directory removed after rollback" test -d "$ROLLBACK_TARGET/bad-skill/scripts"
+
+# ============================================================
+# AC-10: Update with changes detected
+# ============================================================
+echo ""
+echo "--- AC-10: Update reports changes ---"
+
+# The skill from AC-6 is already installed in $INSTALL_TARGET/$SKILL_NAME
+# Save old digest, then update
+OLD_UPDATE_DIGEST="$(yaml_field "$INSTALL_TARGET/$SKILL_NAME/.source.yml" "digest")"
+
+UPDATE_EXIT=0
+bash "$UPDATE_SCRIPT" "$INSTALL_TARGET/$SKILL_NAME" "$INSTALL_TARGET" 2>&1 || UPDATE_EXIT=$?
+
+check "update.sh exits 0 or 1 (not critical)" test "$UPDATE_EXIT" -lt 2
+check ".source.yml still present after update" test -f "$INSTALL_TARGET/$SKILL_NAME/.source.yml"
+check "SKILL.md still present after update" test -f "$INSTALL_TARGET/$SKILL_NAME/SKILL.md"
+
+# ============================================================
+# AC-11: Update no-op (already up to date)
+# ============================================================
+echo ""
+echo "--- AC-11: Update no-op ---"
+
+NOOP_DIGEST_BEFORE="$(yaml_field "$INSTALL_TARGET/$SKILL_NAME/.source.yml" "digest")"
+
+NOOP_EXIT=0
+bash "$UPDATE_SCRIPT" "$INSTALL_TARGET/$SKILL_NAME" "$INSTALL_TARGET" 2>&1 || NOOP_EXIT=$?
+
+NOOP_DIGEST_AFTER="$(yaml_field "$INSTALL_TARGET/$SKILL_NAME/.source.yml" "digest")"
+
+check "no-op update exits 0 or 1 (not critical)" test "$NOOP_EXIT" -lt 2
+check "digest unchanged after no-op update" test "$NOOP_DIGEST_BEFORE" = "$NOOP_DIGEST_AFTER"
 
 # ============================================================
 # Summary

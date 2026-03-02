@@ -22,7 +22,7 @@ Full-lifecycle skill management for agent skills per ADR-002 and ADR-003. Wraps 
 | Audit a skill | `scripts/audit.sh <skill-dir>` |
 | Fetch (low-level) | `scripts/fetch-remote-skill.sh <repo-url> <skill-path> [ref] [target-dir]` |
 | Check drift | Compare `integrity.digest` in `.source.yml` to a fresh hash of local files |
-| Update a skill | Re-run the fetch script — it overwrites and re-stamps |
+| Update a skill | `scripts/update.sh <skill-dir> [target-dir]` |
 | Verify setup | `scripts/smoke-test.sh` |
 
 ## Concepts
@@ -160,17 +160,26 @@ The audit checks for:
 | 3 | `ref` | No | `HEAD` | Branch, tag, or commit to fetch |
 | 4 | `target-dir` | No | `.agents/skills` | Local directory to install the skill into |
 
-## Updating a skill
+## Updates
 
-Re-run the fetch script with the same arguments. The script is idempotent:
-
-- Overwrites local skill files with the latest upstream version
-- Generates a fresh `.source.yml` with updated `fetched.at`, `source.commit`, and `integrity.digest`
-
-To update to a new version:
+Use `update.sh` to update skills using their `.source.yml` coordinates. This is the workaround for [npx skills update #337](https://github.com/vercel-labs/skills/issues/337) (project-scoped updates broken).
 
 ```bash
-bash scripts/fetch-remote-skill.sh \
+bash scripts/update.sh .agents/skills/code-review
+```
+
+The script:
+1. Reads `repository`, `ref`, and `path` from `.source.yml`
+2. Re-runs `install.sh` with the same coordinates (including safety audit)
+3. Compares old vs new integrity digest
+4. Reports "up to date" (digest unchanged) or "updated" (digest changed)
+
+**Exit codes** mirror `install.sh`: 0=clean, 1=warnings, 2=rolled back.
+
+To update to a different ref, edit `.source.yml` first or re-install directly:
+
+```bash
+bash scripts/install.sh \
   https://github.com/acme/shared-skills \
   .agents/skills/code-review \
   v3.0.0
@@ -226,5 +235,6 @@ The smoke test exercises acceptance criteria AC-1 through AC-5 from ADR-002. See
 | `references/source-yml.template.j2` | Jinja2 template for `.source.yml` generation |
 | `scripts/install.sh` | Install with safety-gated activation |
 | `scripts/audit.sh` | Security pattern scanner |
+| `scripts/update.sh` | Update using .source.yml coordinates |
 | `scripts/fetch-remote-skill.sh` | Low-level fetch-and-stamp (POSIX fallback) |
 | `scripts/smoke-test.sh` | End-to-end verification |
