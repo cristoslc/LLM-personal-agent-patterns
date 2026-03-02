@@ -1,7 +1,7 @@
 ---
 title: "Scaffold Skill Manager From Remote Skill Manager"
 artifact: STORY-004
-status: Ready
+status: Implemented
 author: cristos
 created: 2026-03-02
 last-updated: 2026-03-02
@@ -26,3 +26,4 @@ related:
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Ready | 2026-03-02 | 21421b0 | Initial creation — skipped Draft, ACs fully defined |
+| Implemented | 2026-03-02 | 7977e8e | git mv + frontmatter updated; 22/23 smoke-test pass (AC-4 pre-existing) |

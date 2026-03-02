@@ -1,18 +1,18 @@
 ---
-name: remote-skill-manager
-description: Fetch skills from remote Git repositories, generate `.source.yml` provenance manifests, detect drift, and update fetched skills. Use when installing shared skills from external repos, checking for upstream changes, or auditing skill provenance.
+name: skill-manager
+description: Full-lifecycle skill management — discover, install, audit, update, and detect drift for agent skills. Wraps `npx skills` when available, falls back to POSIX tooling. Use when installing shared skills, checking for upstream changes, auditing skill safety, or managing skills across projects.
 license: UNLICENSED
 allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 metadata:
-  short-description: Fetch, track, and update remote skills
-  related-adr: ADR-002-Remote-Skills-Reference-Pattern
-  version: 1.0.0
+  short-description: Discover, install, audit, update, and drift-detect agent skills
+  related-adr: ADR-002-Remote-Skills-Reference-Pattern, ADR-003-Skill-Manager-Wraps-npx-Skills
+  version: 2.0.0
   author: cristos
 ---
 
-# Remote Skill Manager
+# Skill Manager
 
-Fetch skills from remote Git repositories into the local `.agents/skills/` directory and maintain `.source.yml` provenance manifests per ADR-002.
+Full-lifecycle skill management for agent skills per ADR-002 and ADR-003. Wraps `npx skills` when available, falls back to POSIX tooling.
 
 ## Quick reference
 

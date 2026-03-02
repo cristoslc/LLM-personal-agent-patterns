@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# smoke-test.sh — End-to-end verification of the remote-skills-reference pattern
+# smoke-test.sh — End-to-end verification of the skill-manager
 #
 # Exercises acceptance criteria AC-1 through AC-5 from ADR-002.
 # Uses THIS repository's spec-management skill as the fetch target
@@ -138,7 +138,7 @@ check "integrity.algorithm is sha256 ($algo_val)" test "$algo_val" = "sha256"
 
 digest_val="$(yaml_field "$SOURCE_YML" "digest")"
 check "integrity.digest is non-empty" test -n "$digest_val"
-check "integrity.digest is 64 hex chars" echo "$digest_val" | grep -qE '^[0-9a-f]{64}$'
+check "integrity.digest is 64 hex chars" test "$(printf '%s' "$digest_val" | grep -cE '^[0-9a-f]{64}$')" = "1"
 
 # ============================================================
 # AC-4: Integrity digest matches a fresh computation.
@@ -167,7 +167,7 @@ SECOND_AT="$(yaml_field "$SOURCE_YML" "at")"
 SECOND_COMMIT="$(yaml_field "$SOURCE_YML" "commit")"
 
 check "fetched.at changed after re-fetch" test "$FIRST_AT" != "$SECOND_AT"
-check "source.commit is a valid SHA ($SECOND_COMMIT)" echo "$SECOND_COMMIT" | grep -qE '^[0-9a-f]{40}$'
+check "source.commit is a valid SHA ($SECOND_COMMIT)" test "$(printf '%s' "$SECOND_COMMIT" | grep -cE '^[0-9a-f]{40}$')" = "1"
 check "SKILL.md still present after re-fetch" test -f "$TARGET_DIR/$SKILL_NAME/SKILL.md"
 
 # ============================================================
