@@ -1,7 +1,7 @@
 ---
 title: "Verify npx Skills Add End-to-End"
 artifact: STORY-002
-status: Draft
+status: Implemented
 author: cristos
 created: 2026-03-02
 last-updated: 2026-03-02
@@ -27,3 +27,4 @@ related:
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Draft | 2026-03-02 | 7729fab | Initial creation |
+| Implemented | 2026-03-02 | a29dc73 | ACs 1-4 pass; AC-5 (skills.sh) deferred — indexing requires default branch |
