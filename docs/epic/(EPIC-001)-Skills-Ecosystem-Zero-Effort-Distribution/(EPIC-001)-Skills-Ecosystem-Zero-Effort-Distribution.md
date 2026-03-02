@@ -1,7 +1,7 @@
 ---
 title: "EPIC-001 Skills Ecosystem Zero-Effort Distribution"
 artifact: EPIC-001
-status: Proposed
+status: Active
 author: cristos
 created: 2026-03-01
 last-updated: 2026-03-01
@@ -23,7 +23,7 @@ Ride the Agent Skills ecosystem for skill distribution rather than maintaining c
 
 **In scope:**
 - Ecosystem-based skill distribution using the Agent Skills open standard
-- Ensuring this repo's skills are discoverable and installable via `npx skills add` from the `L3-agents` branch
+- Ensuring this repo's skills are discoverable and installable via `npx skills add` from the `l3-standalone` branch
 - Maintaining a viable non-Node.js installation path (clone/symlink)
 - Validating that SKILL.md files meet Agent Skills spec requirements
 
@@ -39,7 +39,7 @@ _To be created after SPIKE-002 is finalized._
 
 ## Key Dependencies
 
-- **ADR-001** (Subtree Split Distribution Model): The `L3-agents` branch is the distribution branch.
+- **ADR-001** (Subtree Split Distribution Model): The `l3-standalone` branch is the distribution branch.
 - **SPIKE-003** (Complete): Plugins rejected. Vendor-agnostic path only.
 - **EPIC-003** (Skill Lifecycle Manager): Complementary — EPIC-001 is publisher-side, EPIC-003 is consumer-side (`skill-manager` wrapping `npx skills`).
 
@@ -48,3 +48,4 @@ _To be created after SPIKE-002 is finalized._
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Proposed | 2026-03-01 | b7245e8 | Initial creation |
+| Active | 2026-03-02 | 89c2fec | All prerequisite spikes complete; child stories ready to create |
