@@ -21,7 +21,7 @@ Full-lifecycle skill management for agent skills per ADR-002 and ADR-003. Wraps 
 | Install a skill | `scripts/install.sh <repo-url> <skill-path> [ref] [target-dir]` |
 | Audit a skill | `scripts/audit.sh <skill-dir>` |
 | Fetch (low-level) | `scripts/fetch-remote-skill.sh <repo-url> <skill-path> [ref] [target-dir]` |
-| Check drift | Compare `integrity.digest` in `.source.yml` to a fresh hash of local files |
+| Check drift | `scripts/drift.sh <skill-dir>` or `scripts/drift.sh --all` |
 | Update a skill | `scripts/update.sh <skill-dir> [target-dir]` |
 | Verify setup | `scripts/smoke-test.sh` |
 
@@ -185,19 +185,31 @@ bash scripts/install.sh \
   v3.0.0
 ```
 
-## Checking drift
+## Drift detection
 
-To manually check if a fetched skill has drifted from its recorded state:
+### Single skill
 
 ```bash
-# Compute current hash (excluding .source.yml)
-CURRENT=$(tar cf - --exclude='.source.yml' -C .agents/skills code-review | sha256sum | cut -d' ' -f1)
-
-# Compare to recorded hash
-RECORDED=$(grep 'digest:' .agents/skills/code-review/.source.yml | awk '{print $2}')
-
-[ "$CURRENT" = "$RECORDED" ] && echo "In sync" || echo "Drift detected"
+bash scripts/drift.sh .agents/skills/code-review
 ```
+
+### All skills in a directory
+
+```bash
+bash scripts/drift.sh --all .agents/skills
+```
+
+Scans all subdirectories containing `.source.yml`. Local-only skills (no `.source.yml`) are skipped.
+
+### Cross-project comparison
+
+```bash
+bash scripts/drift.sh --cross /project-a/.agents/skills /project-b/.agents/skills
+```
+
+Compares skill versions across two projects by `.source.yml` digest and ref. Reports skills that differ, are missing from one project, or are identical.
+
+**Exit codes:** `0` = all in sync, `1` = drift detected.
 
 ## Removing a fetched skill
 
@@ -236,5 +248,6 @@ The smoke test exercises acceptance criteria AC-1 through AC-5 from ADR-002. See
 | `scripts/install.sh` | Install with safety-gated activation |
 | `scripts/audit.sh` | Security pattern scanner |
 | `scripts/update.sh` | Update using .source.yml coordinates |
+| `scripts/drift.sh` | Drift detection (single, all, cross-project) |
 | `scripts/fetch-remote-skill.sh` | Low-level fetch-and-stamp (POSIX fallback) |
 | `scripts/smoke-test.sh` | End-to-end verification |

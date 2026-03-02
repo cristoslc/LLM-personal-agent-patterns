@@ -3,7 +3,8 @@
 #
 # Exercises acceptance criteria AC-1 through AC-5 from ADR-002,
 # plus AC-6 through AC-9 from STORY-005 (install + audit),
-# AC-10 through AC-11 from STORY-006 (update).
+# AC-10 through AC-11 from STORY-006 (update),
+# AC-12 through AC-13 from STORY-007 (drift detection).
 # Uses THIS repository's spec-management skill as the fetch target
 # (self-referential test — no external dependency required).
 #
@@ -24,6 +25,7 @@ FETCH_SCRIPT="$SCRIPT_DIR/fetch-remote-skill.sh"
 INSTALL_SCRIPT="$SCRIPT_DIR/install.sh"
 AUDIT_SCRIPT="$SCRIPT_DIR/audit.sh"
 UPDATE_SCRIPT="$SCRIPT_DIR/update.sh"
+DRIFT_SCRIPT="$SCRIPT_DIR/drift.sh"
 
 # --- Configuration ---
 # Default: fetch from this repo's own origin
@@ -302,6 +304,31 @@ NOOP_DIGEST_AFTER="$(yaml_field "$INSTALL_TARGET/$SKILL_NAME/.source.yml" "diges
 
 check "no-op update exits 0 or 1 (not critical)" test "$NOOP_EXIT" -lt 2
 check "digest unchanged after no-op update" test "$NOOP_DIGEST_BEFORE" = "$NOOP_DIGEST_AFTER"
+
+# ============================================================
+# AC-12: Drift detection — clean (in sync)
+# ============================================================
+echo ""
+echo "--- AC-12: Drift detection — clean ---"
+
+DRIFT_CLEAN_EXIT=0
+bash "$DRIFT_SCRIPT" "$INSTALL_TARGET/$SKILL_NAME" 2>&1 || DRIFT_CLEAN_EXIT=$?
+
+check "drift.sh exits 0 for unmodified skill" test "$DRIFT_CLEAN_EXIT" -eq 0
+
+# ============================================================
+# AC-13: Drift detection — modified (drift detected)
+# ============================================================
+echo ""
+echo "--- AC-13: Drift detection — modified ---"
+
+# Modify a file in the installed skill to trigger drift
+echo "# Modified" >> "$INSTALL_TARGET/$SKILL_NAME/SKILL.md"
+
+DRIFT_MOD_EXIT=0
+bash "$DRIFT_SCRIPT" "$INSTALL_TARGET/$SKILL_NAME" 2>&1 || DRIFT_MOD_EXIT=$?
+
+check "drift.sh exits 1 for modified skill" test "$DRIFT_MOD_EXIT" -eq 1
 
 # ============================================================
 # Summary
