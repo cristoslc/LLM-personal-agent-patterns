@@ -29,7 +29,7 @@ Does the Claude Code plugin marketplace mechanism supersede `update-agents-core`
 
 ### Context
 
-The current update path uses two custom skills:
+###### The current update path uses two custom skills:
 
 **`update-agents-core`** handles scaffolding updates:
 - Fetches from `agents-upstream` git remote (shallow fetch of `l3-standalone` branch)

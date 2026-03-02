@@ -63,9 +63,9 @@ The developer wants to pull the latest version of an installed skill.
 
 The developer uses the same skills across multiple projects and wants them consistent.
 
-- **Install in a new project:** Repeat `npx skills add` in each project. No friction on first install, but there's no "install from lockfile" command (like `npm install` from `package.json`). Each project is independently managed.
+- **Install in a new project:** Repeat `npx skills add` in each project. No friction on first install. `skills-lock.json` is committed to version control, and `npx skills experimental_install` can restore from it — but it restores to the default branch (loses `@ref` pinning) and installs to all agents (ignores original agent selection).
 
-  > **Pain point:** No declarative skill manifest. You can't check in a "these are my project's skills" file and have a colleague (or a fresh clone) reproduce the setup with one command. The `skills-lock.json` exists but there's no `npx skills install` that reads it.
+  > **Pain point:** Lockfile restore exists but is experimental and lossy. `@ref` pinning — critical for framework skills on a non-default branch like `L3-agents` — is not persisted in `skills-lock.json`. A fresh clone restoring via `experimental_install` would get the wrong branch.
 
 - **Keep skills in sync:** No cross-project view. You update one project and forget the others. Drift is silent.
 
@@ -80,9 +80,9 @@ The developer wants to understand what's installed, where it came from, and whet
 
   > **Pain point:** No `npx skills audit` or drift-check command. The data is in the lock file but there's no user-facing workflow to surface it.
 
-- **Scan for vulnerabilities:** No ecosystem tooling exists. Community audits have found ~13% of published skills contain issues, but there's no automated scanner.
+- **Scan for vulnerabilities:** As of v1.4.3, `npx skills add` shows install-time risk assessments from three providers (Gen, Socket, Snyk). This is a significant improvement — security visibility exists at install time. However, there's no post-install `npx skills audit` command for ongoing monitoring.
 
-  > **Pain point:** Skills are executable prompts that can invoke tools, write files, and run commands. The ecosystem has no security scanning. This is an industry-wide gap, not specific to `npx skills`, but it matters.
+  > **Pain point (partially addressed):** Install-time scanning now exists, reducing the "flying blind" problem. The remaining gap is ongoing monitoring — no way to re-scan installed skills without re-installing them.
 
 ```mermaid
 journey
@@ -109,7 +109,7 @@ journey
     section Provenance and Security
       Verify skill source: 3: Solo Developer
       Detect local modifications: 2: Solo Developer
-      Scan for vulnerabilities: 1: Solo Developer
+      Scan for vulnerabilities: 2: Solo Developer
 ```
 
 ## Pain Points Summary
@@ -117,20 +117,22 @@ journey
 | Pain Point | Score | Stage | Root Cause | Opportunity |
 |---|---|---|---|---|
 | Project-scoped skill updates broken | 1 | Updates | `npx skills update` only tracks global installs ([#337](https://github.com/vercel-labs/skills/issues/337)) | Track upstream issue; workaround: re-run `npx skills add` |
-| No vulnerability scanning | 1 | Provenance | Industry-wide gap — no skill-level security tooling exists | Monitor ecosystem; `.source.yml` provenance could feed future scanners |
-| No declarative skill manifest / lockfile install | 2 | Multi-Project | `skills-lock.json` exists but can't be used as input | Could contribute upstream or build thin wrapper: `npx skills install --from-lock` |
+| No post-install vulnerability scanning | 2 | Provenance | Install-time scanning exists (Gen, Socket, Snyk) but no `npx skills audit` for ongoing monitoring | `.source.yml` provenance could feed future post-install scanners |
+| Lockfile restore is experimental and lossy | 2 | Multi-Project | `experimental_install` exists but loses `@ref` pinning and agent selection | Wrapper can restore from `.source.yml` refs for full fidelity |
 | Skills drift across projects silently | 2 | Multi-Project | No cross-project awareness | Script or Makefile pattern: loop over projects, run `npx skills add` |
 | No drift detection CLI | 2 | Provenance | Hash data in lock file but no user command | Could layer `.source.yml` stamping as post-install hook; or contribute `npx skills check --project` |
 
 ## Opportunities
 
-1. **Ride the ecosystem, fill the gaps.** `npx skills` handles discovery, install, and cross-agent routing well. The pain concentrates in lifecycle management (updates, sync, provenance) — not core installation. Don't rebuild what works; patch what doesn't.
+1. **Project-scoped update workaround.** Re-running `npx skills add` is idempotent and can serve as a manual update path until [#337](https://github.com/vercel-labs/skills/issues/337) is resolved. A thin wrapper could automate this.
 
-2. **Thin gap-fillers, not competing tools.** The gaps can be addressed with lightweight scripts (a `Makefile` target, a post-install hook, a `.source.yml` stamper) rather than a full skill manager. Keep `remote-skill-manager`'s provenance stamping as a standalone script; deprecate its fetch/install function.
+2. **Ref-aware lockfile restore.** `experimental_install` exists but loses `@ref` pinning. A wrapper that restores from `.source.yml` refs (which do store the pinned branch/tag/SHA) would provide full-fidelity restore for clones and new projects.
 
-3. **Track upstream.** Issue #337 (project-scoped updates) is the single highest-impact fix. If Vercel ships it, two of the five pain points disappear. Contribute or watch.
+3. **Cross-project drift visibility.** A lightweight CLI or script that compares `skills-lock.json` across sibling projects would surface version differences without requiring centralized infrastructure.
 
-4. **Prepare for scanning.** `.source.yml` provenance manifests position this framework well for future security scanning tools. Stamp provenance post-install so the data is ready when scanners arrive.
+4. **Provenance as post-install overlay.** `.source.yml` stamping could run after any install method, positioning installed skills for future security scanning tools as they emerge.
+
+5. **Ecosystem contribution.** The highest-impact upstream fix is [#337](https://github.com/vercel-labs/skills/issues/337) (project-scoped updates). If resolved, two of the five pain points disappear.
 
 ## Lifecycle
 
