@@ -1,10 +1,10 @@
 ---
 title: "EPIC-004 External Task Management"
 artifact: EPIC-004
-status: Active
+status: Complete
 author: cristos
 created: 2026-03-02
-last-updated: 2026-03-02
+last-updated: 2026-03-03
 parent-vision: VISION-001
 success-criteria:
   - "An external CLI-based task store replaces built-in agent todos as the source of truth for execution tracking"
@@ -42,7 +42,7 @@ Replace built-in agent todo systems with a durable, external CLI-based task stor
 
 ## Child Specs
 
-_To be created after SPIKE-001 completes._
+No child Agent Specs were created. The execution-tracking skill (v2.0.0) was implemented directly as an operational skill rather than through formal spec decomposition. The skill provides the full scope of this Epic: `bd`-backed task management with bootstrap, observer patterns, spec lineage tagging, parallel coordination, and a documented fallback path.
 
 ## Key Dependencies
 
@@ -61,3 +61,4 @@ _To be created after SPIKE-001 completes._
 |-------|------|--------|-------|
 | Proposed | 2026-03-02 | fc73aa0 | Migrated from PRD-001; gated on SPIKE-001 |
 | Active | 2026-03-02 | 3e2bbdb | SPIKE-001 gate passed; bd selected |
+| Complete | 2026-03-03 | fe8272b | All success criteria met; execution-tracking skill v2.0.0 operational |
