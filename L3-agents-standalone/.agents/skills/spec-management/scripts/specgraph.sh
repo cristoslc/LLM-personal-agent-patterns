@@ -7,8 +7,8 @@ set -euo pipefail
 
 # --- Resolve repo root ---
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# Navigate from scripts/ -> spec-management/ -> skills/ -> .agents/ -> L3-agents-standalone/ -> repo root
-REPO_ROOT="$(cd "$SCRIPT_DIR/../../../../.." && pwd)"
+# Navigate from scripts/ -> spec-management/ -> skills/ -> .agents/ -> repo root
+REPO_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 DOCS_DIR="$REPO_ROOT/docs"
 
 # --- Cache path ---
