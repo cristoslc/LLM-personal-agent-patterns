@@ -23,7 +23,7 @@ Extend the artifact type system with two new types that fill gaps in the current
 
 1. **Runbook (RUNBOOK-NNN)** — A human-readable operational document intended for the user (not the agent). Runbooks capture procedures, checklists, and decision trees for recurring operations. Unlike Agent Specs (which describe what an agent should do), Runbooks describe what a _person_ should do, often informed by the output of agent work. They participate in the full lifecycle: versioning, phase transitions, stale-reference detection, and dependency graph reconciliation.
 
-2. **Bug (BUG-NNN)** — A structured defect or issue report that exists outside the Epic hierarchy. Bugs capture problems discovered during any phase of work — testing, user feedback, agent observation — that don't naturally fit as children of an existing Epic. They serve as the bridge between spec-management (where the problem is described and triaged) and execution-tracking (where the fix is tracked). Once triaged, a Bug artifact hands off to the task backend via an implementation plan, just like any other spec artifact.
+2. **Bug (BUG-NNN)** — A structured defect or issue report that exists outside the Epic hierarchy. Bugs capture problems discovered during any phase of work — testing, user feedback, agent observation — that don't naturally fit as children of an existing Epic. They serve as the bridge between spec-management (where the problem is described) and execution-tracking (where the fix is tracked). Triage happens at creation time via frontmatter fields (severity, affected artifacts). When work begins, the Bug hands off to the task backend via an implementation plan, just like any other spec artifact.
 
 ## Scope Boundaries
 
@@ -72,13 +72,13 @@ Extend the artifact type system with two new types that fill gaps in the current
 **Format:** Markdown file per bug (lightweight, like User Stories)
 
 **Proposed lifecycle phases:**
-- Reported → Triaged → In-Progress → Fixed → Verified · Won't-Fix · Abandoned
+- Reported → In-Progress → Fixed → Verified · Won't-Fix · Abandoned
 
 **Key characteristics:**
 - Lives outside the Epic hierarchy — Bugs are not children of Epics
 - Captures the problem description, reproduction steps, severity, and affected artifacts
-- "Triaged" phase means the bug has been assessed and prioritized, ready for handoff
-- Handoff to execution-tracking happens at the Triaged → In-Progress transition
+- Triage happens at creation time — severity, affected artifacts, and priority are frontmatter fields, not a separate phase
+- Handoff to execution-tracking happens at the Reported → In-Progress transition
 - "Verified" is the success end-state (fix confirmed); "Won't-Fix" for intentional non-action
 - May reference any artifact via `affected-artifacts` field
 
@@ -123,7 +123,7 @@ None. This Epic extends the artifact system using established patterns. The exec
 ## Risks
 
 - **Scope creep into workflow automation** — Runbooks could expand into executable playbooks; mitigated by keeping them as static documents with clear "out of scope" boundary
-- **Bug lifecycle overlap with execution-tracking** — The Bug artifact describes the problem; execution-tracking tracks the fix. The boundary must be clean: Bug transitions to In-Progress only when an execution plan exists, and transitions to Fixed/Verified based on execution plan completion
+- **Bug lifecycle overlap with execution-tracking** — The Bug artifact describes the problem; execution-tracking tracks the fix. The boundary must be clean: Bug transitions to In-Progress only when an execution-tracking plan exists, and transitions to Fixed/Verified based on plan completion
 - **Naming collision** — `bug` is a common term that could conflict with the execution-tracking `bug` issue type in bd. Mitigated by scoping: BUG-NNN is the spec artifact (problem description); bd issues are execution tasks (fix tracking)
 
 ## Lifecycle
