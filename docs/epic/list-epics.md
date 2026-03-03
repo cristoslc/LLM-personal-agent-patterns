@@ -4,7 +4,7 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| _None_ | - | - | - | - |
+| [EPIC-006](./(EPIC-006)-Promote-Agents-Core-Standalone-Repo/(EPIC-006)-Promote-Agents-Core-Standalone-Repo.md) | Promote Agents Core to Standalone Repo | 2026-03-03 | 19c8f96 | Initial creation |
 
 ## Active
 
