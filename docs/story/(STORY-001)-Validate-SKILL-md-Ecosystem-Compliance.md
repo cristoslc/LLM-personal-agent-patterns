@@ -19,11 +19,11 @@ depends-on: []
 
 1. All 4 SKILL.md files have valid `name` (lowercase, hyphens, matches dir, ≤64 chars) and `description` (non-empty, ≤1024 chars).
 2. No `name` contains consecutive hyphens or leading/trailing hyphens.
-3. `l3-standalone` branch includes all 4 skill directories with their supporting files (`references/`, `scripts/`).
+3. `l3-agents-core` branch includes all 4 skill directories with their supporting files (`references/`, `scripts/`).
 
 ## Lifecycle
 
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Ready | 2026-03-02 | 7729fab | Initial creation — skipped Draft, ACs fully defined |
-| Implemented | 2026-03-02 | df1a683 | All 4 SKILL.md files pass spec validation; l3-standalone branch current |
+| Implemented | 2026-03-02 | df1a683 | All 4 SKILL.md files pass spec validation; l3-agents-core branch current |

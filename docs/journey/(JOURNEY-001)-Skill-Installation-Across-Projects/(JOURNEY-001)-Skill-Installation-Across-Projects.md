@@ -18,7 +18,7 @@ depends-on: []
 
 ## Persona
 
-**[PERSONA-001 Solo Framework Developer](../../persona/(PERSONA-001)-Solo-Framework-Developer/(PERSONA-001)-Solo-Framework-Developer.md)** — the Pragmatic Tinkerer. Maintains an agents-standalone framework with shared skills. Publishes skills from a monorepo (subtree-split to a `L3-agents` distribution branch). Consumes third-party skills into multiple personal projects. Uses Claude Code primarily, sometimes Gemini CLI or Cursor. Has Node.js available. Not building infrastructure — wants to ride ecosystem tooling and fill gaps.
+**[PERSONA-001 Solo Framework Developer](../../persona/(PERSONA-001)-Solo-Framework-Developer/(PERSONA-001)-Solo-Framework-Developer.md)** — the Pragmatic Tinkerer. Maintains an agents-standalone framework with shared skills. Publishes skills from a monorepo (subtree-split to a `l3-agents-core` distribution branch). Consumes third-party skills into multiple personal projects. Uses Claude Code primarily, sometimes Gemini CLI or Cursor. Has Node.js available. Not building infrastructure — wants to ride ecosystem tooling and fill gaps.
 
 ## Goal
 

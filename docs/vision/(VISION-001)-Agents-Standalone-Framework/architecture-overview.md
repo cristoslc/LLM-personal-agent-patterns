@@ -63,7 +63,7 @@ Current skills include `spec-management` (this skill's domain), `skill-manager` 
 
 Two mechanisms deliver the framework to consumer projects:
 
-1. **Subtree split** (ADR-001): A GitHub Action publishes the `l3-standalone` branch — a root-level projection of the framework directory. Consumer projects merge this branch to import scaffolding (`AGENTS.md`, `.agents/`, `docs/`). Updates are standard `git fetch && git merge --squash`.
+1. **Subtree split** (ADR-001): A GitHub Action publishes the `l3-agents-core` branch — a root-level projection of the framework directory. Consumer projects merge this branch to import scaffolding (`AGENTS.md`, `.agents/`, `docs/`). Updates are standard `git fetch && git merge --squash`.
 
 2. **Skill ecosystem** (ADR-003): Individual skills are distributed via the Agent Skills ecosystem (`npx skills add`). The `skill-manager` skill wraps `npx skills` with a provenance overlay (`.source.yml` per ADR-002), adding safety-gated installation, drift detection, and a POSIX fallback for non-Node environments. This addresses the consumer journey pain points identified in JOURNEY-001.
 

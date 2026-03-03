@@ -17,7 +17,7 @@ depends-on: []
 
 ## Acceptance Criteria
 
-1. `git clone --depth=1 -b l3-standalone` produces `.agents/skills/` with all 4 skills.
+1. `git clone --depth=1 -b l3-agents-core` produces `.agents/skills/` with all 4 skills.
 2. Symlinking a skill dir into a consumer project makes it functional.
 3. `import-agents-standalone.sh` bootstraps full scaffolding into a clean repo.
 4. No step requires Node.js.

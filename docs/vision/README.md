@@ -2,7 +2,7 @@
 
 The highest-level specification artifact. Defines what the product is and why it exists.
 
-See [AGENTS.md](../../L3-agents-standalone/AGENTS.md) for artifact type definitions and lifecycle phases.
+See [AGENTS.md](../../L3-agents-core/AGENTS.md) for artifact type definitions and lifecycle phases.
 
 ## Index
 

@@ -1,4 +1,4 @@
-# Files excluded from the l3-standalone distribution branch.
+# Files excluded from the l3-agents-core distribution branch.
 # Uses rsync exclude patterns (similar to .gitignore).
 .distignore
 import-agents-standalone.sh

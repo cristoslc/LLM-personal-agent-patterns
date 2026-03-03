@@ -26,7 +26,7 @@ Does the Claude Code plugin marketplace mechanism supersede `update-agents-core`
 ###### The current update path uses two custom skills:
 
 **`update-agents-core`** handles scaffolding updates:
-- Fetches from `agents-upstream` git remote (shallow fetch of `l3-standalone` branch)
+- Fetches from `agents-upstream` git remote (shallow fetch of `l3-agents-core` branch)
 - Squash-merges with `--allow-unrelated-histories`
 - Resolves conflicts: `.agents/` files accept upstream; `AGENTS.md` reconciles
 - Manual trigger only — user invokes the skill explicitly

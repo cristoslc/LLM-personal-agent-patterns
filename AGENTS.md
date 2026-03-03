@@ -1,1 +1,1 @@
-L3-agents-standalone/AGENTS.md
+L3-agents-core/AGENTS.md

@@ -42,7 +42,7 @@ A developer who builds personal projects and side ventures with AI coding agents
 ## Context of Use
 
 - Personal laptop (macOS), single developer.
-- Multiple Git repositories, each potentially adopting the agents-standalone framework.
+- Multiple Git repositories, each potentially adopting the agents-core framework.
 - GitHub for hosting and distribution.
 - Sessions driven by Claude Code CLI, occasionally Gemini CLI or Cursor.
 

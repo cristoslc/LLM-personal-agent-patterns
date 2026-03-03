@@ -26,7 +26,7 @@ Ride the Agent Skills ecosystem for skill distribution rather than maintaining c
 
 **In scope:**
 - Ecosystem-based skill distribution using the Agent Skills open standard
-- Ensuring this repo's skills are discoverable and installable via `npx skills add` from the `l3-standalone` branch
+- Ensuring this repo's skills are discoverable and installable via `npx skills add` from the `l3-agents-core` branch
 - Maintaining a viable non-Node.js installation path (clone/symlink)
 - Validating that SKILL.md files meet Agent Skills spec requirements
 
@@ -44,7 +44,7 @@ Ride the Agent Skills ecosystem for skill distribution rather than maintaining c
 
 ## Key Dependencies
 
-- **ADR-001** (Subtree Split Distribution Model): The `l3-standalone` branch is the distribution branch.
+- **ADR-001** (Subtree Split Distribution Model): The `l3-agents-core` branch is the distribution branch.
 - **SPIKE-003** (Complete): Plugins rejected. Vendor-agnostic path only.
 - **EPIC-003** (Skill Lifecycle Manager): Complementary — EPIC-001 is publisher-side, EPIC-003 is consumer-side (`skill-manager` wrapping `npx skills`).
 

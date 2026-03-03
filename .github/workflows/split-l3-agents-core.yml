@@ -1,9 +1,9 @@
-name: Split L3 standalone branch
+name: Split L3 agents-core branch
 
 on:
   push:
     branches: [main]
-    paths: ['L3-agents-standalone/**']
+    paths: ['L3-agents-core/**']
 
 jobs:
   split:
@@ -15,27 +15,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Build and push filtered l3-standalone branch
+      - name: Build and push filtered l3-agents-core branch
         run: |
           MAIN_SHA=$(git rev-parse --short HEAD)
 
-          # Copy L3-agents-standalone contents, applying exclusions
+          # Copy L3-agents-core contents, applying exclusions
           STAGING=$(mktemp -d)
-          if [ -f L3-agents-standalone/.distignore ]; then
-            rsync -a --exclude-from=L3-agents-standalone/.distignore \
-              L3-agents-standalone/ "$STAGING/"
+          if [ -f L3-agents-core/.distignore ]; then
+            rsync -a --exclude-from=L3-agents-core/.distignore \
+              L3-agents-core/ "$STAGING/"
           else
-            rsync -a L3-agents-standalone/ "$STAGING/"
+            rsync -a L3-agents-core/ "$STAGING/"
           fi
 
-          # Commit on top of existing l3-standalone history
+          # Commit on top of existing l3-agents-core history
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if git rev-parse --verify origin/l3-standalone &>/dev/null; then
-            git checkout origin/l3-standalone --detach
+          if git rev-parse --verify origin/l3-agents-core &>/dev/null; then
+            git checkout origin/l3-agents-core --detach
           else
-            git checkout --orphan l3-standalone-build
+            git checkout --orphan l3-agents-core-build
           fi
 
           # Replace tree contents with filtered snapshot
@@ -48,6 +48,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Sync l3-standalone from main (${MAIN_SHA})"
-            git push origin HEAD:l3-standalone --force
+            git commit -m "Sync l3-agents-core from main (${MAIN_SHA})"
+            git push origin HEAD:l3-agents-core --force
           fi

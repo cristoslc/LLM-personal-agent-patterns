@@ -12,7 +12,7 @@ depends-on: []
 
 ## Context
 
-The `L3-agents-standalone` scaffolding (AGENTS.md, `.agents/` skills directory) is maintained in a monorepo (`LLM-personal-agent-patterns`) but needs to be consumable by independent project repos. Projects need to:
+The `L3-agents-core` scaffolding (AGENTS.md, `.agents/` skills directory) is maintained in a monorepo (`LLM-personal-agent-patterns`) but needs to be consumable by independent project repos. Projects need to:
 
 1. Pull the scaffolding into their **project root** (not a subdirectory) — `AGENTS.md` must be the project's `AGENTS.md`.
 2. Receive updates from upstream when the scaffolding evolves.
@@ -20,10 +20,10 @@ The `L3-agents-standalone` scaffolding (AGENTS.md, `.agents/` skills directory) 
 
 ## Decision
 
-Use `git subtree split` to publish a `l3-standalone` branch containing the L3 folder's contents at root level. Consumer projects add this as a git remote and merge into their root.
+Use `git subtree split` to publish a `l3-agents-core` branch containing the L3 folder's contents at root level. Consumer projects add this as a git remote and merge into their root.
 
 **Source side:**
-- A GitHub Action runs `git subtree split --prefix=L3-agents-standalone -b l3-standalone` on every push to main that touches the L3 directory, force-pushing the result.
+- A GitHub Action runs `git subtree split --prefix=L3-agents-core -b l3-agents-core` on every push to main that touches the L3 directory, force-pushing the result.
 - A self-deleting `import-agents-standalone.sh` script is included on the branch for first-time setup.
 
 **Consumer side:**
@@ -43,7 +43,7 @@ Use `git subtree split` to publish a `l3-standalone` branch containing the L3 fo
 ### Sparse-checkout submodule
 - Submodule pointing at the monorepo with sparse-checkout filtering to only materialize the L3 folder.
 - Still clones full history. Sparse-checkout config doesn't propagate to other cloners without additional setup.
-- Results in a nested path (`.agents-upstream/L3-agents-standalone/`).
+- Results in a nested path (`.agents-upstream/L3-agents-core/`).
 
 ### Separate standalone repository
 - Fork L3 into its own repo. Consumer adds as submodule or subtree.

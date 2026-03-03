@@ -13,14 +13,14 @@ depends-on: []
 
 # Verify npx Skills Add End-to-End
 
-**As a** skill consumer, **I want** to install skills via `npx skills add cristoslc/LLM-personal-agent-patterns@l3-standalone`, **so that** I can use ecosystem tooling without manual setup.
+**As a** skill consumer, **I want** to install skills via `npx skills add cristoslc/LLM-personal-agent-patterns@l3-agents-core`, **so that** I can use ecosystem tooling without manual setup.
 
 ## Acceptance Criteria
 
 1. CLI discovers all 4 skills from `.agents/skills/`.
 2. Installing one skill creates correct files in consumer `.agents/skills/` or `.claude/skills/`.
 3. `skills-lock.json` written with correct source.
-4. `@l3-standalone` ref pins to distribution branch.
+4. `@l3-agents-core` ref pins to distribution branch.
 5. After install, skill appears on skills.sh.
 
 ## Lifecycle
