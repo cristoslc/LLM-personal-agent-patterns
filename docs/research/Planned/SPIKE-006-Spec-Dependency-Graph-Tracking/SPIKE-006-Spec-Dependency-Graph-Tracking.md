@@ -120,6 +120,89 @@ Extend the existing `list-<type>.md` index files to include dependency columns. 
 - Doesn't scale well past ~50 artifacts (tables get unwieldy)
 - No cycle detection
 
+### Candidate F: On-the-fly frontmatter grep (no persistent index)
+
+Don't build an index at all. When an LLM needs the dependency graph, it runs a targeted `grep` for frontmatter fields (`blocks:`, `dependencies:`, `parent-epic:`) across `docs/`, parses the matches inline, and answers the question. The "index" is the query itself.
+
+**Strengths:**
+- Zero maintenance — no index to drift, no sync to break
+- Always fresh — reads live frontmatter every time
+- No new files, tools, or dependencies
+- Works today with existing Grep + Read tools
+
+**Weaknesses:**
+- Cost scales linearly with artifact count (one grep per query, then reads for context)
+- Cannot answer transitive questions ("what transitively blocks X?") without multiple rounds
+- No visualization unless the LLM builds it ad hoc
+- No cycle detection
+- Answers the question "is this actually a problem at ~25 artifacts?" — maybe not yet
+
+### Candidate G: SQLite index built from frontmatter
+
+A build step (script or pre-commit hook) parses all frontmatter into a local SQLite database (`docs/.deps.sqlite`). Agents query with `sqlite3` — standard SQL for graph traversal (recursive CTEs for transitive dependencies), cycle detection, filtering by phase/type.
+
+**Strengths:**
+- SQL is a universal query language — any agent or script can query it
+- Recursive CTEs handle transitive dependency queries natively
+- Single-file database, git-friendly (or gitignored and rebuilt on demand)
+- Can answer complex queries: "all Draft artifacts that transitively block an Active Epic"
+- Lightweight — no server, no Dolt, just `sqlite3` (pre-installed on macOS)
+
+**Weaknesses:**
+- Build step required (same as Candidate C)
+- Binary file if git-tracked; rebuild-on-demand if gitignored
+- No built-in visualization (would need a script to emit Mermaid/DOT from query results)
+- Yet another tool in the chain (though sqlite3 is ubiquitous)
+
+### Candidate H: Single YAML/JSON graph file as source of truth
+
+Invert the current model: instead of each artifact owning its own dependency frontmatter, maintain a single `docs/graph.yaml` (or `.json`) that declares all artifacts and their edges. Artifacts still have frontmatter for their own metadata (title, status, author) but dependency relationships live only in the graph file.
+
+**Strengths:**
+- Single source of truth for all edges — no scatter, no sync
+- One file to read for the full graph (LLM-optimal)
+- Trivially parseable by any tool (YAML/JSON)
+- Easy to validate (schema check, cycle detection) with a simple script
+- Diff-friendly — all relationship changes show up in one file
+
+**Weaknesses:**
+- Breaks the current convention where each artifact declares its own relationships
+- Merge conflicts if two people edit the graph file simultaneously (less relevant for solo dev)
+- Artifacts lose self-contained context — reading a single artifact no longer tells you what it blocks/depends on without also reading the graph file
+- Migration effort to extract existing frontmatter relationships into the graph file
+
+### Candidate I: bd kv store as a lightweight edge index
+
+Use bd's built-in `bd kv` key-value store to cache dependency edges without creating full beads for each artifact. Keys are artifact IDs, values are JSON adjacency lists. A skill procedure reads/writes the kv store as part of the index refresh step.
+
+**Strengths:**
+- Uses existing bd infrastructure — no new tool
+- Lighter than full beads (no issue lifecycle, no status mapping needed)
+- `bd kv get EPIC-003` returns its edges instantly
+- `bd kv list` dumps the full graph in one call
+
+**Weaknesses:**
+- kv store has no graph operations (`dep tree`, `graph`, `ready`, `blocked`, `cycles`) — just flat key lookups
+- Loses all the query/visualization power that makes bd attractive in the first place
+- Still a second source of truth alongside frontmatter
+- Effectively a worse version of Candidate C (master index) but stored in `.beads/` instead of a plain file
+
+### Candidate J: Skill procedure as the query layer (no persistent state)
+
+The spec-management skill itself becomes the "graph engine." Add procedures like `query-blockers <artifact-id>` and `render-dependency-graph` that glob, parse frontmatter, build an in-memory graph, and answer the query — all within a single skill invocation. No persistent index file. The graph is ephemeral, computed on demand.
+
+**Strengths:**
+- No persistent state to drift — always computed fresh
+- Encapsulated in the skill — no external tools, no files to maintain
+- Can include cycle detection, transitive queries, Mermaid output as procedure logic
+- The skill already reads/writes artifacts — adding graph traversal is a natural extension
+
+**Weaknesses:**
+- Computed every time — cost grows with artifact count (though ~25 is trivial)
+- Can't be queried outside the skill (e.g., from a shell script or another tool)
+- Logic lives in skill instructions (natural language) — harder to test/debug than a script
+- If the skill context is large, the graph computation competes for context window space
+
 ## Go / No-Go Criteria
 
 | Criterion | Threshold | Measurement |
@@ -137,11 +220,7 @@ If no candidate meets the go threshold, fall back to **Candidate E** (enhanced l
 
 ## Recommendation
 
-Based on the analysis above, **Candidate D (hybrid)** is recommended if the sync mechanism can be made reliable and low-friction. It preserves frontmatter as the source of truth while gaining bd's powerful query and visualization capabilities.
-
-If the sync mechanism proves too fragile or complex during prototyping, **Candidate C (frontmatter extraction + master index)** is the pragmatic fallback — it provides the core value (LLM-readable dependency graph in one file) with zero new dependencies.
-
-Candidate B is eliminated. Candidate A has the dual-write risk that Candidate D avoids. Candidate E is the minimal baseline but doesn't achieve the "automated, queryable graph" goal.
+_To be determined during Active phase after prototyping._
 
 ## Findings
 
