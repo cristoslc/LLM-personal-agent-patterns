@@ -102,6 +102,16 @@ This is more robust than a shell script hook — the agent can detect the platfo
 | **Governance** (always-on) | Skill routing table, pre-implementation protocol, artifact hierarchy, session workflow, issue tracking conventions | `governance` skill — injects into agent context on first use | Session start |
 | **Skills** (on-demand) | spec-management, execution-tracking | Standard SKILL.md via `npx skills` | When invoked |
 
+### Plan authoring and execution architecture (ADR-004)
+
+obra/superpowers is a recommended companion install, not a swain dependency. When present, spec-management leverages superpowers' `brainstorming` → `writing-plans` pipeline for high-quality plan authoring. The three-layer flow:
+
+1. **spec-management** orchestrates — it owns the spec lifecycle and decides when a spec needs an implementation plan
+2. **superpowers** authors the plan — structured design exploration and bite-sized task breakdown (optional; falls back to manual plan authoring when not installed)
+3. **execution-tracking** persists the plan — ingests the superpowers plan file, registers tasks in bd with spec lineage and dependencies, provides cross-session "what's next?"
+
+Each tool stays in its lane: superpowers produces plans, bd tracks them, spec-management orchestrates the handoff. See [ADR-004](../../adr/Adopted/(ADR-004)-Superpowers-Plan-Authoring-With-Beads-Persistence.md) for the full decision record.
+
 ## Child Specs
 
 _To be created as this epic is broken down into stories/specs._
