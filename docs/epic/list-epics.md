@@ -4,13 +4,13 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| [EPIC-004](./(EPIC-004)-External-Task-Management/(EPIC-004)-External-Task-Management.md) | External Task Management | 2026-03-02 | _pending_ | Migrated from PRD-001; gated on SPIKE-001 |
+| _None_ | - | - | - | - |
 
 ## Active
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| _None_ | - | - | - | - |
+| [EPIC-004](./(EPIC-004)-External-Task-Management/(EPIC-004)-External-Task-Management.md) | External Task Management | 2026-03-02 | 89e8fa7 | SPIKE-001 gate passed; bd selected |
 
 ## Complete
 

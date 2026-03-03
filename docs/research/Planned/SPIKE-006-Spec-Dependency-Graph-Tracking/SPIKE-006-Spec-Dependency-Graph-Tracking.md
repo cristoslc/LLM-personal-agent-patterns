@@ -12,7 +12,7 @@ risks-addressed:
   - Stale cross-references when artifacts transition phases
   - No automated way to answer "what does EPIC-003 block?"
 dependencies:
-  - SPIKE-001 (bd CLI selection — confirms bd as the task backend)
+  - SPIKE-001 (bd CLI selection — confirms bd as the task backend, gates EPIC-004)
 blocks: []
 ---
 
