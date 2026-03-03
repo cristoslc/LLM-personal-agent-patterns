@@ -7,10 +7,10 @@ created: 2026-03-03
 last-updated: 2026-03-03
 parent-vision: VISION-001
 success-criteria:
-  - "L3-agents-core content lives in its own Git repo with skills publishable to SkillKit"
-  - "Governance rules (routing, protocols, artifact hierarchy) distribute via Rulesync or direct CLAUDE.md injection with graceful fallback"
-  - "Skills and governance install from a single entry point — consumers do not need to know about two distribution channels"
-  - "The framework's own development docs (docs/) never leak to consumers regardless of distribution channel"
+  - "L3-agents-core content lives in its own Git repo with skills installable via npx skills add"
+  - "Governance rules (routing, protocols, artifact hierarchy) distribute as a governance skill within the same repo — no separate distribution channel"
+  - "All skills and governance install from a single command: npx skills add <owner>/<repo>"
+  - "The framework's own development docs (docs/) never leak to consumers — npx skills only discovers SKILL.md directories"
   - "Existing projects using update-agents-core can migrate to the new distribution model"
 depends-on: []
 ---
@@ -19,25 +19,26 @@ depends-on: []
 
 ## Goal / Objective
 
-Extract L3-agents-core from the LLM-personal-agent-patterns snippets collection into a standalone repository, adopting SkillKit for cross-platform skill distribution and Rulesync for governance rule delivery. The framework becomes installable via standard ecosystem tools rather than a custom rsync pipeline, while preserving the coherence of skills + governance as a single logical unit.
+Extract L3-agents-core from the LLM-personal-agent-patterns snippets collection into a standalone repository, adopting Vercel's `npx skills` as the distribution channel. The framework becomes installable via the de facto ecosystem standard rather than a custom rsync pipeline, while preserving the coherence of skills + governance as a single logical unit distributed from a single repo.
 
 ## Scope Boundaries
 
 **In scope:**
 - New standalone repo creation and naming (nautical theme; candidates include agent-halyard, agent-fairlead, agent-mainsheet, agent-bowline)
-- Adopting SkillKit as the distribution channel for skills (spec-management, execution-tracking)
-- Adopting Rulesync (Option B) as the delivery mechanism for governance rules, bundled within a SkillKit-distributed package with graceful fallback to direct CLAUDE.md/AGENTS.md injection
+- Adopting Vercel's `npx skills` as the distribution channel for all content (skills and governance)
+- Structuring skills for the Agent Skills spec (SKILL.md + references/ + scripts/ per skill)
+- Creating a `governance` skill that delivers always-on routing, protocols, and conventions — with first-invocation setup to inject governance rules into the agent's context (CLAUDE.md or equivalent)
 - Retiring the custom `update-agents-core` skill and `.distignore`-based rsync pipeline
-- Retiring the custom `skill-manager` skill in favor of SkillKit
-- Restructuring AGENTS.md content into governance rules (always-on context via Rulesync) vs. skill capabilities (on-demand via SkillKit)
+- Retiring the custom `skill-manager` skill in favor of `npx skills`
 - Migration path for existing consumers of update-agents-core
 
 **Out of scope:**
 - Replacing the spec-management skill with GitHub Spec Kit or OpenSpec (evaluated and rejected — custom artifact hierarchy and lifecycle model are sufficiently differentiated)
 - Replacing the execution-tracking skill (no equivalent exists in the ecosystem)
-- Cross-agent format translation for skills beyond what SkillKit provides natively
+- Cross-agent format translation beyond what `npx skills` provides natively
 - Enterprise multi-team distribution or hosted registry
 - Modifying the artifact types, lifecycle phases, or hierarchy defined in AGENTS.md (content stays the same; only the delivery mechanism changes)
+- Adopting Rulesync (evaluated — unnecessary given the governance-as-skill approach)
 
 ## Context
 
@@ -49,58 +50,81 @@ L3-agents-core has outgrown its role as a snippet in the patterns collection. It
 
 The spec-driven development and agent tooling space has matured rapidly:
 
-| Tool | Stars | Relevance |
-|------|-------|-----------|
-| GitHub Spec Kit | 73k | SDD templates + extension system. Feature-scoped, no vision/ADR/persona. |
-| OpenSpec | 27k | Artifact DAG + custom schemas. Change-scoped, not product-scoped. |
-| BMAD-METHOD | 39k | Full lifecycle with agent personas. Opinionated, modular. |
-| SkillKit | 461 | Cross-platform skill distribution to 44 agents. Marketplace search. |
-| Rulesync | 839 | Write-once governance rules, generate for 8+ agent formats. |
-| agnix | 69 | LSP linter for CLAUDE.md/AGENTS.md/SKILL.md validation. |
+| Tool | Stars | Weekly npm downloads | Relevance |
+|------|-------|---------------------|-----------|
+| GitHub Spec Kit | 73k | — | SDD templates + extension system. Feature-scoped, no vision/ADR/persona. |
+| OpenSpec | 27k | — | Artifact DAG + custom schemas. Change-scoped, not product-scoped. |
+| BMAD-METHOD | 39k | — | Full lifecycle with agent personas. Opinionated, modular. |
+| Vercel `npx skills` | 8k | ~318,000 | De facto standard skill distribution CLI. 40+ agents. skills.sh directory. |
+| Anthropic Agent Skills spec | 12k | — | Open standard for SKILL.md format. Reference skills at anthropics/skills (82k stars). |
+| SkillKit | 462 | ~460 | Solo-dev alternative to Vercel CLI. Inflated claims, negligible adoption. Rejected. |
+| Rulesync | 839 | — | Write-once governance rules, 8+ agent formats. Unnecessary with governance-as-skill approach. |
 
-**Strategic positioning:** This framework is not an SDD tool (competing with Spec Kit/OpenSpec) or a skill marketplace (competing with SkillKit). It is a **governance and coordination layer** — routing, protocols, convention enforcement, and execution tracking — that composes with ecosystem tools for commodity functions. Adopt SkillKit and Rulesync for distribution; keep the governance core and specialized skills (spec-management, execution-tracking) as the differentiated value.
+**Strategic positioning:** This framework is not an SDD tool (competing with Spec Kit/OpenSpec) or a skill marketplace (competing with skills.sh). It is a **governance and coordination layer** — routing, protocols, convention enforcement, and execution tracking — that composes with ecosystem tools for commodity functions. Adopt `npx skills` for distribution; keep the governance core and specialized skills (spec-management, execution-tracking) as the differentiated value.
 
-### Distribution architecture (Option B)
+### Distribution architecture
 
-SkillKit serves as the single consumer-facing entry point. Governance rules are bundled inside the SkillKit package as `.rulesync/` source files. On install:
+Vercel's `npx skills` serves as the single distribution channel. All content — skills and governance — lives in one repo as SKILL.md directories. `npx skills` discovers them, symlinks them into the consumer's agent skill directories, and handles cross-agent placement.
 
-1. Skills land in the consumer's agent-specific skill directories (`.claude/skills/`, `.cursor/skills/`, etc.) via SkillKit's native translation.
-2. If Rulesync is available, `rulesync generate` produces CLAUDE.md/AGENTS.md/.cursor/rules/ from the bundled `.rulesync/` sources.
-3. If Rulesync is not available, the bootstrap skill writes governance content directly to CLAUDE.md (or the agent's equivalent).
+```
+<repo>/
+  skills/
+    governance/SKILL.md          -- always-on routing, protocols, hierarchy
+    spec-management/SKILL.md     -- artifact lifecycle
+    execution-tracking/SKILL.md  -- task backend integration
+  docs/                          -- dev-only (invisible to npx skills)
+  AGENTS.md                      -- dev-only governance for this repo
+  ...
+```
 
-This preserves coherence (one install, one repo) while leveraging established distribution channels.
+Consumer installs:
+```bash
+npx skills add <owner>/<repo>
+```
+
+This symlinks all three skills into `.claude/skills/` (or equivalent for other agents). No two-tier model, no `.devignore`/`.distignore`, no GitHub Action needed — `npx skills` only discovers directories containing SKILL.md files and ignores everything else.
+
+### Governance delivery: agent-as-hook
+
+Neither `npx skills` nor any major skill CLI supports post-install hooks. Instead, the `governance` skill uses the AI agent itself as the setup mechanism:
+
+1. The governance skill's SKILL.md description triggers it to load at session start (via high-priority routing language).
+2. On first activation, it checks whether the agent's context file (CLAUDE.md, .cursor/rules/, etc.) contains the governance routing rules.
+3. If not, it instructs the agent to append the governance content.
+4. Subsequent sessions find the rules already in place and skip setup.
+
+This is more robust than a shell script hook — the agent can detect the platform, check existing config, and write the appropriate format adaptively.
 
 ### Two layers of content
 
-| Layer | Content | Delivery | Lifecycle |
-|-------|---------|----------|-----------|
-| **Governance rules** (always-on) | Skill routing table, pre-implementation protocol, artifact hierarchy, session workflow, issue tracking conventions | Rulesync (with direct-write fallback) | Loaded at session start; governs all agent behavior |
-| **Skills** (on-demand) | spec-management, execution-tracking | SkillKit | Loaded when invoked; provide operational capabilities |
+| Layer | Content | Delivery | When loaded |
+|-------|---------|----------|-------------|
+| **Governance** (always-on) | Skill routing table, pre-implementation protocol, artifact hierarchy, session workflow, issue tracking conventions | `governance` skill — injects into agent context on first use | Session start |
+| **Skills** (on-demand) | spec-management, execution-tracking | Standard SKILL.md via `npx skills` | When invoked |
 
 ## Child Specs
 
 _To be created as this epic is broken down into stories/specs._
 
 Anticipated children:
-- Repo creation and initial structure (naming, branching, CI)
-- SkillKit integration (packaging skills for SkillKit distribution, marketplace registration)
-- Rulesync integration (governance rule authoring in `.rulesync/` format, bootstrap fallback)
-- AGENTS.md decomposition (split current monolith into governance rules vs. skill content)
-- Migration guide (update-agents-core consumers to SkillKit + Rulesync)
+- Repo creation and initial structure (naming, CI)
+- Skill packaging (restructure existing skills into Agent Skills spec format)
+- Governance skill (extract AGENTS.md routing/protocol content into a governance SKILL.md with first-use setup)
+- Migration guide (update-agents-core consumers to `npx skills add`)
 - Retirement of update-agents-core and skill-manager skills
+- skills.sh registration and discovery
 
 ## Key Dependencies
 
-- **SkillKit** — external tool; must support the distribution model (post-install hooks or bootstrap skill pattern). Needs evaluation of SkillKit vs. Vercel's `npx skills` to confirm SkillKit is the right choice.
-- **Rulesync** — external tool; must support bundled `.rulesync/` sources within a SkillKit package, or the fallback path must be robust.
-- **Repo naming decision** — blocks repo creation. Candidates: agent-halyard, agent-fairlead, agent-mainsheet, agent-bowline.
+- **Vercel `npx skills` CLI** — external tool; must support the repo layout with skills in subdirectories. The CLI discovers SKILL.md files by scanning well-known paths (`.claude/skills/`, `skills/`, etc.). Need to confirm our `skills/` directory layout is discoverable.
+- **Repo naming decision** — blocks repo creation. Candidates: agent-halyard, agent-fairlead, agent-mainsheet, agent-bowline. Must check skills.sh for naming collisions with existing skill packages.
 
 ## Risks
 
-- **SkillKit may not support post-install hooks** — the "Option B" bootstrap pattern requires some mechanism to trigger Rulesync generation on install. If SkillKit doesn't support this, the fallback is a manual setup step or a bootstrap skill the user invokes once.
-- **Rulesync format may not accommodate complex governance content** — the current AGENTS.md includes structured tables, Mermaid diagrams, and multi-level hierarchy definitions. Rulesync may expect simpler rule sets. Needs validation.
-- **Two-tool dependency for consumers** — even with graceful fallback, the full experience requires both SkillKit and Rulesync. If either project becomes unmaintained, the distribution layer needs replacement. Mitigated by the direct-write fallback path.
-- **SkillKit vs. Vercel `npx skills` uncertainty** — SkillKit was identified as the leading option but Vercel's alternative needs evaluation before committing. This is a gating research item.
+- **Governance-as-skill loading semantics** — the governance skill needs to be always-on context, but skills may be lazily loaded (name + description at startup, full body on invocation). If the governance routing rules aren't visible until the skill is explicitly invoked, the routing table can't influence which skills handle which requests. Needs validation of how Claude Code and other agents handle skill loading.
+- **`npx skills` skill discovery paths** — the CLI scans specific directories for SKILL.md files. If our `skills/` layout isn't in the scan list, skills won't be discovered. Needs validation.
+- **No skill dependency management** — `npx skills` has no mechanism for one skill to declare dependencies on another. The governance skill can't programmatically ensure spec-management and execution-tracking are also installed. Mitigated by distributing all skills from the same repo (single `npx skills add` installs all).
+- **Single-vendor distribution dependency** — if Vercel discontinues `npx skills`, the distribution channel needs replacement. Mitigated by the Agent Skills spec being an open standard — alternative CLIs exist and the SKILL.md format is vendor-neutral.
 
 ## Lifecycle
 
