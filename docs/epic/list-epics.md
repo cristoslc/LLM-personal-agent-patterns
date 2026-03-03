@@ -4,13 +4,14 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| [EPIC-005](./(EPIC-005)-Specwatch-Stale-Path-Reference-Detection/(EPIC-005)-Specwatch-Stale-Path-Reference-Detection.md) | Specwatch — Stale Path Reference Detection | 2026-03-03 | dc83645 | Initial creation; gated on SPIKE-007 |
+| _None_ | - | - | - | - |
 
 ## Active
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
 | [EPIC-004](./(EPIC-004)-External-Task-Management/(EPIC-004)-External-Task-Management.md) | External Task Management | 2026-03-02 | 89e8fa7 | SPIKE-001 gate passed; bd selected |
+| [EPIC-005](./(EPIC-005)-Specwatch-Stale-Path-Reference-Detection/(EPIC-005)-Specwatch-Stale-Path-Reference-Detection.md) | Specwatch — Stale Path Reference Detection | 2026-03-03 | 60bc5c3 | SPIKE-007 gate passed; Strategy 2 selected |
 
 ## Complete
 

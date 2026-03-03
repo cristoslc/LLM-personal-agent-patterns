@@ -162,3 +162,5 @@ Spec-management reads this log at the start of every operation. If entries exist
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Planned | 2026-03-03 | dc83645 | Initial creation |
+| Active | 2026-03-03 | 60bc5c3 | Investigation commenced |
+| Complete | 2026-03-03 | 60bc5c3 | Gate PASS — Strategy 2 (Warn + suggest) selected |
