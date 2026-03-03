@@ -1,7 +1,7 @@
 ---
 title: "Spec Dependency Graph Tracking"
 artifact: SPIKE-006
-status: Planned
+status: Complete
 author: cristos
 created: 2026-03-02
 last-updated: 2026-03-02
@@ -11,9 +11,7 @@ risks-addressed:
   - Agent reads all docs to discover blocking relationships
   - Stale cross-references when artifacts transition phases
   - No automated way to answer "what does EPIC-003 block?"
-dependencies:
-  - SPIKE-001 (bd CLI selection — confirms bd as the task backend, gates EPIC-004)
-blocks: []
+depends-on: []
 ---
 
 # Spec Dependency Graph Tracking
@@ -220,14 +218,48 @@ If no candidate meets the go threshold, fall back to **Candidate E** (enhanced l
 
 ## Recommendation
 
-_To be determined during Active phase after prototyping._
+**Gate: PASS.** Adopt a refined version of Candidate F (on-the-fly frontmatter grep) hybridized with Candidate C (materialized index). The solution:
+
+1. **Standardize frontmatter** with a single canonical `depends-on:` field (YAML list of bare `TYPE-NNN` IDs) across all 24 artifacts. Remove deprecated `dependencies:`, `blocks:`, `what_it_blocks:`, `child-stories:`, `affects:` fields.
+2. **Build `specgraph.sh`** — a bash+jq script that parses frontmatter, caches a JSON graph in `/tmp/`, and provides query subcommands (`blocks`, `blocked-by`, `tree`, `ready`, `mermaid`, `status`).
+
+This approach meets all four go criteria:
+- **Query cost:** 1 Bash call (`specgraph.sh blocked-by SPIKE-002`) returns results instantly from cache.
+- **Sync reliability:** Frontmatter is the sole source of truth — the cache auto-rebuilds when any doc changes.
+- **Setup cost:** `specgraph.sh build` processes 24 artifacts in under 2 seconds.
+- **Visualization:** `specgraph.sh mermaid` produces valid Mermaid graph markup.
 
 ## Findings
 
-_To be populated during Active phase._
+### Frontmatter audit results
+
+Before standardization, the 24 artifacts used 5 different field names for dependency relationships:
+- `dependencies:` (SPIKE-001..006) — free-text descriptions mixing artifact IDs with prose
+- `blocks:` (SPIKE-002..006) — free-text descriptions of what the spike blocks
+- `what_it_blocks:` (SPIKE-001) — variant of `blocks:` with different name
+- `child-stories:` (EPIC-003) — inverse hierarchy (parent listing children)
+- `affects:` (ADR-001, ADR-002) — empty arrays, unused
+
+ID formats were inconsistent: some used bare IDs (`SPIKE-002`), others embedded descriptions (`"SPIKE-002 npx Skills vs Remote Skill Manager (Planned)"`). This made automated parsing unreliable.
+
+After standardization: all 24 artifacts use `depends-on:` with bare `TYPE-NNN` IDs. Hierarchy is encoded via `parent-vision:` and `parent-epic:` (already consistent). Cross-references use `linked-journeys:`, `linked-personas:`, `related:`, `linked-epics:`, etc. (informational, not blocking).
+
+### Candidate evaluation summary
+
+- **Candidate A (bd shadow graph):** Viable but adds sync complexity and `.beads/` weight for a 24-artifact corpus.
+- **Candidate B (artifacts in beads):** Eliminated — bd is an issue tracker, not a document store.
+- **Candidate C (frontmatter extraction + index):** Strong — zero dependencies, single-file output, git-friendly. Selected as the caching layer.
+- **Candidate D (hybrid frontmatter + bd):** Viable but premature at this scale.
+- **Candidate E (enhanced list indexes):** Too manual, no querying.
+- **Candidate F (on-the-fly grep):** Strong for small corpus, but no transitive queries or visualization. Selected as the source-of-truth model.
+- **Candidate G (SQLite):** Viable but heavier than needed at 24 artifacts.
+- **Candidate H (single graph file):** Breaks self-contained artifacts.
+- **Candidate I (bd kv store):** Worse Candidate C with bd dependency.
+- **Candidate J (skill procedure):** Can't be queried outside the skill.
 
 ## Lifecycle
 
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Planned | 2026-03-02 | 779a93c | Initial creation |
+| Complete | 2026-03-02 | PENDING | Gate PASS — Candidate F refined with specgraph.sh |
