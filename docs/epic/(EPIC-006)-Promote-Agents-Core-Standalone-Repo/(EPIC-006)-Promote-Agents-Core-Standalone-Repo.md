@@ -9,7 +9,7 @@ parent-vision: VISION-001
 success-criteria:
   - "L3-agents-core content lives in its own Git repo with skills installable via npx skills add"
   - "Governance rules (routing, protocols, artifact hierarchy) distribute as a governance skill within the same repo — no separate distribution channel"
-  - "All skills and governance install from a single command: npx skills add <owner>/<repo>"
+  - "All skills and governance install from a single command: npx skills add cristos/swain"
   - "The framework's own development docs (docs/) never leak to consumers — npx skills only discovers SKILL.md directories"
   - "Existing projects using update-agents-core can migrate to the new distribution model"
 depends-on: []
@@ -24,7 +24,7 @@ Extract L3-agents-core from the LLM-personal-agent-patterns snippets collection 
 ## Scope Boundaries
 
 **In scope:**
-- New standalone repo creation and naming (nautical theme; candidates include agent-halyard, agent-fairlead, agent-mainsheet, agent-bowline)
+- New standalone repo creation as `cristos/swain` (named for the boatswain's mate — the officer who maintains rigging and enforces standards)
 - Adopting Vercel's `npx skills` as the distribution channel for all content (skills and governance)
 - Structuring skills for the Agent Skills spec (SKILL.md + references/ + scripts/ per skill)
 - Creating a `governance` skill that delivers always-on routing, protocols, and conventions — with first-invocation setup to inject governance rules into the agent's context (CLAUDE.md or equivalent)
@@ -67,7 +67,7 @@ The spec-driven development and agent tooling space has matured rapidly:
 Vercel's `npx skills` serves as the single distribution channel. All content — skills and governance — lives in one repo as SKILL.md directories. `npx skills` discovers them, symlinks them into the consumer's agent skill directories, and handles cross-agent placement.
 
 ```
-<repo>/
+swain/
   skills/
     governance/SKILL.md          -- always-on routing, protocols, hierarchy
     spec-management/SKILL.md     -- artifact lifecycle
@@ -79,7 +79,7 @@ Vercel's `npx skills` serves as the single distribution channel. All content —
 
 Consumer installs:
 ```bash
-npx skills add <owner>/<repo>
+npx skills add cristos/swain
 ```
 
 This symlinks all three skills into `.claude/skills/` (or equivalent for other agents). No two-tier model, no `.devignore`/`.distignore`, no GitHub Action needed — `npx skills` only discovers directories containing SKILL.md files and ignores everything else.
@@ -117,7 +117,7 @@ Anticipated children:
 ## Key Dependencies
 
 - **Vercel `npx skills` CLI** — external tool; must support the repo layout with skills in subdirectories. The CLI discovers SKILL.md files by scanning well-known paths (`.claude/skills/`, `skills/`, etc.). Need to confirm our `skills/` directory layout is discoverable.
-- **Repo naming decision** — blocks repo creation. Candidates: agent-halyard, agent-fairlead, agent-mainsheet, agent-bowline. Must check skills.sh for naming collisions with existing skill packages.
+- **Repo naming decision** — resolved: `cristos/swain`. Zero collisions on GitHub, npm, and PyPI.
 
 ## Risks
 
