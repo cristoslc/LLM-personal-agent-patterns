@@ -1,7 +1,7 @@
 ---
 title: "Specwatch — Stale Path Reference Detection"
 artifact: EPIC-005
-status: Proposed
+status: Active
 author: cristos
 created: 2026-03-03
 last-updated: 2026-03-03
