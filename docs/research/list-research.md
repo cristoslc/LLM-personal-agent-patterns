@@ -5,6 +5,7 @@
 | Artifact | Date | Commit | Notes |
 |---|---|---|---|
 | [SPIKE-001-External-Task-CLI-Evaluation](./Planned/SPIKE-001-External-Task-CLI-Evaluation/SPIKE-001-External-Task-CLI-Evaluation.md) | 2026-02-25 | 2630c39 | Initial planning for external task CLI selection |
+| [SPIKE-006-Spec-Dependency-Graph-Tracking](./Planned/SPIKE-006-Spec-Dependency-Graph-Tracking/SPIKE-006-Spec-Dependency-Graph-Tracking.md) | 2026-03-02 | 779a93c | Investigate approaches to structured spec dependency tracking |
 
 ## Active
 
