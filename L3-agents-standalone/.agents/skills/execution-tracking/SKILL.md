@@ -92,6 +92,25 @@ bd dep relate <task-a> <task-b>
 - `bd swarm create <epic-id>` — agents use `bd ready` to pick up unblocked work.
 - For repeatable workflows, define a formula in `.beads/formulas/` and instantiate with `bd mol pour`.
 
+## "What's next?" flow
+
+When asked what to work on next, show ready work from the execution backend:
+
+```bash
+# Check for bd availability and initialization
+command -v bd && [ -d .beads ]
+
+# Show unblocked tasks (blocker-aware)
+bd ready --json
+
+# If there are in-progress tasks, show those too
+bd list --status=in_progress --json
+```
+
+If bd is initialized and has tasks, present the results. If bd is not initialized or has no tasks, report that and defer to the spec-management skill's `specgraph.sh next` for artifact-level guidance.
+
+When invoked from the spec-management skill's combined "what's next?" flow, this skill provides the **task layer** — concrete claimable work items — complementing the spec layer's artifact-level readiness view.
+
 ## Observer pattern expectations
 
 1. Maintain compact current-status view: `bd status` and `bd list --pretty`.
