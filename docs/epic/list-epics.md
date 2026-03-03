@@ -4,7 +4,7 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| _None_ | - | - | - | - |
+| [EPIC-005](./(EPIC-005)-Specwatch-Stale-Path-Reference-Detection/(EPIC-005)-Specwatch-Stale-Path-Reference-Detection.md) | Specwatch — Stale Path Reference Detection | 2026-03-03 | dc83645 | Initial creation; gated on SPIKE-007 |
 
 ## Active
 

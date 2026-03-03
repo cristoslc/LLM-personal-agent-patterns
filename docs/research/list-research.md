@@ -4,7 +4,7 @@
 
 | Artifact | Date | Commit | Notes |
 |---|---|---|---|
-| _None_ | - | - | - |
+| [SPIKE-007-Specwatch-Log-Strategy](./Planned/SPIKE-007-Specwatch-Log-Strategy/SPIKE-007-Specwatch-Log-Strategy.md) | 2026-03-03 | dc83645 | Initial creation |
 
 ## Active
 

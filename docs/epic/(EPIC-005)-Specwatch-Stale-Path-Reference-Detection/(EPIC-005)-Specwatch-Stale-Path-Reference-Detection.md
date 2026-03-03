@@ -57,4 +57,4 @@ _To be created after SPIKE-007 completes and log strategy is decided._
 
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
-| Proposed | 2026-03-03 | _pending_ | Initial creation; gated on SPIKE-007 |
+| Proposed | 2026-03-03 | dc83645 | Initial creation; gated on SPIKE-007 |
