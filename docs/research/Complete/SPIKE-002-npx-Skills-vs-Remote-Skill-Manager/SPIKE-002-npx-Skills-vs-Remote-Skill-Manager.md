@@ -11,12 +11,7 @@ risks-addressed:
   - "Maintaining two parallel skill-installation mechanisms creates confusion and drift"
   - "Dropping the custom path locks out users without Node.js / npx"
   - "Wrapping npx skills may add fragile coupling to an external tool's CLI interface"
-dependencies:
-  - "ADR-002 Remote Skills Reference Pattern (Adopted)"
-  - "EPIC-001 Skills Ecosystem Zero-Effort Distribution (Proposed)"
-blocks:
-  - "EPIC-001 implementation — cannot finalize installation path without this decision"
-  - "Potential refactor or deprecation of remote-skill-manager skill"
+depends-on: []
 ---
 
 # SPIKE-002 npx Skills vs Remote Skill Manager

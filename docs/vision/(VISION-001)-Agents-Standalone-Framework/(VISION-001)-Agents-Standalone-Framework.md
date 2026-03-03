@@ -16,6 +16,7 @@ non-goals:
   - "Enterprise-scale multi-team coordination"
   - "Tight coupling to any single agent vendor (Claude Code, Gemini CLI, Cursor, etc.)"
   - "Runtime infrastructure or hosted services"
+depends-on: []
 ---
 
 # VISION-001 Agents Standalone Framework

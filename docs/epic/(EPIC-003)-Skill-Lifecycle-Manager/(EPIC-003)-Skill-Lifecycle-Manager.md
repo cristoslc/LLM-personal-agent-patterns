@@ -5,12 +5,6 @@ status: Complete
 author: cristos
 created: 2026-03-01
 last-updated: 2026-03-02
-child-stories:
-  - STORY-004
-  - STORY-005
-  - STORY-006
-  - STORY-007
-  - STORY-008
 parent-vision: VISION-001
 success-criteria:
   - "A single `skill-manager` skill covers discovery, safety review, installation, updates, and drift detection"
@@ -18,6 +12,9 @@ success-criteria:
   - "Every install and update includes a safety review step before skill activation"
   - "The skill wraps `npx skills` when available and falls back to POSIX tooling when it's not"
   - "JOURNEY-001 pain points at score <= 2 are addressed or have documented workarounds"
+depends-on:
+  - SPIKE-002
+  - SPIKE-005
 ---
 
 # EPIC-003 Skill Lifecycle Manager

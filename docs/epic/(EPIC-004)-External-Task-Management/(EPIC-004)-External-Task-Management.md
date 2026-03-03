@@ -11,6 +11,8 @@ success-criteria:
   - "Task history persists when switching between agent backends"
   - "An external observer can monitor task progress without access to the active agent runtime"
   - "The execution-tracking skill defaults to the selected CLI with a documented fallback path"
+depends-on:
+  - SPIKE-001
 ---
 
 # EPIC-004 External Task Management

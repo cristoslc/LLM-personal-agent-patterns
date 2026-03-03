@@ -11,14 +11,9 @@ risks-addressed:
   - "Remote skill repos without a standard distribution path create friction for consumers"
   - "Different distribution mechanisms for first-party vs third-party skills creates inconsistency"
   - "Skill repos that lack SKILL.md files (like architecture-reference-repo today) are invisible to ecosystem tools"
-dependencies:
-  - "SPIKE-002 npx Skills vs Remote Skill Manager (Planned)"
-  - "SPIKE-003 Plugin Marketplace vs Update Agents Core (Planned)"
-  - "EPIC-001 Skills Ecosystem Zero-Effort Distribution (Proposed)"
-  - "EPIC-002 Claude Code Plugin Marketplace (Proposed)"
-blocks:
-  - "Distribution guidance for third-party skill repos"
-  - "Potential architecture-reference-repo refactor to add SKILL.md and/or plugin manifests"
+depends-on:
+  - SPIKE-002
+  - SPIKE-003
 ---
 
 # SPIKE-004 Remote Skill Repo Distribution Path

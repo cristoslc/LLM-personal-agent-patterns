@@ -8,6 +8,7 @@ last-updated: 2026-03-02
 parent-epic: EPIC-001
 related:
   - JOURNEY-001
+depends-on: []
 ---
 
 # Validate SKILL.md Ecosystem Compliance

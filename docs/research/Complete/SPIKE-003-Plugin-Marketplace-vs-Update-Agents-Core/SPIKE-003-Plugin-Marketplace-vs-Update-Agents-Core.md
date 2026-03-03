@@ -11,14 +11,8 @@ risks-addressed:
   - "Plugin auto-updates may conflict with the manual git-merge approach in update-agents-core"
   - "Two update mechanisms for the same files creates confusion about which is authoritative"
   - "Dropping update-agents-core removes support for non-Claude-Code agents that adopt this framework"
-dependencies:
-  - "SPIKE-002 npx Skills vs Remote Skill Manager (Planned) — the skill-level decision informs the scaffolding-level decision"
-  - "ADR-001 Subtree Split Distribution Model (Adopted)"
-  - "ADR-002 Remote Skills Reference Pattern (Adopted)"
-  - "EPIC-002 Claude Code Plugin Marketplace (Proposed)"
-blocks:
-  - "EPIC-002 implementation — cannot finalize plugin structure without this decision"
-  - "Potential refactor or deprecation of update-agents-core skill"
+depends-on:
+  - SPIKE-002
 ---
 
 # SPIKE-003 Plugin Marketplace vs Update Agents Core

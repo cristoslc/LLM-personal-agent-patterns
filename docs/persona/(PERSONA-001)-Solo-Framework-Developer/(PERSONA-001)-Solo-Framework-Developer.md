@@ -5,8 +5,9 @@ status: Draft
 author: cristos
 created: 2026-03-01
 last-updated: 2026-03-01
-journeys:
-  - "JOURNEY-001 Skill Installation Across Projects"
+linked-journeys:
+  - JOURNEY-001
+depends-on: []
 ---
 
 # PERSONA-001 Solo Framework Developer

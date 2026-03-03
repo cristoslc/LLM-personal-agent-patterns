@@ -1,10 +1,11 @@
 ---
-title: Remote Skills Reference Pattern
+title: "Remote Skills Reference Pattern"
+artifact: ADR-002
 status: Adopted
 author: Claude
 created: 2026-02-26
 last-updated: 2026-02-26
-affects: []
+depends-on: []
 ---
 
 # ADR-002: Remote Skills Reference Pattern

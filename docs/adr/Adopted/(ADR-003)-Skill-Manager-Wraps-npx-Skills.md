@@ -9,6 +9,9 @@ linked-epics:
   - EPIC-001
   - EPIC-003
 linked-specs: []
+depends-on:
+  - SPIKE-002
+  - SPIKE-005
 ---
 
 # ADR-003: Skill Manager Wraps npx Skills with Provenance Overlay

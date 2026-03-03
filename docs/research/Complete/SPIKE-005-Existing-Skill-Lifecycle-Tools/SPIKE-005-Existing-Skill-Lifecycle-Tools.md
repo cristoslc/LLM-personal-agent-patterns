@@ -10,11 +10,8 @@ gate: Pre-implementation (EPIC-003)
 risks-addressed:
   - "Building a skill-manager that duplicates an existing solution"
   - "Missing composable primitives that could accelerate development"
-dependencies:
-  - "EPIC-003 Skill Lifecycle Manager (Proposed)"
-  - "SPIKE-002 npx Skills vs Remote Skill Manager (Active)"
-blocks:
-  - "EPIC-003 build-vs-compose decision"
+depends-on:
+  - SPIKE-002
 ---
 
 # SPIKE-005 Existing Skill Lifecycle Tools

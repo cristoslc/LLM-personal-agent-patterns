@@ -1,10 +1,11 @@
 ---
 title: "Subtree Split Distribution Model"
+artifact: ADR-001
 status: Adopted
 author: cristoslc
 created: 2026-02-26
 last-updated: 2026-02-26
-affects: []
+depends-on: []
 ---
 
 # ADR-001: Subtree Split Distribution Model

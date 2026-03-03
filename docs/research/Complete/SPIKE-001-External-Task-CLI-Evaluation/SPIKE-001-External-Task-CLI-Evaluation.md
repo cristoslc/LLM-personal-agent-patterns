@@ -1,7 +1,8 @@
 ---
-title: SPIKE-001 External Task CLI Evaluation
+title: "SPIKE-001 External Task CLI Evaluation"
+artifact: SPIKE-001
 status: Complete
-question: Which external task-management CLI should replace built-in agent todos for cross-backend continuity and supervisor observability?
+question: "Which external task-management CLI should replace built-in agent todos for cross-backend continuity and supervisor observability?"
 gate: Pre-MVP
 gate_criteria:
   - "Must support durable local persistence and machine-readable export/import with no data loss in a 200-task migration test"
@@ -11,12 +12,8 @@ risks-addressed:
   - "Tool lock-in to a single agent backend"
   - "Loss of task continuity during backend switches"
   - "Lack of supervisory visibility for external observer workflows"
-dependencies:
-  - "EPIC-004 External Task Management (Proposed)"
-what_it_blocks:
-  - "Default task backend in the L3 execution-tracking skill"
-  - "Runbook standardization for operator supervision"
 recommended_pivot_if_gate_fails: "Use a neutral JSONL task ledger plus a thin wrapper script, and treat CLI tools as optional adapters rather than the system of record."
+depends-on: []
 ---
 
 # SPIKE-001 External Task CLI Evaluation

@@ -6,11 +6,12 @@ author: cristos
 created: 2026-03-01
 last-updated: 2026-03-01
 parent-vision: VISION-001
-personas:
-  - "PERSONA-001 Solo Framework Developer"
+linked-personas:
+  - PERSONA-001
 related:
   - "SPIKE-002 npx Skills vs Remote Skill Manager"
   - "EPIC-001 Skills Ecosystem Zero-Effort Distribution"
+depends-on: []
 ---
 
 # JOURNEY-001 Skill Installation Across Projects

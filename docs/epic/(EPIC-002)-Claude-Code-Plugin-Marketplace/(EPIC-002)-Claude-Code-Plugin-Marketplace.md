@@ -12,6 +12,8 @@ success-criteria:
   - "Auto-updates pull new skill versions when the `L3-agents` branch is updated"
   - "Semantic versioning in plugin.json enables users to track breaking changes"
   - "A non-plugin installation path remains documented and functional"
+depends-on:
+  - SPIKE-003
 ---
 
 # EPIC-002 Claude Code Plugin Marketplace

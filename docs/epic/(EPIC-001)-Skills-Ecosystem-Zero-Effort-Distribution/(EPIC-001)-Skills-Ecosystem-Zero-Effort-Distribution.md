@@ -11,6 +11,9 @@ success-criteria:
   - "Skills are discoverable on skills.sh without manual registry submission"
   - "A non-Node.js installation path remains viable for consumers without npx"
   - "The installation experience addresses the pain points surfaced in JOURNEY-001"
+depends-on:
+  - SPIKE-002
+  - SPIKE-003
 ---
 
 # EPIC-001 Skills Ecosystem Zero-Effort Distribution
