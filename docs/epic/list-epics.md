@@ -23,7 +23,7 @@
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
 | [EPIC-003](./(EPIC-003)-Skill-Lifecycle-Manager/(EPIC-003)-Skill-Lifecycle-Manager.md) | Skill Lifecycle Manager | 2026-03-02 | ad5d66e | All 5 stories done; 38/38 smoke tests pass |
-| [EPIC-004](./(EPIC-004)-External-Task-Management/(EPIC-004)-External-Task-Management.md) | External Task Management | 2026-03-03 | fe8272b | All success criteria met; execution-tracking skill v2.0.0 operational |
+| [EPIC-004](./(EPIC-004)-External-Task-Management/(EPIC-004)-External-Task-Management.md) | External Task Management | 2026-03-03 | 4f465bd | All success criteria met; execution-tracking skill v2.0.0 operational |
 | [EPIC-001](./(EPIC-001)-Skills-Ecosystem-Zero-Effort-Distribution/(EPIC-001)-Skills-Ecosystem-Zero-Effort-Distribution.md) | Skills Ecosystem Zero-Effort Distribution | 2026-03-02 | f7226c2 | All 3 stories done; ecosystem distribution verified |
 
 ## Abandoned
