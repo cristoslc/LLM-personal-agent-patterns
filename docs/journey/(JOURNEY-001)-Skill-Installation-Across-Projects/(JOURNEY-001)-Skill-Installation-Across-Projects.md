@@ -56,7 +56,7 @@ The developer wants to pull the latest version of an installed skill.
 - **Update a globally installed skill:** `npx skills update` pulls latest. Works as expected.
 - **Update a project-scoped skill:** **Broken.** `npx skills update` does not track project-scoped installations. [Issue #337](https://github.com/vercel-labs/skills/issues/337) is open but unresolved. The workaround is to re-run `npx skills add` (idempotent) — but you have to know to do this, and there's no notification that an update is available.
 
-  > **Pain point:** This is the biggest gap. Per-project skills are the natural model for team repos and framework adopters, but the update story is missing. You're stuck manually re-adding skills or writing a wrapper script.
+  > **PP-01:** This is the biggest gap. Per-project skills are the natural model for team repos and framework adopters, but the update story is missing. You're stuck manually re-adding skills or writing a wrapper script.
 
 - **Pin to a specific version:** Lock file tracks the `ref` used at install time. You can install at a tag (`@v1.0.0`) and it stays pinned. But there's no `npx skills pin` command — you have to remember the ref syntax.
 
@@ -66,11 +66,11 @@ The developer uses the same skills across multiple projects and wants them consi
 
 - **Install in a new project:** Repeat `npx skills add` in each project. No friction on first install. `skills-lock.json` is committed to version control, and `npx skills experimental_install` can restore from it — but it restores to the default branch (loses `@ref` pinning) and installs to all agents (ignores original agent selection).
 
-  > **Pain point:** Lockfile restore exists but is experimental and lossy. `@ref` pinning — critical for framework skills on a non-default branch like `L3-agents` — is not persisted in `skills-lock.json`. A fresh clone restoring via `experimental_install` would get the wrong branch.
+  > **PP-03:** Lockfile restore exists but is experimental and lossy. `@ref` pinning — critical for framework skills on a non-default branch like `L3-agents` — is not persisted in `skills-lock.json`. A fresh clone restoring via `experimental_install` would get the wrong branch.
 
 - **Keep skills in sync:** No cross-project view. You update one project and forget the others. Drift is silent.
 
-  > **Pain point:** Skills drift across projects with no notification. A simple `npx skills sync` or even a lockfile-based install would solve this, but neither exists today.
+  > **PP-04:** Skills drift across projects with no notification. A simple `npx skills sync` or even a lockfile-based install would solve this, but neither exists today.
 
 ### Provenance & Security
 
@@ -79,11 +79,11 @@ The developer wants to understand what's installed, where it came from, and whet
 - **Verify skill source:** `skills-lock.json` records `source` (owner/repo) and `ref`. Adequate for basic "where did this come from" questions.
 - **Detect local modifications:** The lock file stores a `skillFolderHash` (GitHub tree SHA). In principle you could compare, but there's no CLI command to check drift on project-scoped skills.
 
-  > **Pain point:** No `npx skills audit` or drift-check command. The data is in the lock file but there's no user-facing workflow to surface it.
+  > **PP-05:** No `npx skills audit` or drift-check command. The data is in the lock file but there's no user-facing workflow to surface it.
 
 - **Scan for vulnerabilities:** As of v1.4.3, `npx skills add` shows install-time risk assessments from three providers (Gen, Socket, Snyk). This is a significant improvement — security visibility exists at install time. However, there's no post-install `npx skills audit` command for ongoing monitoring.
 
-  > **Pain point (partially addressed):** Install-time scanning now exists, reducing the "flying blind" problem. The remaining gap is ongoing monitoring — no way to re-scan installed skills without re-installing them.
+  > **PP-02:** Install-time scanning now exists, reducing the "flying blind" problem. The remaining gap is ongoing monitoring — no way to re-scan installed skills without re-installing them.
 
 ```mermaid
 journey
@@ -115,13 +115,13 @@ journey
 
 ## Pain Points Summary
 
-| Pain Point | Score | Stage | Root Cause | Opportunity |
-|---|---|---|---|---|
-| Project-scoped skill updates broken | 1 | Updates | `npx skills update` only tracks global installs ([#337](https://github.com/vercel-labs/skills/issues/337)) | Track upstream issue; workaround: re-run `npx skills add` |
-| No post-install vulnerability scanning | 2 | Provenance | Install-time scanning exists (Gen, Socket, Snyk) but no `npx skills audit` for ongoing monitoring | `.source.yml` provenance could feed future post-install scanners |
-| Lockfile restore is experimental and lossy | 2 | Multi-Project | `experimental_install` exists but loses `@ref` pinning and agent selection | Wrapper can restore from `.source.yml` refs for full fidelity |
-| Skills drift across projects silently | 2 | Multi-Project | No cross-project awareness | Script or Makefile pattern: loop over projects, run `npx skills add` |
-| No drift detection CLI | 2 | Provenance | Hash data in lock file but no user command | Could layer `.source.yml` stamping as post-install hook; or contribute `npx skills check --project` |
+| ID | Pain Point | Score | Stage | Root Cause | Opportunity |
+|----|---|---|---|---|---|
+| JOURNEY-001.PP-01 | Project-scoped skill updates broken | 1 | Updates | `npx skills update` only tracks global installs ([#337](https://github.com/vercel-labs/skills/issues/337)) | Track upstream issue; workaround: re-run `npx skills add` |
+| JOURNEY-001.PP-02 | No post-install vulnerability scanning | 2 | Provenance | Install-time scanning exists (Gen, Socket, Snyk) but no `npx skills audit` for ongoing monitoring | `.source.yml` provenance could feed future post-install scanners |
+| JOURNEY-001.PP-03 | Lockfile restore is experimental and lossy | 2 | Multi-Project | `experimental_install` exists but loses `@ref` pinning and agent selection | Wrapper can restore from `.source.yml` refs for full fidelity |
+| JOURNEY-001.PP-04 | Skills drift across projects silently | 2 | Multi-Project | No cross-project awareness | Script or Makefile pattern: loop over projects, run `npx skills add` |
+| JOURNEY-001.PP-05 | No drift detection CLI | 2 | Provenance | Hash data in lock file but no user command | Could layer `.source.yml` stamping as post-install hook; or contribute `npx skills check --project` |
 
 ## Opportunities
 

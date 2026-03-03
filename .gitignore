@@ -5,7 +5,7 @@
 .claude/skills/
 
 # Specwatch runtime log
-.agents/specwatch.log
+specwatch.log
 
 # Dolt database files (added by bd init)
 .dolt/
