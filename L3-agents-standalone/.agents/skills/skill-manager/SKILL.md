@@ -6,7 +6,7 @@ allowed-tools: Bash, Read, Write, Edit, Grep, Glob
 metadata:
   short-description: Discover, install, audit, update, and drift-detect agent skills
   related-adr: ADR-002-Remote-Skills-Reference-Pattern, ADR-003-Skill-Manager-Wraps-npx-Skills
-  version: 2.0.0
+  version: 2.1.0
   author: cristos
 ---
 
@@ -96,9 +96,95 @@ When helping a user find relevant skills, examine their project for context:
 
 ## Installation
 
+### Installation interview
+
+Before running the install script, interview the user to determine scope, git tracking, and version. Gather answers via the decision table below, then map them to `install.sh` arguments.
+
+#### Decision table
+
+| # | Decision | Options | Default |
+|---|----------|---------|---------|
+| 1 | **Scope** — Where to install? | Project (`.agents/skills/`), User-global (`~/.claude/skills/`) | Project |
+| 2 | **Git tracking** — Track in version control? *(only when scope = project)* | Commit with repo, Gitignore, Decide later | Commit |
+| 3 | **Version** — Which ref to install? | Latest (HEAD), Specific tag/branch, Specific commit SHA | Latest |
+
+Q2 is **conditional** — skip it when scope = user-global (the install target is outside the repo).
+
+#### Claude Code structured prompts
+
+When `AskUserQuestion` is available, use two rounds of structured prompts.
+
+**Round 1 — scope + version** (ask together):
+
+```yaml
+AskUserQuestion:
+  questions:
+    - question: "Where should this skill be installed?"
+      header: "Scope"
+      options:
+        - label: "Project (Recommended)"
+          description: "Install to .agents/skills/ — shared with team via version control"
+        - label: "User-global"
+          description: "Install to ~/.claude/skills/ — available across all your projects, not committed"
+      multiSelect: false
+    - question: "Which version should be installed?"
+      header: "Version"
+      options:
+        - label: "Latest (Recommended)"
+          description: "Fetch the default branch tip (HEAD)"
+        - label: "Specific tag or branch"
+          description: "You'll be asked for the exact ref name next"
+        - label: "Specific commit SHA"
+          description: "You'll be asked for the full 40-character hash next"
+      multiSelect: false
+```
+
+**Round 2 — git tracking** (only if scope = project):
+
+```yaml
+AskUserQuestion:
+  questions:
+    - question: "Should this skill be tracked in git?"
+      header: "Git tracking"
+      options:
+        - label: "Commit with repo (Recommended)"
+          description: "Stage the skill files — team members get it when they pull"
+        - label: "Gitignore"
+          description: "Add to .gitignore — stays local to your machine"
+        - label: "Decide later"
+          description: "Install without touching git configuration"
+      multiSelect: false
+```
+
+If version = "Specific tag or branch" or "Specific commit SHA", ask a conversational follow-up for the ref value (free-text input — no structured prompt needed).
+
+#### Fallback for non-Claude runtimes
+
+If structured prompts are not available, ask the same questions conversationally and accept free-text answers. Use the defaults (project scope, commit, latest) if the user says "just install it" or similar.
+
+#### Mapping answers to install.sh arguments
+
+| Answer | install.sh argument |
+|--------|---------------------|
+| Scope = Project | `target-dir` = `.agents/skills` |
+| Scope = User-global | `target-dir` = `~/.claude/skills` |
+| Version = Latest | `ref` = `HEAD` |
+| Version = specific | `ref` = user-provided value |
+
+#### Post-install actions
+
+After `install.sh` succeeds (exit 0 or 1), apply git actions based on the interview answers:
+
+| Answer | Post-install action |
+|--------|---------------------|
+| Git tracking = Commit | `git add <skill-dir>` — inform user files are staged, do **not** commit |
+| Git tracking = Gitignore | Append the skill directory path to `.gitignore` |
+| Git tracking = Decide later | No git action |
+| Scope = User-global | No git action (regardless of Q2) |
+
 ### Install with safety gate
 
-Use `install.sh` for all skill installations. It wraps the fetch-and-stamp workflow with a post-install safety audit and automatic rollback on critical findings.
+Called by the interview procedure above. Wraps the fetch-and-stamp workflow with a post-install safety audit and automatic rollback on critical findings.
 
 ```bash
 bash scripts/install.sh \
