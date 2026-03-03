@@ -1,0 +1,13 @@
+{"created_at":"2026-03-03T08:11:08Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme","issue_id":"LLM-personal-agent-patterns-fme.1","type":"parent-child"}
+{"created_at":"2026-03-03T08:11:08Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme","issue_id":"LLM-personal-agent-patterns-fme.2","type":"parent-child"}
+{"created_at":"2026-03-03T08:11:08Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme.1","issue_id":"LLM-personal-agent-patterns-fme.2","type":"blocks"}
+{"created_at":"2026-03-03T08:11:09Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme","issue_id":"LLM-personal-agent-patterns-fme.3","type":"parent-child"}
+{"created_at":"2026-03-03T08:11:09Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme.1","issue_id":"LLM-personal-agent-patterns-fme.3","type":"blocks"}
+{"created_at":"2026-03-03T08:11:09Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme","issue_id":"LLM-personal-agent-patterns-fme.4","type":"parent-child"}
+{"created_at":"2026-03-03T08:11:09Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme.2","issue_id":"LLM-personal-agent-patterns-fme.4","type":"blocks"}
+{"created_at":"2026-03-03T08:11:09Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme","issue_id":"LLM-personal-agent-patterns-fme.5","type":"parent-child"}
+{"created_at":"2026-03-03T08:11:09Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme.3","issue_id":"LLM-personal-agent-patterns-fme.5","type":"blocks"}
+{"created_at":"2026-03-03T08:11:09Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme.4","issue_id":"LLM-personal-agent-patterns-fme.5","type":"blocks"}
+{"created_at":"2026-03-03T08:11:09Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme","issue_id":"LLM-personal-agent-patterns-fme.6","type":"parent-child"}
+{"created_at":"2026-03-03T08:11:09Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme.2","issue_id":"LLM-personal-agent-patterns-fme.6","type":"blocks"}
+{"created_at":"2026-03-03T08:11:09Z","created_by":"Cristos L-C","depends_on_id":"LLM-personal-agent-patterns-fme.3","issue_id":"LLM-personal-agent-patterns-fme.6","type":"blocks"}
