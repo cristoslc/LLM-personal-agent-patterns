@@ -5,6 +5,7 @@
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
 | [EPIC-006](./(EPIC-006)-Promote-Agents-Core-Standalone-Repo/(EPIC-006)-Promote-Agents-Core-Standalone-Repo.md) | Promote Agents Core to Standalone Repo | 2026-03-03 | 19c8f96 | Initial creation |
+| [EPIC-007](./(EPIC-007)-New-Artifact-Types-Runbook-and-Bug/(EPIC-007)-New-Artifact-Types-Runbook-and-Bug.md) | New Artifact Types — Runbook and Bug | 2026-03-03 | 76a76c1 | Initial creation |
 
 ## Active
 
