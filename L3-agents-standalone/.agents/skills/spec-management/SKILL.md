@@ -13,6 +13,35 @@ metadata:
 
 Create, transition, and validate documentation artifacts defined in AGENTS.md. The authoritative list of artifact types, phases, and hierarchy lives in AGENTS.md — this skill provides the operational procedures.
 
+## Dependency graph
+
+The `specgraph.sh` script builds and queries the artifact dependency graph from frontmatter. It caches a JSON graph in `/tmp/` and auto-rebuilds when any `docs/*.md` file changes.
+
+**Script location:** `scripts/specgraph.sh` (relative to this skill)
+
+**Subcommands:**
+
+| Command | What it does |
+|---------|-------------|
+| `build` | Force-rebuild graph from frontmatter |
+| `blocks <ID>` | What does this artifact depend on? (direct dependencies) |
+| `blocked-by <ID>` | What depends on this artifact? (inverse lookup) |
+| `tree <ID>` | Transitive dependency tree (all ancestors) |
+| `ready` | Active/Planned artifacts with all deps resolved |
+| `mermaid` | Mermaid diagram to stdout |
+| `status` | Summary table by type and phase |
+
+**When to use:**
+- Before transitioning an artifact to a new phase, run `blocks <ID>` to verify dependencies are resolved.
+- To find unblocked work, run `ready` — it lists active/planned artifacts whose dependencies are all in resolved statuses.
+- To understand the full dependency chain, run `tree <ID>` for transitive closure.
+- To generate a visual overview, pipe `mermaid` output into a `.md` file or render it directly.
+
+**Edge types:**
+- `depends-on` — explicit blocking dependency (from `depends-on:` frontmatter)
+- `parent-vision` — hierarchy edge (from `parent-vision:` frontmatter)
+- `parent-epic` — hierarchy edge (from `parent-epic:` frontmatter)
+
 ## Lifecycle table format
 
 Every artifact embeds a lifecycle table tracking phase transitions:
