@@ -3,3 +3,7 @@
 .claude/settings.local.json
 .claude/CLAUDE.local.md
 .claude/skills/
+
+# Dolt database files (added by bd init)
+.dolt/
+*.db
