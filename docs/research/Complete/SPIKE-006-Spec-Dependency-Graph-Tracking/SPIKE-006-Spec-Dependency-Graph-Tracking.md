@@ -262,4 +262,4 @@ After standardization: all 24 artifacts use `depends-on:` with bare `TYPE-NNN` I
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Planned | 2026-03-02 | 779a93c | Initial creation |
-| Complete | 2026-03-02 | PENDING | Gate PASS — Candidate F refined with specgraph.sh |
+| Complete | 2026-03-02 | 44106d0 | Gate PASS — Candidate F refined with specgraph.sh |
