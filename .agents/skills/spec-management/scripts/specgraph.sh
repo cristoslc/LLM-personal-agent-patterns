@@ -30,6 +30,7 @@ Commands:
   blocked-by <ID>    What depends on this artifact? (inverse lookup)
   tree <ID>          Transitive dependency tree (all ancestors)
   ready              Active/Planned artifacts with all deps resolved
+  next               What to work on next (ready items + what they unblock)
   mermaid            Mermaid diagram to stdout
   status             Summary table by type and phase
 USAGE
@@ -223,6 +224,73 @@ do_ready() {
   ' "$CACHE_FILE" | column -t -s $'\t'
 }
 
+# next — what to work on next (ready items + what they'd unblock + blocked items)
+do_next() {
+  ensure_cache
+  # Ready items with what completing them would unblock
+  local ready_output
+  ready_output=$(jq -r '
+    .nodes as $nodes |
+    .edges as $edges |
+    # Resolved status regex
+    def is_resolved: test("Complete|Implemented|Adopted|Validated|Archived|Retired|Superseded|Abandoned|Sunset|Deprecated");
+
+    # Find ready (unresolved, all deps satisfied)
+    [.nodes | to_entries[] |
+      select(.value.status | is_resolved | not) |
+      .key as $id |
+      ([$edges[] | select(.from == $id and .type == "depends-on") | .to] | unique) as $deps |
+      select(
+        ($deps | length == 0) or
+        ($deps | all(. as $dep | $nodes[$dep].status | is_resolved))
+      ) |
+      # What would completing this unblock?
+      ([$edges[] | select(.to == $id and .type == "depends-on") | .from] |
+        map(select(. as $blocked |
+          [$edges[] | select(.from == $blocked and .type == "depends-on") | .to] |
+          all(. as $dep | if $dep == $id then true else ($nodes[$dep].status | is_resolved) end)
+        ))
+      ) as $would_unblock |
+      {id: $id, status: .value.status, title: .value.title, unblocks: $would_unblock}
+    ] |
+    sort_by(.id) |
+    if length == 0 then "  (none)\n"
+    else .[] |
+      "  \(.id)  (\(.status))  \(.title)" +
+      if (.unblocks | length) > 0 then "\n    unblocks: \(.unblocks | join(", "))"
+      else "" end
+    end
+  ' "$CACHE_FILE") || true
+
+  # Blocked items
+  local blocked_output
+  blocked_output=$(jq -r '
+    .nodes as $nodes |
+    .edges as $edges |
+    def is_resolved: test("Complete|Implemented|Adopted|Validated|Archived|Retired|Superseded|Abandoned|Sunset|Deprecated");
+
+    [.nodes | to_entries[] |
+      select(.value.status | is_resolved | not) |
+      .key as $id |
+      ([$edges[] | select(.from == $id and .type == "depends-on") | .to] | unique) as $deps |
+      ($deps | map(select(. as $dep | $nodes[$dep].status | is_resolved | not))) as $unresolved |
+      select(($unresolved | length) > 0) |
+      {id: $id, status: .value.status, title: .value.title, waiting: $unresolved}
+    ] |
+    sort_by(.id) |
+    if length == 0 then "  (none)\n"
+    else .[] |
+      "  \(.id)  (\(.status))  \(.title)\n    waiting on: \(.waiting | join(", "))"
+    end
+  ' "$CACHE_FILE") || true
+
+  echo "=== Ready ==="
+  echo "$ready_output"
+  echo ""
+  echo "=== Blocked ==="
+  echo "$blocked_output"
+}
+
 # mermaid — output Mermaid diagram
 do_mermaid() {
   ensure_cache
@@ -287,6 +355,9 @@ case "$1" in
     ;;
   ready)
     do_ready
+    ;;
+  next)
+    do_next
     ;;
   mermaid)
     do_mermaid
