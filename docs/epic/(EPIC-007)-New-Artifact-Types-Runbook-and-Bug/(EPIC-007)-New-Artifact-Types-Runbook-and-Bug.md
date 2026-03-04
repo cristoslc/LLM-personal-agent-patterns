@@ -130,3 +130,4 @@ None. This Epic extends the artifact system using established patterns. The exec
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Proposed | 2026-03-03 | 76a76c1 | Initial creation |
+| Active | 2026-03-04 | 2af3ec2 | Child specs SPEC-001, SPEC-002 created and implemented |

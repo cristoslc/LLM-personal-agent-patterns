@@ -45,4 +45,4 @@ The Runbook artifact type (RUNBOOK-NNN) is defined in AGENTS.md with lifecycle p
 
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
-| Implemented | 2026-03-04 | _pending_ | Created directly as Implemented — definition and template files authored in-session |
+| Implemented | 2026-03-04 | 2af3ec2 | Created directly as Implemented — definition and template files already existed |

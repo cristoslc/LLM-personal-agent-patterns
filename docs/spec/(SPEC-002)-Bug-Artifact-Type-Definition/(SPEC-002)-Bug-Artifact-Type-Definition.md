@@ -56,4 +56,4 @@ The artifact type system has no Bug type. Defect reports discovered during testi
 
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
-| Implemented | 2026-03-04 | _pending_ | Created directly as Implemented — full type definition authored in-session |
+| Implemented | 2026-03-04 | 2af3ec2 | Created directly as Implemented — full type definition authored in-session |
