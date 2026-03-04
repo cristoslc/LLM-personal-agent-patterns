@@ -1,10 +1,10 @@
 ---
 title: "PERSONA-001 Solo Framework Developer"
 artifact: PERSONA-001
-status: Draft
+status: Validated
 author: cristos
 created: 2026-03-01
-last-updated: 2026-03-01
+last-updated: 2026-03-04
 linked-journeys:
   - JOURNEY-001
 depends-on: []

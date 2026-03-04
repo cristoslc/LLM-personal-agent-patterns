@@ -1,10 +1,10 @@
 ---
 title: "EPIC-007 New Artifact Types — Runbook and Bug"
 artifact: EPIC-007
-status: Proposed
+status: Active
 author: cristos
 created: 2026-03-03
-last-updated: 2026-03-03
+last-updated: 2026-03-04
 parent-vision: VISION-001
 success-criteria:
   - "Runbook and Bug artifact types are defined in AGENTS.md with lifecycle phases, path conventions, and relationship rules"
@@ -111,10 +111,9 @@ Product Vision (VISION-NNN)
 
 ## Child Specs
 
-_To be created when this Epic moves to Active:_
-- Agent Spec for Runbook artifact type definition and tooling
-- Agent Spec for Bug artifact type definition and tooling
-- Agent Spec for specwatch/specgraph extensions (if non-trivial)
+- [SPEC-001 Runbook Artifact Type Definition and Tooling](../../spec/(SPEC-001)-Runbook-Artifact-Type-Definition/(SPEC-001)-Runbook-Artifact-Type-Definition.md) — Implemented
+- [SPEC-002 Bug Artifact Type Definition and Tooling](../../spec/(SPEC-002)-Bug-Artifact-Type-Definition/(SPEC-002)-Bug-Artifact-Type-Definition.md) — Implemented
+- Specwatch/specgraph extensions — not needed (scripts are generic, scan all `docs/*.md`)
 
 ## Key Dependencies
 
