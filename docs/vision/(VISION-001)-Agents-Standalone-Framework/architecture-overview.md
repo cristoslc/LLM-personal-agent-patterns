@@ -1,6 +1,6 @@
 # Architecture Overview
 
-Supporting document for [VISION-001 Agents Standalone Framework](./\(VISION-001\)-Agents-Standalone-Framework.md).
+Supporting document for [VISION-001 Agents Standalone Framework](./(VISION-001)-Agents-Standalone-Framework.md).
 
 ## System Shape
 
