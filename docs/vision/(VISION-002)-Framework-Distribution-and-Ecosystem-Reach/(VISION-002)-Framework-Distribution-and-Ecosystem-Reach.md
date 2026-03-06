@@ -39,4 +39,4 @@ Framework capabilities are only valuable if developers can find and install them
 
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
-| Active | 2026-03-05 | _pending_ | Initial creation — skipped Draft, distribution strategy already defined in EPIC-006 |
+| Active | 2026-03-05 | 19ad5bf | Initial creation — skipped Draft, distribution strategy already defined in EPIC-006 |
