@@ -75,3 +75,4 @@ This could be agent instructions (the agent parses the plan inline) or a helper 
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Draft | 2026-03-06 | _pending_ | Initial creation |
+| Implemented | 2026-03-06 | 034183a | Plan ingestion script and SKILL.md docs complete |
