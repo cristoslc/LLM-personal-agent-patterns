@@ -5,7 +5,7 @@ status: Proposed
 author: cristos
 created: 2026-03-03
 last-updated: 2026-03-03
-parent-vision: VISION-001
+parent-vision: VISION-002
 success-criteria:
   - "L3-agents-core content lives in its own Git repo with skills installable via npx skills add"
   - "Governance rules (routing, protocols, artifact hierarchy) distribute as a governance skill within the same repo — no separate distribution channel"
