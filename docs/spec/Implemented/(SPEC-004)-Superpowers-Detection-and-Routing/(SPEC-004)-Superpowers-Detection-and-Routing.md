@@ -1,7 +1,7 @@
 ---
 title: "Superpowers Detection and Routing"
 artifact: SPEC-004
-status: Draft
+status: Implemented
 author: cristos
 created: 2026-03-06
 last-updated: 2026-03-06
