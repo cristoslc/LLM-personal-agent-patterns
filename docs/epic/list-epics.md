@@ -5,11 +5,12 @@
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
 | [EPIC-006](./(EPIC-006)-Promote-Agents-Core-Standalone-Repo/(EPIC-006)-Promote-Agents-Core-Standalone-Repo.md) | Promote Agents Core to Standalone Repo | 2026-03-03 | 19c8f96 | Initial creation |
-| [EPIC-008](./(EPIC-008)-Specwatch-Ignore-List/(EPIC-008)-Specwatch-Ignore-List.md) | Specwatch Ignore List | 2026-03-05 | _pending_ | Initial creation |
+
 ## Active
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
+| [EPIC-008](./(EPIC-008)-Specwatch-Ignore-List/(EPIC-008)-Specwatch-Ignore-List.md) | Specwatch Ignore List | 2026-03-05 | 1c0fe84 | Scope clear, no spikes needed |
 
 
 ## Testing
