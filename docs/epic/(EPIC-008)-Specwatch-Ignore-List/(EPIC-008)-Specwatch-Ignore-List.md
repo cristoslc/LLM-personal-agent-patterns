@@ -1,7 +1,7 @@
 ---
 title: "Specwatch Ignore List"
 artifact: EPIC-008
-status: Proposed
+status: Active
 author: cristos
 created: 2026-03-05
 last-updated: 2026-03-05
@@ -47,4 +47,4 @@ Builds on the existing specwatch infrastructure delivered by EPIC-005. No blocki
 
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
-| Proposed | 2026-03-05 | _pending_ | Initial creation |
+| Proposed | 2026-03-05 | 47b3287 | Initial creation |
