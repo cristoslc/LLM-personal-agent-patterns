@@ -1,7 +1,7 @@
 ---
 title: "Superpowers Execution Tracking Integration"
 artifact: EPIC-009
-status: Proposed
+status: Complete
 author: cristos
 created: 2026-03-06
 last-updated: 2026-03-06
@@ -35,8 +35,8 @@ Implement the three-layer architecture from ADR-004: superpowers for plan author
 ## Child Specs
 
 - SPIKE-008: Superpowers Execution Model Evaluation (Complete — gate PASS)
-- SPEC-003: Superpowers Plan Ingestion (Draft)
-- SPEC-004: Superpowers Detection and Routing (Draft, depends on SPEC-003)
+- SPEC-003: Superpowers Plan Ingestion (Implemented)
+- SPEC-004: Superpowers Detection and Routing (Implemented)
 
 ## Key Dependencies
 
