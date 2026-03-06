@@ -5,7 +5,7 @@
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
 | [EPIC-006](./(EPIC-006)-Promote-Agents-Core-Standalone-Repo/(EPIC-006)-Promote-Agents-Core-Standalone-Repo.md) | Promote Agents Core to Standalone Repo | 2026-03-03 | 19c8f96 | Initial creation |
-| [EPIC-009](./Proposed/(EPIC-009)-Superpowers-Execution-Tracking-Integration/(EPIC-009)-Superpowers-Execution-Tracking-Integration.md) | Superpowers Execution Tracking Integration | 2026-03-06 | _pending_ | Initial creation; gated by SPIKE-008 |
+
 
 ## Active
 
@@ -23,6 +23,7 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
+| [EPIC-009](./Complete/(EPIC-009)-Superpowers-Execution-Tracking-Integration/(EPIC-009)-Superpowers-Execution-Tracking-Integration.md) | Superpowers Execution Tracking Integration | 2026-03-06 | 9fbf816 | All child specs implemented, success criteria met |
 | [EPIC-007](./(EPIC-007)-New-Artifact-Types-Runbook-and-Bug/(EPIC-007)-New-Artifact-Types-Runbook-and-Bug.md) | New Artifact Types — Runbook and Bug | 2026-03-05 | 47fe610 | All success criteria met; SPEC-001, SPEC-002 implemented |
 | [EPIC-003](./(EPIC-003)-Skill-Lifecycle-Manager/(EPIC-003)-Skill-Lifecycle-Manager.md) | Skill Lifecycle Manager | 2026-03-02 | ad5d66e | All 5 stories done; 38/38 smoke tests pass |
 | [EPIC-005](./(EPIC-005)-Specwatch-Stale-Path-Reference-Detection/(EPIC-005)-Specwatch-Stale-Path-Reference-Detection.md) | Specwatch — Stale Path Reference Detection | 2026-03-03 | cd85f8c | All 4 success criteria validated |
