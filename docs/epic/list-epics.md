@@ -5,6 +5,7 @@
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
 | [EPIC-006](./(EPIC-006)-Promote-Agents-Core-Standalone-Repo/(EPIC-006)-Promote-Agents-Core-Standalone-Repo.md) | Promote Agents Core to Standalone Repo | 2026-03-03 | 19c8f96 | Initial creation |
+| [EPIC-009](./Proposed/(EPIC-009)-Superpowers-Execution-Tracking-Integration/(EPIC-009)-Superpowers-Execution-Tracking-Integration.md) | Superpowers Execution Tracking Integration | 2026-03-06 | _pending_ | Initial creation; gated by SPIKE-008 |
 
 ## Active
 

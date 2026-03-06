@@ -22,6 +22,7 @@
 | [SPIKE-005-Existing-Skill-Lifecycle-Tools](./Complete/SPIKE-005-Existing-Skill-Lifecycle-Tools/SPIKE-005-Existing-Skill-Lifecycle-Tools.md) | 2026-03-01 | 5810a56 | Gate PASS — no full-lifecycle skill exists; build, borrow patterns |
 | [SPIKE-006-Spec-Dependency-Graph-Tracking](./Complete/SPIKE-006-Spec-Dependency-Graph-Tracking/SPIKE-006-Spec-Dependency-Graph-Tracking.md) | 2026-03-02 | 44106d0 | Gate PASS — Candidate F refined with specgraph.sh |
 | [SPIKE-007-Specwatch-Log-Strategy](./Complete/SPIKE-007-Specwatch-Log-Strategy/SPIKE-007-Specwatch-Log-Strategy.md) | 2026-03-03 | 60bc5c3 | Gate PASS — Strategy 2 (Warn + suggest) selected |
+| [SPIKE-008](./Complete/(SPIKE-008)-Superpowers-Plan-Ingestion-Feasibility/(SPIKE-008)-Superpowers-Plan-Ingestion-Feasibility.md) | 2026-03-06 | _pending_ | Gate PASS — GO for integration; ADR-004 validated |
 
 ## Abandoned
 
