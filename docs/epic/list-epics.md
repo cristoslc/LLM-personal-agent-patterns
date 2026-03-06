@@ -10,7 +10,7 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| [EPIC-007](./(EPIC-007)-New-Artifact-Types-Runbook-and-Bug/(EPIC-007)-New-Artifact-Types-Runbook-and-Bug.md) | New Artifact Types — Runbook and Bug | 2026-03-04 | 2af3ec2 | Child specs SPEC-001, SPEC-002 implemented |
+
 
 ## Testing
 
@@ -21,6 +21,7 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
+| [EPIC-007](./(EPIC-007)-New-Artifact-Types-Runbook-and-Bug/(EPIC-007)-New-Artifact-Types-Runbook-and-Bug.md) | New Artifact Types — Runbook and Bug | 2026-03-05 | 47fe610 | All success criteria met; SPEC-001, SPEC-002 implemented |
 | [EPIC-003](./(EPIC-003)-Skill-Lifecycle-Manager/(EPIC-003)-Skill-Lifecycle-Manager.md) | Skill Lifecycle Manager | 2026-03-02 | ad5d66e | All 5 stories done; 38/38 smoke tests pass |
 | [EPIC-005](./(EPIC-005)-Specwatch-Stale-Path-Reference-Detection/(EPIC-005)-Specwatch-Stale-Path-Reference-Detection.md) | Specwatch — Stale Path Reference Detection | 2026-03-03 | cd85f8c | All 4 success criteria validated |
 | [EPIC-004](./(EPIC-004)-External-Task-Management/(EPIC-004)-External-Task-Management.md) | External Task Management | 2026-03-03 | 4f465bd | All success criteria met; execution-tracking skill v2.0.0 operational |
