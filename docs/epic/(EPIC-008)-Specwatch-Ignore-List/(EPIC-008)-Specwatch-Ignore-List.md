@@ -48,3 +48,4 @@ Builds on the existing specwatch infrastructure delivered by EPIC-005. No blocki
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Proposed | 2026-03-05 | 47b3287 | Initial creation |
+| Active | 2026-03-05 | 1c0fe84 | Scope clear, no spikes needed |
