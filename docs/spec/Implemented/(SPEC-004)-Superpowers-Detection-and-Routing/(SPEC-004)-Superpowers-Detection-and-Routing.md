@@ -73,3 +73,4 @@ Add a "Superpowers integration" section to the spec-management SKILL.md's execut
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Draft | 2026-03-06 | _pending_ | Initial creation |
+| Implemented | 2026-03-06 | 3f44cb1 | Detection and routing logic added to spec-management SKILL.md |
