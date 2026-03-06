@@ -1,5 +1,12 @@
 # Agent Spec Lifecycle Index
 
+## Draft
+
+| Artifact | Title | Date | Commit | Notes |
+|---|---|---|---|---|
+| [SPEC-003](./Draft/(SPEC-003)-Superpowers-Plan-Ingestion/(SPEC-003)-Superpowers-Plan-Ingestion.md) | Superpowers Plan Ingestion | 2026-03-06 | _pending_ | execution-tracking ingests superpowers plan files into bd |
+| [SPEC-004](./Draft/(SPEC-004)-Superpowers-Detection-and-Routing/(SPEC-004)-Superpowers-Detection-and-Routing.md) | Superpowers Detection and Routing | 2026-03-06 | _pending_ | spec-management detects and routes through superpowers |
+
 ## Implemented
 
 | Artifact | Title | Date | Commit | Notes |

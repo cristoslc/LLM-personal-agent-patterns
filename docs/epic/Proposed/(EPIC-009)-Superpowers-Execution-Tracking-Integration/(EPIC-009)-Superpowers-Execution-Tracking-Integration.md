@@ -7,10 +7,9 @@ created: 2026-03-06
 last-updated: 2026-03-06
 parent-vision: VISION-001
 success-criteria:
-  - "SPIKE-008 completes with a clear integrate/replace/reject decision backed by hands-on evidence"
-  - "If integrate or replace: execution-tracking skill is updated to work with superpowers (either as plan author or as primary backend)"
-  - "If replace: new ADR supersedes ADR-004 with documented rationale"
-  - "If reject: current stack is validated and this epic is abandoned cleanly"
+  - "execution-tracking skill can ingest a superpowers plan file and register tasks in bd with origin-ref and spec tags"
+  - "spec-management detects superpowers and routes implementation through brainstorming → writing-plans when present"
+  - "Current flow works unchanged when superpowers is not installed"
 depends-on:
   - SPIKE-008
 addresses: []
@@ -20,33 +19,29 @@ addresses: []
 
 ## Goal / Objective
 
-Evaluate whether and how obra/superpowers should relate to our execution-tracking stack. ADR-004 proposed a three-layer architecture (spec-management → superpowers → execution-tracking/bd), but that decision was made from documentation, not hands-on use. This epic gates on SPIKE-008 to determine the right path before any implementation work.
-
-Three possible outcomes:
-1. **Integrate** — superpowers authors plans, bd tracks execution (ADR-004 validated)
-2. **Replace** — superpowers replaces bd as the execution backend (ADR-004 superseded)
-3. **Reject** — keep current stack, superpowers doesn't fit our workflow (epic abandoned)
+Implement the three-layer architecture from ADR-004: superpowers for plan authoring, bd for plan tracking, spec-management as orchestrator. SPIKE-008 validated all four assumptions — superpowers and bd serve genuinely different purposes, and the combined value exceeds either tool alone.
 
 ## Scope Boundaries
 
 **In scope:**
-- SPIKE-008 hands-on evaluation of superpowers' execution model
-- Challenging ADR-004 assumptions with empirical evidence
-- Whatever implementation path SPIKE-008's findings dictate
+- Plan ingestion: execution-tracking parses superpowers plan files into bd tasks (SPEC-003)
+- Detection and routing: spec-management detects superpowers and adapts the implementation flow (SPEC-004)
 
 **Out of scope:**
 - Modifying superpowers itself — we consume it as-is
-- Committing to a specific integration approach before SPIKE-008 completes
+- Bidirectional sync between plan files and bd
+- Superpowers' executing-plans/subagent-driven-development integration (orthogonal, per ADR-004)
 
 ## Child Specs
 
-- SPIKE-008: Superpowers Execution Model Evaluation (gating spike — must complete before any implementation decisions)
-- Implementation specs TBD based on SPIKE-008 outcome
+- SPIKE-008: Superpowers Execution Model Evaluation (Complete — gate PASS)
+- SPEC-003: Superpowers Plan Ingestion (Draft)
+- SPEC-004: Superpowers Detection and Routing (Draft, depends on SPEC-003)
 
 ## Key Dependencies
 
-- SPIKE-008 (Planned) — gating research, blocks all implementation work
-- ADR-004 (Adopted) — may be validated, superseded, or abandoned based on findings
+- SPIKE-008 (Complete) — validated ADR-004 assumptions
+- ADR-004 (Adopted) — architectural decision this epic implements
 - EPIC-004 (Complete) — established execution-tracking with bd
 - superpowers (external) — obra/superpowers
 
