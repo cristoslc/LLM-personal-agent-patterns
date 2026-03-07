@@ -1,10 +1,11 @@
 ---
 title: "Subtree Split Distribution Model"
 artifact: ADR-001
-status: Adopted
+status: Superseded
+superseded-by: ADR-005
 author: cristoslc
 created: 2026-02-26
-last-updated: 2026-02-26
+last-updated: 2026-03-06
 depends-on: []
 ---
 
@@ -66,3 +67,4 @@ Use `git subtree split` to publish a `l3-agents-core` branch containing the L3 f
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
 | Adopted | 2026-02-26 | de5f1a3 | Branch and Action already shipped; writing ADR retroactively |
+| Superseded | 2026-03-06 | _pending_ | Superseded by ADR-005 (npx Skills Distribution Model) |
