@@ -72,4 +72,4 @@ The framework's governance layer (skill routing rules, pre-implementation protoc
 
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
-| Draft | 2026-03-06 | _pending_ | Initial creation |
+| Draft | 2026-03-06 | d7c0701 | Initial creation |
