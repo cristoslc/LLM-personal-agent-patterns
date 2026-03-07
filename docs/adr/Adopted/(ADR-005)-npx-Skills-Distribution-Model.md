@@ -77,4 +77,4 @@ Replace the subtree split pipeline with direct distribution via `npx skills` fro
 
 | Phase | Date | Commit | Notes |
 |-------|------|--------|-------|
-| Adopted | 2026-03-06 | _pending_ | Supersedes ADR-001; decision captured in EPIC-006 |
+| Adopted | 2026-03-06 | fbfc4ee | Supersedes ADR-001; decision captured in EPIC-006 |
