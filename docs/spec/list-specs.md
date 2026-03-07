@@ -4,7 +4,8 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| _None_ | - | - | - | - |
+| [SPEC-005](./Draft/(SPEC-005)-Swain-Repo-Structure/(SPEC-005)-Swain-Repo-Structure.md) | Swain Repository Structure and Skill Packaging | 2026-03-06 | _pending_ | EPIC-006 |
+| [SPEC-006](./Draft/(SPEC-006)-Governance-Skill/(SPEC-006)-Governance-Skill.md) | Governance Skill | 2026-03-06 | _pending_ | EPIC-006 |
 
 ## Implemented
 

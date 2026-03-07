@@ -112,17 +112,16 @@ obra/superpowers is a recommended companion install, not a swain dependency. Whe
 
 Each tool stays in its lane: superpowers produces plans, bd tracks them, spec-management orchestrates the handoff. See [ADR-004](../../adr/Adopted/(ADR-004)-Superpowers-Plan-Authoring-With-Beads-Persistence.md) for the full decision record.
 
-## Child Specs
+## Child Artifacts
 
-_To be created as this epic is broken down into stories/specs._
-
-Anticipated children:
-- Repo creation and initial structure (naming, CI)
-- Skill packaging (restructure existing skills into Agent Skills spec format)
-- Governance skill (extract AGENTS.md routing/protocol content into a governance SKILL.md with first-use setup)
-- Migration guide (update-agents-core consumers to `npx skills add`)
-- Retirement of update-agents-core and skill-manager skills
-- skills.sh registration and discovery
+| Artifact | Title | Status |
+|----------|-------|--------|
+| SPEC-005 | Swain Repository Structure and Skill Packaging | Draft |
+| SPEC-006 | Governance Skill | Draft |
+| STORY-009 | Single-Command Framework Install | Draft |
+| STORY-010 | Migrate from Legacy Distribution | Draft |
+| STORY-011 | Retire Legacy Distribution Infrastructure | Draft |
+| STORY-012 | Skills.sh Registration | Draft |
 
 ## Key Dependencies
 

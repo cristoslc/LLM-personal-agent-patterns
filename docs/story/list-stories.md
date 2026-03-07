@@ -4,7 +4,10 @@
 
 | Artifact | Title | Date | Commit | Notes |
 |---|---|---|---|---|
-| _None_ | - | - | - | - |
+| [STORY-009](./Draft/(STORY-009)-Single-Command-Framework-Install.md) | Single-Command Framework Install | 2026-03-06 | _pending_ | EPIC-006 |
+| [STORY-010](./Draft/(STORY-010)-Migrate-From-Legacy-Distribution.md) | Migrate from Legacy Distribution | 2026-03-06 | _pending_ | EPIC-006 |
+| [STORY-011](./Draft/(STORY-011)-Retire-Legacy-Distribution-Infrastructure.md) | Retire Legacy Distribution Infrastructure | 2026-03-06 | _pending_ | EPIC-006 |
+| [STORY-012](./Draft/(STORY-012)-Skills-sh-Registration.md) | Skills.sh Registration | 2026-03-06 | _pending_ | EPIC-006 |
 
 ## Ready
 
