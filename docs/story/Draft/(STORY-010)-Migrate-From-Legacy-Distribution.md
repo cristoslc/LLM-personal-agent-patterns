@@ -15,7 +15,7 @@ execution-tracking: required
 
 # STORY-010 Migrate from Legacy Distribution
 
-**As an** existing consumer of the subtree-split distribution (L3-agents-core branch), **I want** a clear migration path to `npx skills add cristos/swain`, **so that** I can switch to the new distribution model without losing my customizations or breaking my workflow.
+**As an** existing consumer of the subtree-split distribution (L3-agents-core branch), **I want** a clear migration path to `npx skills add cristoslc/swain`, **so that** I can switch to the new distribution model without losing my customizations or breaking my workflow.
 
 ## Acceptance Criteria
 

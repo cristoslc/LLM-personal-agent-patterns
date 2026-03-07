@@ -9,7 +9,7 @@ parent-vision: VISION-002
 success-criteria:
   - "L3-agents-core content lives in its own Git repo with skills installable via npx skills add"
   - "Governance rules (routing, protocols, artifact hierarchy) distribute as a governance skill within the same repo — no separate distribution channel"
-  - "All skills and governance install from a single command: npx skills add cristos/swain"
+  - "All skills and governance install from a single command: npx skills add cristoslc/swain"
   - "The framework's own development docs (docs/) never leak to consumers — npx skills only discovers SKILL.md directories"
   - "Existing projects using update-agents-core can migrate to the new distribution model"
 depends-on: []
@@ -24,7 +24,7 @@ Extract L3-agents-core from the LLM-personal-agent-patterns snippets collection 
 ## Scope Boundaries
 
 **In scope:**
-- New standalone repo creation as `cristos/swain` (named for the boatswain's mate — the officer who maintains rigging and enforces standards)
+- New standalone repo creation as `cristoslc/swain` (named for the boatswain's mate — the officer who maintains rigging and enforces standards)
 - Adopting Vercel's `npx skills` as the distribution channel for all content (skills and governance)
 - Structuring skills for the Agent Skills spec (SKILL.md + references/ + scripts/ per skill)
 - Creating a `governance` skill that delivers always-on routing, protocols, and conventions — with first-invocation setup to inject governance rules into the agent's context (CLAUDE.md or equivalent)
@@ -79,7 +79,7 @@ swain/
 
 Consumer installs:
 ```bash
-npx skills add cristos/swain
+npx skills add cristoslc/swain
 ```
 
 This symlinks all three skills into `.claude/skills/` (or equivalent for other agents). No two-tier model, no `.devignore`/`.distignore`, no GitHub Action needed — `npx skills` only discovers directories containing SKILL.md files and ignores everything else.
@@ -126,7 +126,7 @@ Each tool stays in its lane: superpowers produces plans, bd tracks them, spec-ma
 ## Key Dependencies
 
 - **Vercel `npx skills` CLI** — external tool; must support the repo layout with skills in subdirectories. The CLI discovers SKILL.md files by scanning well-known paths (`.claude/skills/`, `skills/`, etc.). Need to confirm our `skills/` directory layout is discoverable.
-- **Repo naming decision** — resolved: `cristos/swain`. Zero collisions on GitHub, npm, and PyPI.
+- **Repo naming decision** — resolved: `cristoslc/swain`. Zero collisions on GitHub, npm, and PyPI.
 
 ## Risks
 

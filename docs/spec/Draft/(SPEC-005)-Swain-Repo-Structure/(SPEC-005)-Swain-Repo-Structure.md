@@ -18,12 +18,12 @@ execution-tracking: required
 
 ## Problem Statement
 
-The framework's skills currently live inside `L3-agents-core/.agents/` within a monorepo, structured for the custom subtree-split distribution pipeline. They need to be restructured into a standalone `cristos/swain` repository that `npx skills` can discover and install.
+The framework's skills currently live inside `L3-agents-core/.agents/` within a monorepo, structured for the custom subtree-split distribution pipeline. They need to be restructured into a standalone `cristoslc/swain` repository that `npx skills` can discover and install.
 
 ## External Behavior
 
 **Inputs:**
-- `npx skills add cristos/swain` from any project directory
+- `npx skills add cristoslc/swain` from any project directory
 
 **Outputs:**
 - All skills (spec-management, execution-tracking, governance) symlinked into the consumer's `.claude/skills/` directory
@@ -39,7 +39,7 @@ The framework's skills currently live inside `L3-agents-core/.agents/` within a 
 
 ## Acceptance Criteria
 
-1. Given the swain repo exists on GitHub, when a user runs `npx skills add cristos/swain`, then all skills are installed into `.claude/skills/`
+1. Given the swain repo exists on GitHub, when a user runs `npx skills add cristoslc/swain`, then all skills are installed into `.claude/skills/`
 2. Given the repo contains `docs/`, `AGENTS.md`, and other dev-only files, when `npx skills` scans the repo, then only SKILL.md directories are discovered
 3. Given the existing spec-management skill with its `references/` and `scripts/` subdirectories, when packaged for swain, then all supporting files are included and paths resolve correctly
 4. Given the existing execution-tracking skill, when packaged for swain, then all scripts (including `ingest-plan.py`) are included and functional
@@ -59,12 +59,13 @@ The framework's skills currently live inside `L3-agents-core/.agents/` within a 
 
 ## Implementation Approach
 
-1. Create `cristos/swain` repo on GitHub
-2. Set up directory structure: `skills/spec-management/`, `skills/execution-tracking/`, `skills/governance/`
-3. Copy existing skill content from `L3-agents-core/.claude/skills/` (this repo's `.agents/skills/` equivalent)
-4. Copy skill content from this repo's `.claude/skills/` where the canonical versions live
-5. Verify `npx skills add` discovers all SKILL.md files
-6. Add repo-level README, LICENSE, and CI
+1. Create `cristoslc/swain` repo on GitHub
+2. Clone locally to `~/Documents/code/swain/` (peer to other personal code projects)
+3. Set up directory structure: `skills/spec-management/`, `skills/execution-tracking/`, `skills/governance/`
+4. Copy existing skill content from this repo's `.claude/skills/` where the canonical versions live
+5. Copy any additional content from `L3-agents-core/.agents/` that isn't already covered
+6. Verify `npx skills add` discovers all SKILL.md files
+7. Add repo-level README, LICENSE, and CI
 
 ## Lifecycle
 

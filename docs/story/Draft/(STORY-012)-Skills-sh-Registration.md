@@ -21,7 +21,7 @@ execution-tracking: required
 
 1. The swain repo is registered on skills.sh.
 2. Each skill (spec-management, execution-tracking, governance) appears with its description in the directory listing.
-3. The skills.sh listing links back to the `cristos/swain` GitHub repo.
+3. The skills.sh listing links back to the `cristoslc/swain` GitHub repo.
 
 ## Lifecycle
 

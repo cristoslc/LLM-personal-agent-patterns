@@ -27,11 +27,11 @@ Meanwhile, Vercel's `npx skills` CLI has become the de facto standard for agent 
 
 ## Decision
 
-Replace the subtree split pipeline with direct distribution via `npx skills` from a standalone `cristos/swain` repository.
+Replace the subtree split pipeline with direct distribution via `npx skills` from a standalone `cristoslc/swain` repository.
 
 **What changes:**
-- L3-agents-core content moves to the `cristos/swain` repo, structured as SKILL.md directories under `skills/`
-- Consumers install with `npx skills add cristos/swain` — one command, no git ceremony
+- L3-agents-core content moves to the `cristoslc/swain` repo, structured as SKILL.md directories under `skills/`
+- Consumers install with `npx skills add cristoslc/swain` — one command, no git ceremony
 - A `governance` skill delivers always-on routing rules, protocols, and conventions via first-use agent-driven setup
 - The GitHub Action (`split-l3-agents-core.yml`), `.distignore`, `update-agents-core` skill, and `skill-manager` skill are retired
 - The `L3-agents-core/` directory is removed from this repo after migration
@@ -65,7 +65,7 @@ Replace the subtree split pipeline with direct distribution via `npx skills` fro
 
 ## Consequences
 
-- **Positive:** Consumer installation drops from 4 commands (remote add, fetch, merge, cleanup) to 1 (`npx skills add cristos/swain`).
+- **Positive:** Consumer installation drops from 4 commands (remote add, fetch, merge, cleanup) to 1 (`npx skills add cristoslc/swain`).
 - **Positive:** Updates via `npx skills update` — no merge conflicts, no stale refs.
 - **Positive:** Eliminates all custom distribution infrastructure: GitHub Action, `.distignore`, `update-agents-core` skill, `skill-manager` skill.
 - **Positive:** Framework becomes discoverable in the skills.sh ecosystem directory.

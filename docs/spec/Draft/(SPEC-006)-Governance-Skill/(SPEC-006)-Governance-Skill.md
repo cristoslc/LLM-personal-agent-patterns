@@ -24,7 +24,7 @@ The framework's governance layer (skill routing rules, pre-implementation protoc
 ## External Behavior
 
 **Inputs:**
-- Installed via `npx skills add cristos/swain` (bundled with other skills)
+- Installed via `npx skills add cristoslc/swain` (bundled with other skills)
 - First invocation triggers setup: detects agent platform and existing config
 
 **Outputs:**

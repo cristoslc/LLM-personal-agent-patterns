@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Create the `cristos/swain` repo locally, structure it for `npx skills` discovery, copy the three existing skills plus a governance placeholder, and verify end-to-end installation.
+**Goal:** Create the `cristoslc/swain` repo locally, structure it for `npx skills` discovery, copy the three existing skills plus a governance placeholder, and verify end-to-end installation.
 
 **Architecture:** Standalone Git repo at `~/Documents/code/swain/` with a `skills/` directory containing four skill subdirectories. Each skill has a SKILL.md plus optional `references/` and `scripts/` subdirectories. Dev-only content (docs, AGENTS.md) lives at repo root with no SKILL.md, so `npx skills` ignores it.
 
@@ -16,7 +16,7 @@
 
 Run:
 ```bash
-gh repo create cristos/swain --public --description "Agent governance, spec management, and execution tracking skills" --clone --gitignore='' ~/Documents/code/swain
+gh repo create cristoslc/swain --public --description "Agent governance, spec management, and execution tracking skills" --clone --gitignore='' ~/Documents/code/swain
 ```
 Expected: Repo created on GitHub and cloned locally.
 
@@ -120,7 +120,7 @@ Named for the boatswain's mate — the officer who maintains rigging and enforce
 ## Install
 
 ```bash
-npx skills add cristos/swain
+npx skills add cristoslc/swain
 ```
 
 This installs all skills into your project's `.claude/skills/` directory:
@@ -365,7 +365,7 @@ git push origin main
 **Step 2: Verify GitHub discovery**
 
 ```bash
-npx skills add cristos/swain --list
+npx skills add cristoslc/swain --list
 ```
 Expected: All 4 skills listed from the GitHub repo (not local path).
 

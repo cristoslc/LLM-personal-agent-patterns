@@ -14,11 +14,11 @@ execution-tracking: required
 
 # STORY-009 Single-Command Framework Install
 
-**As a** developer adopting the agents framework, **I want** to install it with a single `npx skills add cristos/swain` command, **so that** I get all skills and governance without git remote setup, merge ceremonies, or manual file copying.
+**As a** developer adopting the agents framework, **I want** to install it with a single `npx skills add cristoslc/swain` command, **so that** I get all skills and governance without git remote setup, merge ceremonies, or manual file copying.
 
 ## Acceptance Criteria
 
-1. Running `npx skills add cristos/swain` in a clean project installs all framework skills into `.claude/skills/`.
+1. Running `npx skills add cristoslc/swain` in a clean project installs all framework skills into `.claude/skills/`.
 2. After installation, `npx skills list` shows spec-management, execution-tracking, and governance as installed skills.
 3. The first agent session after install triggers governance setup, injecting routing rules into the project's context file.
 4. The entire install-to-working flow completes in under 60 seconds.
