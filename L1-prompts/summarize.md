@@ -1,3 +1,1 @@
-```
-Summarize our purpose, process, principal findings, primary outcomes, and produced artifacts related only to this conversation. Aim for 1,500 - 3,000 tokens. This summary will be used for further LLM interactions. Use a modular, losslessly compacted, markdown reference document format.
-```
+Summarize our purpose, process, principal findings, primary outcomes, and produced artifacts related only to this conversation. Aim for 500 - 3,000 tokens, only as many as needed. This summary will be used for further LLM interactions. Use a modular, losslessly compacted, markdown reference document format.
